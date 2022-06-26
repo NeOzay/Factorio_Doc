@@ -1,4 +1,4 @@
----@class ClassDoc
+---@class ClassDescription
 local ClassDoc = {}
 ClassDoc.__index = ClassDoc
 

@@ -1,0 +1,18 @@
+---Register a handler to run on the specified event(s). Each mod can only register once for every event, as any additional registration will overwrite the previous one. This holds true even if different filters are used for subsequent registrations.
+---
+---
+---Register for the [on_tick](on_tick) event to print the current tick to console each tick. 
+---```lua
+---script.on_event(defines.events.on_tick,
+---function(event) game.print(event.tick) end)
+---```
+---
+---Register for the [on_built_entity](on_built_entity) event, limiting it to only be received when a `"fast-inserter"` is built. 
+---```lua
+---script.on_event(defines.events.on_built_entity,
+---function(event) game.print("Gotta go fast!") end,
+---{{filter = "name", name = "fast-inserter"}})
+---```
+---
+---@class test
+local test
