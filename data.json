@@ -10637,6 +10637,7 @@
                "order":46,
                "description":"The max underground distance for underground belts and underground pipes or `nil` if this isn't one of those prototypes.",
                "type":"uint8",
+
                "read":true,
                "write":false
             },

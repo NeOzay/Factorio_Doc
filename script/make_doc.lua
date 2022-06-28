@@ -15,13 +15,15 @@ local function add_balise(s)
 	return s
 end
 
-
-
-function Documentation.new()
+---@param description? string
+---@param notes? string[]
+---@param examples? string[]
+---@return DocomentationDescription
+function Documentation.new(description, notes, examples)
 	local documentation = {}
-	documentation.description = ""
-	documentation.notes = {}
-	documentation.examples = {}
+	documentation.description = description or ""
+	documentation.notes = notes or {}
+	documentation.examples = examples or {}
 	return setmetatable(documentation, Documentation)
 end
 
@@ -39,14 +41,22 @@ function Documentation:add_examples(examples)
 end
 
 function Documentation:tostring()
-	local doc = add_balise(self.description).."\n---\n"
+	local doc = add_balise(self.description).."\n"
+	local notes = {}
 	for index, note in ipairs(self.notes) do
-		doc =	doc..add_balise(note).."\n"
+		notes[index] = add_balise(note)
 	end
-	doc = doc.."---\n"
+	if #notes> 0 then
+		doc = doc.."---\n"
+		doc = doc..table.concat(notes,"\n---\\\n").."\n"
+		doc = doc.."---\n"
+	end
+
+	local examples = {}
 	for index, example in ipairs(self.examples) do
-		doc = doc..add_balise(example).."\n--- -\n"
+		examples[index] = add_balise(example)
 	end
+	doc = doc..table.concat(examples,"\n---\\\n")
 
 	return doc
 end

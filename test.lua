@@ -1,18 +1,8 @@
----Register a handler to run on the specified event(s). Each mod can only register once for every event, as any additional registration will overwrite the previous one. This holds true even if different filters are used for subsequent registrations.
----
----
----Register for the [on_tick](on_tick) event to print the current tick to console each tick. 
----```lua
----script.on_event(defines.events.on_tick,
----function(event) game.print(event.tick) end)
----```
----
----Register for the [on_built_entity](on_built_entity) event, limiting it to only be received when a `"fast-inserter"` is built. 
----```lua
----script.on_event(defines.events.on_built_entity,
----function(event) game.print("Gotta go fast!") end,
----{{filter = "name", name = "fast-inserter"}})
----```
----
----@class test
-local test
+---@meta
+
+---Control behavior for accumulators.
+---@class LuaAccumulatorControlBehavior
+---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
+---@field output_signal SignalID
+---@field valid boolean @Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
+local LuaAccumulatorControlBehavior = {}
