@@ -17,12 +17,12 @@ function FieldDoc.new(attribute)
 	else
 		field.documentation = attribute.description..rw
 	end
-	
+
 	return setmetatable(field, FieldDoc)
 end
 
 function FieldDoc:tostring()
-	local description = string.format("---@field %s %s", self.name, self.type)
+	local description = string.format("---@field %s %s", self.name, tostring(self.type))
 
 	if type(self.documentation) == "string" then
 		description = description.." @"..self.documentation

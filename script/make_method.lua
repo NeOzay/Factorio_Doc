@@ -5,7 +5,7 @@ local MethodDoc = {}
 MethodDoc.__index = MethodDoc
 ---@param param Parameter
 local function make_param(param)
-	local def = ("---@param %s %s"):format(param.name, param.type)
+	local def = ("---@param %s %s"):format(param.name, tostring(param.type))
 	if param.description ~= "" then
 		def = def.." @"..param.description
 	end

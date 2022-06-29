@@ -49,7 +49,6 @@ function Documentation:tostring()
 	if #notes> 0 then
 		doc = doc.."---\n"
 		doc = doc..table.concat(notes,"\n---\\\n").."\n"
-		doc = doc.."---\n"
 	end
 
 	local examples = {}
@@ -57,6 +56,7 @@ function Documentation:tostring()
 		examples[index] = add_balise(example)
 	end
   if #examples > 0 then
+		doc = doc.."---\n"
 		doc = doc..table.concat(examples,"\n---\\\n").."\n"
   end
 
