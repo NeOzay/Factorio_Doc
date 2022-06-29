@@ -1,7 +1,9 @@
 local Docomentation = require"script.make_doc"
 local FieldDescription = require"script.make_field"
+local MethodDescription = require"script.make_method"
 ---@class ClassDescription
 ---@field fields FieldDescription[]
+---@field methods MethodDescription[]
 local ClassDoc = {}
 ClassDoc.__index = ClassDoc
 
@@ -18,6 +20,13 @@ function ClassDoc.new(class)
 	for index, attribute in ipairs(class.attributes) do
 		fields[index] = FieldDescription.new(attribute)
 	end
+
+	classDoc.methods = {}
+	local methods = classDoc.methods
+	for index, m in ipairs(class.methods) do
+		methods[index] = MethodDescription.new(m, class.name)
+	end
+
 	return setmetatable(classDoc, ClassDoc)
 end
 
@@ -26,9 +35,15 @@ function ClassDoc:tostring()
 	description = description..self.documentation:tostring()
 	description = description..string.format("---@class %s", self.name).."\n"
 	for index, field in ipairs(self.fields) do
-		description = description..field:tostring().."\n"
+		description = description..field:tostring()
 	end
 	description = description..string.format("local %s = {}", self.name).."\n"
+	description = description.."\n"
+
+	for index, method in ipairs(self.methods) do
+		description = description..method:tostring().."\n"
+	end
+
 	return description
 end
 

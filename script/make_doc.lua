@@ -56,7 +56,9 @@ function Documentation:tostring()
 	for index, example in ipairs(self.examples) do
 		examples[index] = add_balise(example)
 	end
-	doc = doc..table.concat(examples,"\n---\\\n")
+  if #examples > 0 then
+		doc = doc..table.concat(examples,"\n---\\\n").."\n"
+  end
 
 	return doc
 end

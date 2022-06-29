@@ -19,6 +19,6 @@ make_types(data.builtin_types)
 ---@type table
 --local test = json.decode()
 
-local c = Class.new(data.classes[2])
+local c = Class.new(data.classes[7])
 
 make_file(c:tostring(), "test.lua")
