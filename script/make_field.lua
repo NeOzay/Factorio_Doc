@@ -1,8 +1,11 @@
 local Docomentation = require"script.make_doc"
+local solve_type = require"script.solve_type"
 
 ---@class FieldDescription
 local FieldDoc = {}
 FieldDoc.__index = FieldDoc
+
+
 
 ---@param attribute Attribute
 function FieldDoc.new(attribute)
@@ -22,7 +25,7 @@ function FieldDoc.new(attribute)
 end
 
 function FieldDoc:tostring()
-	local description = string.format("---@field %s %s", self.name, tostring(self.type))
+	local description = string.format("---@field %s %s", self.name, solve_type(self.type))
 
 	if type(self.documentation) == "string" then
 		description = description.." @"..self.documentation

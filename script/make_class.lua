@@ -7,6 +7,10 @@ local MethodDescription = require"script.make_method"
 local ClassDoc = {}
 ClassDoc.__index = ClassDoc
 
+local function setCurrentClass()
+	currentClass = {}
+end
+
 ---@param class Class
 ---@return ClassDescription
 function ClassDoc.new(class)

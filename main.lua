@@ -12,7 +12,7 @@ do
 	f:close()
 end
 ---@type Toplevel
-local data = json.decode(rawData)
+local data = json.decode(rawData)--[[@as Toplevel]]
 
 make_types(data.builtin_types)
 

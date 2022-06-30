@@ -1,4 +1,4 @@
----@alias Type string
+---@alias Type string|ComplexType
 ---@alias Operator Attribute|Method
 
 ---@class Class
