@@ -1,11 +1,6 @@
-local Docomentation = require"script.make_doc"
-local solve_type = require"script.solve_type"
-
 ---@class FieldDescription
 local FieldDoc = {}
 FieldDoc.__index = FieldDoc
-
-
 
 ---@param attribute Attribute
 function FieldDoc.new(attribute)
@@ -24,11 +19,24 @@ function FieldDoc.new(attribute)
 	return setmetatable(field, FieldDoc)
 end
 
+---@param parameter Parameter
+function FieldDoc.fromParameter(parameter)
+	---@type FieldDescription
+	local field = setmetatable({}, FieldDoc)
+	field.name = parameter.name..(parameter.optional and "?" or "")
+	field.type = parameter.type
+	field.documentation = parameter.description
+	return field:tostring()
+end
+
 function FieldDoc:tostring()
+	current.field = self
 	local description = string.format("---@field %s %s", self.name, solve_type(self.type))
 
 	if type(self.documentation) == "string" then
-		description = description.." @"..self.documentation
+		if self.documentation ~= "" then
+			description = description.." @"..self.documentation
+		end
 	else
 		description = self.documentation:tostring()..description
 	end

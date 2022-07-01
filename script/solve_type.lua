@@ -31,6 +31,7 @@ complex_type.LuaCustomTable = complex_type.dictionary
 complex_type["function"] = function (_type)
 	local args = {}
 	for index, param in ipairs(_type.parameters) do
+		---@cast param -Parameter
 		args[index] = ("_arg%s:%s"):format(index, solve_type(param))
 	end
 	return ("fun(%s)"):format(table.concat(args, ", "))
@@ -43,7 +44,15 @@ end
 
 ---@param _type ComplexType
 complex_type.table = function (_type)
-	
+	local name = current.class.name.."."..current.field.name
+	local def = ("---@class %s"):format(name).."\n"
+	for index, param in ipairs(_type.parameters) do
+		---@cast param -Type
+		def = def..FieldDescription.fromParameter(param)
+	end
+
+	table.insert(current.class.extras, def)
+	return name
 end
 
 return solve_type

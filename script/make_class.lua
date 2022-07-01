@@ -1,15 +1,9 @@
-local Docomentation = require"script.make_doc"
-local FieldDescription = require"script.make_field"
-local MethodDescription = require"script.make_method"
 ---@class ClassDescription
 ---@field fields FieldDescription[]
 ---@field methods MethodDescription[]
+---@field extras string[]
 local ClassDoc = {}
 ClassDoc.__index = ClassDoc
-
-local function setCurrentClass()
-	currentClass = {}
-end
 
 ---@param class Class
 ---@return ClassDescription
@@ -19,6 +13,7 @@ function ClassDoc.new(class)
 	classDoc.raw = class
 	classDoc.name = class.name
 	classDoc.documentation = Docomentation.new(class.description, class.notes, class.examples)
+	classDoc.extras = {}
 	classDoc.fields = {}
 	local fields = classDoc.fields
 	for index, attribute in ipairs(class.attributes) do
@@ -35,6 +30,7 @@ function ClassDoc.new(class)
 end
 
 function ClassDoc:tostring()
+	current.class = self
 	local description = ""
 	description = description..self.documentation:tostring()
 	description = description..string.format("---@class %s", self.name).."\n"
@@ -48,6 +44,13 @@ function ClassDoc:tostring()
 		description = description..method:tostring().."\n"
 	end
 
+	if #self.extras > 0 then
+		description = description.."\n"
+		for index, extra in ipairs(self.extras) do
+			description = description..extra.."\n"
+		end
+		
+	end
 	return description
 end
 
