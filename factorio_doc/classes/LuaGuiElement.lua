@@ -169,29 +169,29 @@
 local LuaGuiElement = {}
 
 ---Add a new child element to this GuiElement.
----@param anchor? GuiAnchor @Where to position the child element when in the `relative` element.
----@param caption? LocalisedString @Text displayed on the child element. For frames, this is their title. For other elements, like buttons or labels, this is the content. Whilst this attribute may be used on all elements, it doesn't make sense for tables and flows as they won't display it.
----@param enabled? boolean @Whether the child element is enabled. Defaults to `true`.
----@param ignored_by_interaction? boolean @Whether the child element is ignored by interaction. Defaults to `false`.
----@param index? uint @Location in its parent that the child element should slot into. By default, the child will be appended onto the end.
----@param name? string @Name of the child element. It must be unique within the parent element.
----@param style? string @Style of the child element.
----@param tags? Tags @[Tags](Tags) associated with the child element.
----@param tooltip? LocalisedString @Tooltip of the child element.
----@param type string @The kind of element to add. Has to be one of the GUI element types listed at the top of this page.
----@param visible? boolean @Whether the child element is visible. Defaults to `true`.
+---@param _type string @The kind of element to add. Has to be one of the GUI element types listed at the top of this page.
+---@param _name? string @Name of the child element. It must be unique within the parent element.
+---@param _caption? LocalisedString @Text displayed on the child element. For frames, this is their title. For other elements, like buttons or labels, this is the content. Whilst this attribute may be used on all elements, it doesn't make sense for tables and flows as they won't display it.
+---@param _tooltip? LocalisedString @Tooltip of the child element.
+---@param _enabled? boolean @Whether the child element is enabled. Defaults to `true`.
+---@param _visible? boolean @Whether the child element is visible. Defaults to `true`.
+---@param _ignored_by_interaction? boolean @Whether the child element is ignored by interaction. Defaults to `false`.
+---@param _style? string @Style of the child element.
+---@param _tags? Tags @[Tags](Tags) associated with the child element.
+---@param _index? uint @Location in its parent that the child element should slot into. By default, the child will be appended onto the end.
+---@param _anchor? GuiAnchor @Where to position the child element when in the `relative` element.
 ---@return LuaGuiElement @The GUI element that was added.
-function LuaGuiElement.add(anchor, caption, enabled, ignored_by_interaction, index, name, style, tags, tooltip, type, visible) end
+function LuaGuiElement.add(_type, _name, _caption, _tooltip, _enabled, _visible, _ignored_by_interaction, _style, _tags, _index, _anchor) end
 
 ---Inserts a string at the end or at the given index of this dropdown or listbox.
----@param index? uint @The index at which to insert the item.
----@param string LocalisedString @The text to insert.
-function LuaGuiElement.add_item(index, string) end
+---@param _string LocalisedString @The text to insert.
+---@param _index? uint @The index at which to insert the item.
+function LuaGuiElement.add_item(_string, _index) end
 
 ---Adds the given tab and content widgets to this tabbed pane as a new tab.
----@param content LuaGuiElement @The content to show when this tab is selected. Can be any type of GUI element.
----@param tab LuaGuiElement @The tab to add, must be a GUI element of type "tab".
-function LuaGuiElement.add_tab(content, tab) end
+---@param _tab LuaGuiElement @The tab to add, must be a GUI element of type "tab".
+---@param _content LuaGuiElement @The content to show when this tab is selected. Can be any type of GUI element.
+function LuaGuiElement.add_tab(_tab, _content) end
 
 ---Moves this GUI element to the "front" so it will draw over other elements.
 ---
@@ -230,9 +230,9 @@ function LuaGuiElement.force_auto_center() end
 function LuaGuiElement.get_index_in_parent() end
 
 ---Gets the item at the given index from this dropdown or listbox.
----@param index uint @The index to get
+---@param _index uint @The index to get
 ---@return LocalisedString
-function LuaGuiElement.get_item(index) end
+function LuaGuiElement.get_item(_index) end
 
 ---The mod that owns this Gui element or `nil` if it's owned by the scenario script.
 ---
@@ -265,29 +265,29 @@ function LuaGuiElement.get_slider_value_step() end
 function LuaGuiElement.help() end
 
 ---Removes the item at the given index from this dropdown or listbox.
----@param index uint @The index
-function LuaGuiElement.remove_item(index) end
+---@param _index uint @The index
+function LuaGuiElement.remove_item(_index) end
 
 ---Removes the given tab and its associated content from this tabbed pane.
 ---
 ---Removing a tab does not destroy the tab or the tab contents. It just removes them from the view.
 ---\
 ---When removing tabs, [LuaGuiElement::selected_tab_index](LuaGuiElement::selected_tab_index) needs to be manually updated.
----@param tab LuaGuiElement @The tab to remove. If not given, it removes all tabs.
-function LuaGuiElement.remove_tab(tab) end
+---@param _tab LuaGuiElement @The tab to remove. If not given, it removes all tabs.
+function LuaGuiElement.remove_tab(_tab) end
 
 ---Scrolls this scroll bar to the bottom.
 function LuaGuiElement.scroll_to_bottom() end
 
 ---Scrolls this scroll bar such that the specified GUI element is visible to the player.
----@param element LuaGuiElement @The element to scroll to.
----@param scroll_mode? string @Where the element should be positioned in the scroll-pane. Must be either `"in-view"` or `"top-third"`. Defaults to `"in-view"`.
-function LuaGuiElement.scroll_to_element(element, scroll_mode) end
+---@param _element LuaGuiElement @The element to scroll to.
+---@param _scroll_mode? string @Where the element should be positioned in the scroll-pane. Must be either `"in-view"` or `"top-third"`. Defaults to `"in-view"`.
+function LuaGuiElement.scroll_to_element(_element, _scroll_mode) end
 
 ---Scrolls the scroll bar such that the specified listbox item is visible to the player.
----@param index int @The item index to scroll to.
----@param scroll_mode? string @Where the item should be positioned in the list-box. Must be either `"in-view"` or `"top-third"`. Defaults to `"in-view"`.
-function LuaGuiElement.scroll_to_item(index, scroll_mode) end
+---@param _index int @The item index to scroll to.
+---@param _scroll_mode? string @Where the item should be positioned in the list-box. Must be either `"in-view"` or `"top-third"`. Defaults to `"in-view"`.
+function LuaGuiElement.scroll_to_item(_index, _scroll_mode) end
 
 ---Scrolls this scroll bar to the left.
 function LuaGuiElement.scroll_to_left() end
@@ -309,41 +309,41 @@ function LuaGuiElement.scroll_to_top() end
 ---```lua
 ---textbox.select(1, 0)
 ---```
----@param end int @The index of the last character to select
----@param start int @The index of the first character to select
-function LuaGuiElement.select(end, start) end
+---@param _start int @The index of the first character to select
+---@param _end int @The index of the last character to select
+function LuaGuiElement.select(_start, _end) end
 
 ---Selects all the text in this textbox.
 function LuaGuiElement.select_all() end
 
 ---Sets the given string at the given index in this dropdown or listbox.
----@param index uint @The index whose text to replace.
----@param string LocalisedString @The text to set at the given index.
-function LuaGuiElement.set_item(index, string) end
+---@param _index uint @The index whose text to replace.
+---@param _string LocalisedString @The text to set at the given index.
+function LuaGuiElement.set_item(_index, _string) end
 
 ---Sets whether this slider only allows being moved to discrete positions.
----@param value boolean
-function LuaGuiElement.set_slider_discrete_slider(value) end
+---@param _value boolean
+function LuaGuiElement.set_slider_discrete_slider(_value) end
 
 ---Sets whether this slider only allows discrete values.
----@param value boolean
-function LuaGuiElement.set_slider_discrete_values(value) end
+---@param _value boolean
+function LuaGuiElement.set_slider_discrete_values(_value) end
 
 ---Sets this sliders minimum and maximum values.
 ---
 ---The minimum can't be >= the maximum.
----@param maximum double
----@param minimum double
-function LuaGuiElement.set_slider_minimum_maximum(maximum, minimum) end
+---@param _minimum double
+---@param _maximum double
+function LuaGuiElement.set_slider_minimum_maximum(_minimum, _maximum) end
 
 ---Sets the minimum distance this slider can move.
 ---
 ---The minimum distance can't be > (max - min).
----@param value double
-function LuaGuiElement.set_slider_value_step(value) end
+---@param _value double
+function LuaGuiElement.set_slider_value_step(_value) end
 
 ---Swaps the children at the given indices in this element.
----@param index_1 uint @The index of the first child.
----@param index_2 uint @The index of the second child.
-function LuaGuiElement.swap_children(index_1, index_2) end
+---@param _index_1 uint @The index of the first child.
+---@param _index_2 uint @The index of the second child.
+function LuaGuiElement.swap_children(_index_1, _index_2) end
 

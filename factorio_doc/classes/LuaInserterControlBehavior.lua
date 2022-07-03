@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for inserters.
----@class LuaInserterControlBehavior
+---@class LuaInserterControlBehavior:LuaGenericOnOffControlBehavior
 ---@field circuit_hand_read_mode defines.control_behavior.inserter.hand_read_mode @The hand read mode for the inserter.`[RW]`
 ---@field circuit_mode_of_operation defines.control_behavior.inserter.circuit_mode_of_operation @The circuit mode of operations for the inserter.`[RW]`
 ---@field circuit_read_hand_contents boolean @`true` if the contents of the inserter hand should be sent to the circuit network`[RW]`

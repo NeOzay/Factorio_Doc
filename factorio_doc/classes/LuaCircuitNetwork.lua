@@ -13,9 +13,9 @@
 local LuaCircuitNetwork = {}
 
 ---
----@param signal SignalID @The signal to read.
+---@param _signal SignalID @The signal to read.
 ---@return int @The current value of the signal.
-function LuaCircuitNetwork.get_signal(signal) end
+function LuaCircuitNetwork.get_signal(_signal) end
 
 ---All methods and properties that this object supports.
 ---@return string

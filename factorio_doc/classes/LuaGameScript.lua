@@ -73,9 +73,10 @@
 ---@field object_name string @This object's name.`[R]`
 ---@field particle_prototypes table<string, LuaParticlePrototype> @A dictionary containing every LuaParticlePrototype indexed by `name`.`[R]`
 ---@field permissions LuaPermissionGroups @`[R]`
----@field player LuaPlayer @This property is only populated inside [custom command](LuaCommandProcessor) handlers and when writing [Lua console commands](https://wiki.factorio.com/Console#Scripting_and_cheat_commands). Returns the player that is typing the command, `nil` in all other instances.
-
-See [LuaGameScript::players](LuaGameScript::players) for accessing all players.`[R]`
+---This property is only populated inside [custom command](LuaCommandProcessor) handlers and when writing [Lua console commands](https://wiki.factorio.com/Console#Scripting_and_cheat_commands). Returns the player that is typing the command, `nil` in all other instances.
+---
+---See [LuaGameScript::players](LuaGameScript::players) for accessing all players.`[R]`
+---@field player LuaPlayer
 ---@field players table<uint|string, LuaPlayer> @Get a table of all the players that currently exist. This sparse table allows you to find players by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the array part of the table. Iterating with `ipairs()` will not work at all.`[R]`
 ---@field pollution_statistics LuaFlowStatistics @The pollution statistics for this map.`[R]`
 ---@field recipe_category_prototypes table<string, LuaRecipeCategoryPrototype> @A dictionary containing every LuaRecipeCategoryPrototype indexed by `name`.`[R]`
@@ -106,13 +107,13 @@ local LuaGameScript = {}
 ---Instruct the game to perform an auto-save.
 ---
 ---Only the server will save in multiplayer. In single player a standard auto-save is triggered.
----@param name? string @The autosave name if any. Saves will be named _autosave-*name* when provided.
-function LuaGameScript.auto_save(name) end
+---@param _name? string @The autosave name if any. Saves will be named _autosave-*name* when provided.
+function LuaGameScript.auto_save(_name) end
 
 ---Bans the given player from this multiplayer game. Does nothing if this is a single player game of if the player running this isn't an admin.
----@param player PlayerIdentification @The player to ban.
----@param reason? LocalisedString @The reason given if any.
-function LuaGameScript.ban_player(player, reason) end
+---@param _player PlayerIdentification @The player to ban.
+---@param _reason? LocalisedString @The reason given if any.
+function LuaGameScript.ban_player(_player, _reason) end
 
 ---Run internal consistency checks. Allegedly prints any errors it finds.
 ---
@@ -132,53 +133,53 @@ function LuaGameScript.count_pipe_groups() end
 ---The game currently supports a maximum of 64 forces, including the three built-in forces. This means that a maximum of 61 new forces may be created.
 ---\
 ---Force names must be unique.
----@param force string @Name of the new force
+---@param _force string @Name of the new force
 ---@return LuaForce @The force that was just created
-function LuaGameScript.create_force(force) end
+function LuaGameScript.create_force(_force) end
 
 ---Creates an inventory that is not owned by any game object. It can be resized later with [LuaInventory::resize](LuaInventory::resize).
 ---
 ---Make sure to destroy it when you are done with it using [LuaInventory::destroy](LuaInventory::destroy).
----@param size uint16 @The number of slots the inventory initially has.
+---@param _size uint16 @The number of slots the inventory initially has.
 ---@return LuaInventory
-function LuaGameScript.create_inventory(size) end
+function LuaGameScript.create_inventory(_size) end
 
 ---Creates a [LuaProfiler](LuaProfiler), which is used for measuring script performance.
 ---
 ---LuaProfiler cannot be serialized.
----@param stopped? boolean @Create the timer stopped
+---@param _stopped? boolean @Create the timer stopped
 ---@return LuaProfiler
-function LuaGameScript.create_profiler(stopped) end
+function LuaGameScript.create_profiler(_stopped) end
 
 ---Creates a deterministic standalone random generator with the given seed or if a seed is not provided the initial map seed is used.
 ---
 ---*Make sure* you actually want to use this over math.random(...) as this provides entirely different functionality over math.random(...).
----@param seed? uint
+---@param _seed? uint
 ---@return LuaRandomGenerator
-function LuaGameScript.create_random_generator(seed) end
+function LuaGameScript.create_random_generator(_seed) end
 
 ---Create a new surface.
 ---
 ---The game currently supports a maximum of 4,294,967,295 surfaces, including the default surface.
 ---\
 ---Surface names must be unique.
----@param name string @Name of the new surface.
----@param settings? MapGenSettings @Map generation settings.
+---@param _name string @Name of the new surface.
+---@param _settings? MapGenSettings @Map generation settings.
 ---@return LuaSurface @The surface that was just created.
-function LuaGameScript.create_surface(name, settings) end
+function LuaGameScript.create_surface(_name, _settings) end
 
 ---Base64 decodes and inflates the given string.
----@param string string @The string to decode.
+---@param _string string @The string to decode.
 ---@return string @The decoded string or `nil` if the decode failed.
-function LuaGameScript.decode_string(string) end
+function LuaGameScript.decode_string(_string) end
 
 ---Deletes the given surface and all entities on it.
----@param surface string|LuaSurface @The surface to be deleted. Currently the primary surface (1, 'nauvis') cannot be deleted.
-function LuaGameScript.delete_surface(surface) end
+---@param _surface string|LuaSurface @The surface to be deleted. Currently the primary surface (1, 'nauvis') cannot be deleted.
+function LuaGameScript.delete_surface(_surface) end
 
 ---Converts the given direction into the string version of the direction.
----@param direction defines.direction
-function LuaGameScript.direction_to_string(direction) end
+---@param _direction defines.direction
+function LuaGameScript.direction_to_string(_direction) end
 
 ---Disables replay saving for the current save file. Once done there's no way to re-enable replay saving for the save file without loading an old save.
 function LuaGameScript.disable_replay() end
@@ -187,9 +188,9 @@ function LuaGameScript.disable_replay() end
 function LuaGameScript.disable_tutorial_triggers() end
 
 ---Deflates and base64 encodes the given string.
----@param string string @The string to encode.
+---@param _string string @The string to encode.
 ---@return string @The encoded string or `nil` if the encode failed.
-function LuaGameScript.encode_string(string) end
+function LuaGameScript.encode_string(_string) end
 
 ---Evaluate an expression, substituting variables as provided. For details on the formula, see the relevant page on the [Factorio wiki](https://wiki.factorio.com/Prototype/Technology#unit).
 ---
@@ -198,10 +199,10 @@ function LuaGameScript.encode_string(string) end
 ---local formula = game.forces["player"].technologies["mining-productivity-4"].research_unit_count_formula
 ---local units = game.evaluate_expression(formula, { L = 10, l = 10 })
 ---```
----@param expression string @The expression to evaluate.
----@param variables? table<string, double> @Variables to be substituted.
+---@param _expression string @The expression to evaluate.
+---@param _variables? table<string, double> @Variables to be substituted.
 ---@return double
-function LuaGameScript.evaluate_expression(expression, variables) end
+function LuaGameScript.evaluate_expression(_expression, _variables) end
 
 ---Force a CRC check. Tells all peers to calculate their current map CRC; these CRC are then compared against each other. If a mismatch is detected, the game is desynced and some peers are forced to reconnect.
 function LuaGameScript.force_crc() end
@@ -209,14 +210,14 @@ function LuaGameScript.force_crc() end
 ---Gets the number of entities that are active (updated each tick).
 ---
 ---This is very expensive to determine.
----@param surface? SurfaceIdentification @If give, only the entities active on this surface are counted.
+---@param _surface? SurfaceIdentification @If give, only the entities active on this surface are counted.
 ---@return uint
-function LuaGameScript.get_active_entities_count(surface) end
+function LuaGameScript.get_active_entities_count(_surface) end
 
 ---
----@param tag string
+---@param _tag string
 ---@return LuaEntity
-function LuaGameScript.get_entity_by_tag(tag) end
+function LuaGameScript.get_entity_by_tag(_tag) end
 
 ---Returns a dictionary of all LuaAchievementPrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -224,9 +225,9 @@ function LuaGameScript.get_entity_by_tag(tag) end
 ---```lua
 ---local prototypes = game.get_filtered_achievement_prototypes{{filter="allowed-without-fight", invert=true}}
 ---```
----@param filters AchievementPrototypeFilter[]
+---@param _filters AchievementPrototypeFilter[]
 ---@return table<string, LuaAchievementPrototype>
-function LuaGameScript.get_filtered_achievement_prototypes(filters) end
+function LuaGameScript.get_filtered_achievement_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaDecorativePrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -234,9 +235,9 @@ function LuaGameScript.get_filtered_achievement_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_decorative_prototypes{{filter="autoplace"}}
 ---```
----@param filters DecorativePrototypeFilter[]
+---@param _filters DecorativePrototypeFilter[]
 ---@return table<string, LuaDecorativePrototype>
-function LuaGameScript.get_filtered_decorative_prototypes(filters) end
+function LuaGameScript.get_filtered_decorative_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaEntityPrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -244,9 +245,9 @@ function LuaGameScript.get_filtered_decorative_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_entity_prototypes{{filter="crafting-category", crafting_category="crafting-with-fluid"}}
 ---```
----@param filters EntityPrototypeFilter[]
+---@param _filters EntityPrototypeFilter[]
 ---@return table<string, LuaEntityPrototype>
-function LuaGameScript.get_filtered_entity_prototypes(filters) end
+function LuaGameScript.get_filtered_entity_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaEquipmentPrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -254,9 +255,9 @@ function LuaGameScript.get_filtered_entity_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_equipment_prototypes{{filter="type", type="battery-equipment"}}
 ---```
----@param filters EquipmentPrototypeFilter[]
+---@param _filters EquipmentPrototypeFilter[]
 ---@return table<string, LuaEquipmentPrototype>
-function LuaGameScript.get_filtered_equipment_prototypes(filters) end
+function LuaGameScript.get_filtered_equipment_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaFluidPrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -264,9 +265,9 @@ function LuaGameScript.get_filtered_equipment_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_fluid_prototypes{{filter="heat-capacity", comparison="=", value=100}}
 ---```
----@param filters FluidPrototypeFilter[]
+---@param _filters FluidPrototypeFilter[]
 ---@return table<string, LuaFluidPrototype>
-function LuaGameScript.get_filtered_fluid_prototypes(filters) end
+function LuaGameScript.get_filtered_fluid_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaItemPrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -274,9 +275,9 @@ function LuaGameScript.get_filtered_fluid_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_item_prototypes{{filter="has-rocket-launch-products"}}
 ---```
----@param filters ItemPrototypeFilter[]
+---@param _filters ItemPrototypeFilter[]
 ---@return table<string, LuaItemPrototype>
-function LuaGameScript.get_filtered_item_prototypes(filters) end
+function LuaGameScript.get_filtered_item_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaModSettingPrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -284,9 +285,9 @@ function LuaGameScript.get_filtered_item_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_mod_setting_prototypes{{filter="mod", mod="space-exploration"}}
 ---```
----@param filters ModSettingPrototypeFilter[]
+---@param _filters ModSettingPrototypeFilter[]
 ---@return table<string, LuaModSettingPrototype>
-function LuaGameScript.get_filtered_mod_setting_prototypes(filters) end
+function LuaGameScript.get_filtered_mod_setting_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaRecipePrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -294,9 +295,9 @@ function LuaGameScript.get_filtered_mod_setting_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_recipe_prototypes{{filter="energy", comparison="<", value=0.5}}
 ---```
----@param filters RecipePrototypeFilter[]
+---@param _filters RecipePrototypeFilter[]
 ---@return table<string, LuaRecipePrototype>
-function LuaGameScript.get_filtered_recipe_prototypes(filters) end
+function LuaGameScript.get_filtered_recipe_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaTechnologyPrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -304,9 +305,9 @@ function LuaGameScript.get_filtered_recipe_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_technology_prototypes{{filter="has-prerequisites", invert=true}}
 ---```
----@param filters TechnologyPrototypeFilter[]
+---@param _filters TechnologyPrototypeFilter[]
 ---@return table<string, LuaTechnologyPrototype>
-function LuaGameScript.get_filtered_technology_prototypes(filters) end
+function LuaGameScript.get_filtered_technology_prototypes(_filters) end
 
 ---Returns a dictionary of all LuaTilePrototypes that fit the given filters. The prototypes are indexed by `name`.
 ---
@@ -314,9 +315,9 @@ function LuaGameScript.get_filtered_technology_prototypes(filters) end
 ---```lua
 ---local prototypes = game.get_filtered_tile_prototypes{{filter="walking-speed-modifier", comparison="≥", value=1.5}}
 ---```
----@param filters TilePrototypeFilter[]
+---@param _filters TilePrototypeFilter[]
 ---@return table<string, LuaTilePrototype>
-function LuaGameScript.get_filtered_tile_prototypes(filters) end
+function LuaGameScript.get_filtered_tile_prototypes(_filters) end
 
 ---Gets the map exchange string for the map generation settings that were used to create this map.
 ---@return string
@@ -325,30 +326,30 @@ function LuaGameScript.get_map_exchange_string() end
 ---Gets the given player or returns `nil` if no player is found.
 ---
 ---This is a shortcut for game.players[...]
----@param player uint|string @The player index or name.
+---@param _player uint|string @The player index or name.
 ---@return LuaPlayer
-function LuaGameScript.get_player(player) end
+function LuaGameScript.get_player(_player) end
 
 ---Gets the inventories created through [LuaGameScript::create_inventory](LuaGameScript::create_inventory)
 ---
 ---Inventories created through console commands will be owned by `"core"`.
----@param mod? string @The mod who's inventories to get. If not provided all inventories are returned.
+---@param _mod? string @The mod who's inventories to get. If not provided all inventories are returned.
 ---@return table<string, LuaInventory[]> @A mapping of mod name to array of inventories owned by that mod.
-function LuaGameScript.get_script_inventories(mod) end
+function LuaGameScript.get_script_inventories(_mod) end
 
 ---Gets the given surface or returns `nil` if no surface is found.
 ---
 ---This is a shortcut for game.surfaces[...]
----@param surface uint|string @The surface index or name.
+---@param _surface uint|string @The surface index or name.
 ---@return LuaSurface
-function LuaGameScript.get_surface(surface) end
+function LuaGameScript.get_surface(_surface) end
 
 ---Gets train stops matching the given filters.
----@param force? ForceIdentification
----@param name? string|string[]
----@param surface? SurfaceIdentification
+---@param _name? string|string[]
+---@param _surface? SurfaceIdentification
+---@param _force? ForceIdentification
 ---@return LuaEntity[]
-function LuaGameScript.get_train_stops(force, name, surface) end
+function LuaGameScript.get_train_stops(_name, _surface, _force) end
 
 ---Is this the demo version of Factorio?
 ---@return boolean
@@ -359,66 +360,66 @@ function LuaGameScript.is_demo() end
 function LuaGameScript.is_multiplayer() end
 
 ---Checks if the given SoundPath is valid.
----@param sound_path SoundPath @Path to the sound.
+---@param _sound_path SoundPath @Path to the sound.
 ---@return boolean
-function LuaGameScript.is_valid_sound_path(sound_path) end
+function LuaGameScript.is_valid_sound_path(_sound_path) end
 
 ---Checks if the given SpritePath is valid and contains a loaded sprite. The existence of the image is not checked for paths of type `file`.
----@param sprite_path SpritePath @Path to the image.
+---@param _sprite_path SpritePath @Path to the image.
 ---@return boolean
-function LuaGameScript.is_valid_sprite_path(sprite_path) end
+function LuaGameScript.is_valid_sprite_path(_sprite_path) end
 
 ---Convert a JSON string to a table.
----@param json string @The string to convert.
+---@param _json string @The string to convert.
 ---@return AnyBasic @The returned object, or `nil` if the JSON string was invalid.
-function LuaGameScript.json_to_table(json) end
+function LuaGameScript.json_to_table(_json) end
 
 ---Kicks the given player from this multiplayer game. Does nothing if this is a single player game or if the player running this isn't an admin.
----@param player PlayerIdentification @The player to kick.
----@param reason? LocalisedString @The reason given if any.
-function LuaGameScript.kick_player(player, reason) end
+---@param _player PlayerIdentification @The player to kick.
+---@param _reason? LocalisedString @The reason given if any.
+function LuaGameScript.kick_player(_player, _reason) end
 
 ---Marks two forces to be merged together. All entities in the source force will be reassigned to the target force. The source force will then be destroyed.
 ---
 ---The three built-in forces -- player, enemy and neutral -- can't be destroyed. I.e. they can't be used as the source argument to this function.
 ---\
 ---The source force is not removed until the end of the current tick, or if called during the [on_forces_merging](on_forces_merging) or [on_forces_merged](on_forces_merged) event, the end of the next tick.
----@param destination ForceIdentification @The force to reassign all entities to.
----@param source ForceIdentification @The force to remove.
-function LuaGameScript.merge_forces(destination, source) end
+---@param _source ForceIdentification @The force to remove.
+---@param _destination ForceIdentification @The force to reassign all entities to.
+function LuaGameScript.merge_forces(_source, _destination) end
 
 ---Mutes the given player. Does nothing if the player running this isn't an admin.
----@param player PlayerIdentification @The player to mute.
-function LuaGameScript.mute_player(player) end
+---@param _player PlayerIdentification @The player to mute.
+function LuaGameScript.mute_player(_player) end
 
 ---Convert a map exchange string to map gen settings and map settings.
----@param map_exchange_string string
+---@param _map_exchange_string string
 ---@return MapExchangeStringData
-function LuaGameScript.parse_map_exchange_string(map_exchange_string) end
+function LuaGameScript.parse_map_exchange_string(_map_exchange_string) end
 
 ---Play a sound for every player in the game.
----@param override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
----@param path SoundPath @The sound to play.
----@param position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
----@param volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
-function LuaGameScript.play_sound(override_sound_type, path, position, volume_modifier) end
+---@param _path SoundPath @The sound to play.
+---@param _position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
+---@param _volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
+---@param _override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
+function LuaGameScript.play_sound(_path, _position, _volume_modifier, _override_sound_type) end
 
 ---Print text to the chat console all players.
 ---
 ---Messages that are identical to a message sent in the last 60 ticks are not printed again.
----@param color? Color
----@param message LocalisedString
-function LuaGameScript.print(color, message) end
+---@param _message LocalisedString
+---@param _color? Color
+function LuaGameScript.print(_message, _color) end
 
 ---Purges the given players messages from the game. Does nothing if the player running this isn't an admin.
----@param player PlayerIdentification @The player to purge.
-function LuaGameScript.purge_player(player) end
+---@param _player PlayerIdentification @The player to purge.
+function LuaGameScript.purge_player(_player) end
 
 ---Regenerate autoplacement of some entities on all surfaces. This can be used to autoplace newly-added entities.
 ---
 ---All specified entity prototypes must be autoplacable.
----@param entities string|string[] @Prototype names of entity or entities to autoplace.
-function LuaGameScript.regenerate_entity(entities) end
+---@param _entities string|string[] @Prototype names of entity or entities to autoplace.
+function LuaGameScript.regenerate_entity(_entities) end
 
 ---Forces a reload of all mods.
 ---
@@ -435,12 +436,12 @@ function LuaGameScript.reload_mods() end
 function LuaGameScript.reload_script() end
 
 ---Remove players who are currently not connected from the map.
----@param players? LuaPlayer|string[] @List of players to remove. If not specified, remove all offline players.
-function LuaGameScript.remove_offline_players(players) end
+---@param _players? LuaPlayer|string[] @List of players to remove. If not specified, remove all offline players.
+function LuaGameScript.remove_offline_players(_players) end
 
 ---Remove a file or directory in the `script-output` folder, located in the game's [user data directory](https://wiki.factorio.com/User_data_directory). Can be used to remove files created by [LuaGameScript::write_file](LuaGameScript::write_file).
----@param path string @The path to the file or directory to remove, relative to `script-output`.
-function LuaGameScript.remove_path(path) end
+---@param _path string @The path to the file or directory to remove, relative to `script-output`.
+function LuaGameScript.remove_path(_path) end
 
 ---Reset scenario state (game_finished, player_won, etc.).
 function LuaGameScript.reset_game_state() end
@@ -454,16 +455,16 @@ function LuaGameScript.reset_time_played() end
 function LuaGameScript.save_atlas() end
 
 ---Instruct the server to save the map.
----@param name? string @Save name. If not specified, writes into the currently-running save.
-function LuaGameScript.server_save(name) end
+---@param _name? string @Save name. If not specified, writes into the currently-running save.
+function LuaGameScript.server_save(_name) end
 
 ---Set scenario state.
----@param can_continue boolean
----@param game_finished boolean
----@param next_level string
----@param player_won boolean
----@param victorious_force ForceIdentification
-function LuaGameScript.set_game_state(can_continue, game_finished, next_level, player_won, victorious_force) end
+---@param _game_finished boolean
+---@param _player_won boolean
+---@param _next_level string
+---@param _can_continue boolean
+---@param _victorious_force ForceIdentification
+function LuaGameScript.set_game_state(_game_finished, _player_won, _next_level, _can_continue, _victorious_force) end
 
 ---Forces the screenshot saving system to wait until all queued screenshots have been written to disk.
 function LuaGameScript.set_wait_for_screenshots_to_finish() end
@@ -471,60 +472,60 @@ function LuaGameScript.set_wait_for_screenshots_to_finish() end
 ---Show an in-game message dialog.
 ---
 ---Can only be used when the map contains exactly one player.
----@param image? string @Path to an image to show on the dialog
----@param point_to? GuiArrowSpecification @If specified, dialog will show an arrow pointing to this place. When not specified, the arrow will point to the player's position. (Use `point_to={type="nowhere"}` to remove the arrow entirely.) The dialog itself will be placed near the arrow's target.
----@param style? string @The gui style to use for this speech bubble. Must be of type speech_bubble.
----@param text LocalisedString @What the dialog should say
----@param wrapper_frame_style? string @Must be of type flow_style.
-function LuaGameScript.show_message_dialog(image, point_to, style, text, wrapper_frame_style) end
+---@param _text LocalisedString @What the dialog should say
+---@param _image? string @Path to an image to show on the dialog
+---@param _point_to? GuiArrowSpecification @If specified, dialog will show an arrow pointing to this place. When not specified, the arrow will point to the player's position. (Use `point_to={type="nowhere"}` to remove the arrow entirely.) The dialog itself will be placed near the arrow's target.
+---@param _style? string @The gui style to use for this speech bubble. Must be of type speech_bubble.
+---@param _wrapper_frame_style? string @Must be of type flow_style.
+function LuaGameScript.show_message_dialog(_text, _image, _point_to, _style, _wrapper_frame_style) end
 
 ---Convert a table to a JSON string
----@param data table
+---@param _data table
 ---@return string
-function LuaGameScript.table_to_json(data) end
+function LuaGameScript.table_to_json(_data) end
 
 ---Take a screenshot of the game and save it to the `script-output` folder, located in the game's [user data directory](https://wiki.factorio.com/User_data_directory). The name of the image file can be specified via the `path` parameter.
 ---
 ---If Factorio is running headless, this function will do nothing.
----@param allow_in_replay? boolean @Whether to save the screenshot even during replay playback. Defaults to `false`.
----@param anti_alias? boolean @Whether to render in double resolution and downscale the result (including GUI). Defaults to `false`.
----@param by_player? PlayerIdentification @If defined, the screenshot will only be taken for this player.
----@param daytime? double @Overrides the current surface daytime for the duration of screenshot rendering.
----@param force_render? boolean @Screenshot requests are processed in between game update and render. The game may skip rendering (ie. drop frames) if the previous frame has not finished rendering or the game simulation starts to fall below 60 updates per second. If `force_render` is set to `true`, the game won't drop frames and process the screenshot request at the end of the update in which the request was created. This is not honored on multiplayer clients that are catching up to server. Defaults to `false`.
----@param path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"screenshot.png"`.
----@param player? PlayerIdentification @The player to focus on. Defaults to the local player.
----@param position? MapPosition @If defined, the screenshot will be centered on this position. Otherwise, the screenshot will center on `player`.
----@param quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
----@param resolution? TilePosition @The maximum allowed resolution is 16384x16384 (8192x8192 when `anti_alias` is `true`), but the maximum recommended resolution is 4096x4096 (resp. 2048x2048).
----@param show_cursor_building_preview? boolean @When `true` and when `player` is specified, the building preview for the item in the player's cursor will also be rendered. Defaults to `false`.
----@param show_entity_info? boolean @Whether to include entity info ("Alt mode") or not. Defaults to `false`.
----@param show_gui? boolean @Whether to include GUIs in the screenshot or not. Defaults to `false`.
----@param surface? SurfaceIdentification @If defined, the screenshot will be taken on this surface.
----@param water_tick? uint @Overrides the tick of water animation, if animated water is enabled.
----@param zoom? double @The map zoom to take the screenshot at. Defaults to `1`.
-function LuaGameScript.take_screenshot(allow_in_replay, anti_alias, by_player, daytime, force_render, path, player, position, quality, resolution, show_cursor_building_preview, show_entity_info, show_gui, surface, water_tick, zoom) end
+---@param _player? PlayerIdentification @The player to focus on. Defaults to the local player.
+---@param _by_player? PlayerIdentification @If defined, the screenshot will only be taken for this player.
+---@param _surface? SurfaceIdentification @If defined, the screenshot will be taken on this surface.
+---@param _position? MapPosition @If defined, the screenshot will be centered on this position. Otherwise, the screenshot will center on `player`.
+---@param _resolution? TilePosition @The maximum allowed resolution is 16384x16384 (8192x8192 when `anti_alias` is `true`), but the maximum recommended resolution is 4096x4096 (resp. 2048x2048).
+---@param _zoom? double @The map zoom to take the screenshot at. Defaults to `1`.
+---@param _path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"screenshot.png"`.
+---@param _show_gui? boolean @Whether to include GUIs in the screenshot or not. Defaults to `false`.
+---@param _show_entity_info? boolean @Whether to include entity info ("Alt mode") or not. Defaults to `false`.
+---@param _show_cursor_building_preview? boolean @When `true` and when `player` is specified, the building preview for the item in the player's cursor will also be rendered. Defaults to `false`.
+---@param _anti_alias? boolean @Whether to render in double resolution and downscale the result (including GUI). Defaults to `false`.
+---@param _quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
+---@param _allow_in_replay? boolean @Whether to save the screenshot even during replay playback. Defaults to `false`.
+---@param _daytime? double @Overrides the current surface daytime for the duration of screenshot rendering.
+---@param _water_tick? uint @Overrides the tick of water animation, if animated water is enabled.
+---@param _force_render? boolean @Screenshot requests are processed in between game update and render. The game may skip rendering (ie. drop frames) if the previous frame has not finished rendering or the game simulation starts to fall below 60 updates per second. If `force_render` is set to `true`, the game won't drop frames and process the screenshot request at the end of the update in which the request was created. This is not honored on multiplayer clients that are catching up to server. Defaults to `false`.
+function LuaGameScript.take_screenshot(_player, _by_player, _surface, _position, _resolution, _zoom, _path, _show_gui, _show_entity_info, _show_cursor_building_preview, _anti_alias, _quality, _allow_in_replay, _daytime, _water_tick, _force_render) end
 
 ---Take a screenshot of the technology screen and save it to the `script-output` folder, located in the game's [user data directory](https://wiki.factorio.com/User_data_directory). The name of the image file can be specified via the `path` parameter.
----@param by_player? PlayerIdentification @If given, the screenshot will only be taken for this player.
----@param force? ForceIdentification @The force whose technology to screenshot. If not given, the `"player`" force is used.
----@param path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"technology-screenshot.png"`.
----@param quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
----@param selected_technology? TechnologyIdentification @The technology to highlight.
----@param skip_disabled? boolean @If `true`, disabled technologies will be skipped. Their successors will be attached to the disabled technology's parents. Defaults to `false`.
-function LuaGameScript.take_technology_screenshot(by_player, force, path, quality, selected_technology, skip_disabled) end
+---@param _force? ForceIdentification @The force whose technology to screenshot. If not given, the `"player`" force is used.
+---@param _path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"technology-screenshot.png"`.
+---@param _by_player? PlayerIdentification @If given, the screenshot will only be taken for this player.
+---@param _selected_technology? TechnologyIdentification @The technology to highlight.
+---@param _skip_disabled? boolean @If `true`, disabled technologies will be skipped. Their successors will be attached to the disabled technology's parents. Defaults to `false`.
+---@param _quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
+function LuaGameScript.take_technology_screenshot(_force, _path, _by_player, _selected_technology, _skip_disabled, _quality) end
 
 ---Unbans the given player from this multiplayer game. Does nothing if this is a single player game of if the player running this isn't an admin.
----@param player PlayerIdentification @The player to unban.
-function LuaGameScript.unban_player(player) end
+---@param _player PlayerIdentification @The player to unban.
+function LuaGameScript.unban_player(_player) end
 
 ---Unmutes the given player. Does nothing if the player running this isn't an admin.
----@param player PlayerIdentification @The player to unmute.
-function LuaGameScript.unmute_player(player) end
+---@param _player PlayerIdentification @The player to unmute.
+function LuaGameScript.unmute_player(_player) end
 
 ---Write a file to the `script-output` folder, located in the game's [user data directory](https://wiki.factorio.com/User_data_directory). The name and file extension of the file can be specified via the `filename` parameter.
----@param append? boolean @If `true`, `data` will be appended to the end of the file. Defaults to `false`, which will overwrite any pre-existing file with the new `data`.
----@param data LocalisedString @The content to write to the file.
----@param filename string @The name of the file. Providing a directory path (ex. `"save/here/example.txt"`) will create the necessary folder structure in `script-output`.
----@param for_player? uint @If given, the file will only be written for this `player_index`. Providing `0` will only write to the server's output if present.
-function LuaGameScript.write_file(append, data, filename, for_player) end
+---@param _filename string @The name of the file. Providing a directory path (ex. `"save/here/example.txt"`) will create the necessary folder structure in `script-output`.
+---@param _data LocalisedString @The content to write to the file.
+---@param _append? boolean @If `true`, `data` will be appended to the end of the file. Defaults to `false`, which will overwrite any pre-existing file with the new `data`.
+---@param _for_player? uint @If given, the file will only be written for this `player_index`. Providing `0` will only write to the server's output if present.
+function LuaGameScript.write_file(_filename, _data, _append, _for_player) end
 

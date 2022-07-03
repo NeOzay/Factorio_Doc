@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for mining drills.
----@class LuaMiningDrillControlBehavior
+---@class LuaMiningDrillControlBehavior:LuaGenericOnOffControlBehavior
 ---@field circuit_enable_disable boolean @`true` if this drill is enabled or disabled using the logistics or circuit condition.`[RW]`
 ---@field circuit_read_resources boolean @`true` if this drill should send the resources in the field to the circuit network. Which resources depends on [LuaMiningDrillControlBehavior::resource_read_mode](LuaMiningDrillControlBehavior::resource_read_mode)`[RW]`
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`

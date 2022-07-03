@@ -5,7 +5,7 @@
 ---@field api_version number
 ---@field classes Class[]
 ---@field events Event[]
----@field defines Define[]
+---@field defines DefineBase[]
 ---@field builtin_types BuiltinType[]
 ---@field concepts Concept[]
 ---@field global_objects GlobalObject[]

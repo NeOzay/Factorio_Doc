@@ -1,13 +1,12 @@
 json = require"json"
 Documentation = require"script.make_doc"
-Class = require"script.make_class"
+ClassDescription = require"script.make_class"
 Docomentation = require"script.make_doc"
 FieldDescription = require"script.make_field"
 MethodDescription = require"script.make_method"
 solve_type = require"script.solve_type"
 
-local make_types = require("script.make_builtinTypes")
-local make_file = require("script.make_file")
+make_file = require("script.make_file")
 local examples = require"examples"
 
 local rawData
@@ -17,17 +16,21 @@ do
 	f:close()
 end
 ---@type Toplevel
-local data = json.decode(rawData)--[[@as Toplevel]]
+data = json.decode(rawData)--[[@as Toplevel]]
 
-make_types(data.builtin_types)
-
----@type table
---local test = json.decode()
 
 current = {}
 
-
-for i = 1, #data.classes, 1 do
-	local c = Class.new(data.classes[i])
-	make_file(c:tostring(), "./factorio_doc/classes/"..c.name..".lua")
+local function setupClass()
+	for i = 1, #data.classes, 1 do
+		local c = ClassDescription.new(data.classes[i])
+		make_file(c:tostring(), "./factorio_doc/classes/"..c.name..".lua")
+	end
 end
+
+
+require("script.make_builtinTypes")
+--setupClass()
+require("script.make_define")
+require("script.make_event")
+require("script.make_globalObject")

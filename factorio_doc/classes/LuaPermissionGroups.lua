@@ -8,14 +8,14 @@
 local LuaPermissionGroups = {}
 
 ---Creates a new permission group.
----@param name? string
+---@param _name? string
 ---@return LuaPermissionGroup @`nil` if the calling player doesn't have permission to make groups.
-function LuaPermissionGroups.create_group(name) end
+function LuaPermissionGroups.create_group(_name) end
 
 ---Gets the permission group with the given name or group ID.
----@param group string|uint
+---@param _group string|uint
 ---@return LuaPermissionGroup @`nil` if there is no matching group.
-function LuaPermissionGroups.get_group(group) end
+function LuaPermissionGroups.get_group(_group) end
 
 ---All methods and properties that this object supports.
 ---@return string

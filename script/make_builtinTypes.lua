@@ -1,5 +1,8 @@
 local make_file = require("script.make_file")
 
+
+local builtin_types = data.builtin_types
+
 local baseTypes = {
 	string = true,
 	table = true,
@@ -11,10 +14,10 @@ local function makeType(types)
 	local description = ""
 	for index, type in ipairs(types) do
 		if not baseTypes[type.name] then
-			description = description..string.format("---@alias %s %s @%s", type.name, "number", type.description).."\n"
+			description = description..("---@alias %s %s @%s\n"):format(type.name, "number", type.description)
 		end
 	end
 	make_file(description, "./factorio_doc/builtin_types.lua")
 end
 
-return makeType
+makeType(builtin_types)

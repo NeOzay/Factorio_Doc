@@ -9,8 +9,8 @@
 local LuaControlBehavior = {}
 
 ---
----@param circuit_connector? defines.circuit_connector_id @The connector to get circuit network for. Must be specified for entities with more than one circuit network connector.
----@param wire defines.wire_type @Wire color of the network connected to this entity.
+---@param _wire defines.wire_type @Wire color of the network connected to this entity.
+---@param _circuit_connector? defines.circuit_connector_id @The connector to get circuit network for. Must be specified for entities with more than one circuit network connector.
 ---@return LuaCircuitNetwork @The circuit network or nil.
-function LuaControlBehavior.get_circuit_network(circuit_connector, wire) end
+function LuaControlBehavior.get_circuit_network(_wire, _circuit_connector) end
 

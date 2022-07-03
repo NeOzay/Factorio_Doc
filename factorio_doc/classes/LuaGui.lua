@@ -23,7 +23,7 @@ function LuaGui.help() end
 ---Returns `true` if sprite_path is valid and contains loaded sprite, otherwise `false`. Sprite path of type `file` doesn't validate if file exists.
 ---
 ---If you want to avoid needing a LuaGui object, [LuaGameScript::is_valid_sprite_path](LuaGameScript::is_valid_sprite_path) can be used instead.
----@param sprite_path SpritePath @Path to a image.
+---@param _sprite_path SpritePath @Path to a image.
 ---@return boolean
-function LuaGui.is_valid_sprite_path(sprite_path) end
+function LuaGui.is_valid_sprite_path(_sprite_path) end
 

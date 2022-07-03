@@ -10,7 +10,7 @@ function FieldDoc.new(attribute)
 	field.name = attribute.name
 	field.type = attribute.type
 	local rw = ("`[%s]`"):format((attribute.read and "R" or "")..(attribute.write and "W" or ""))
-	if attribute.notes or attribute.examples then
+	if attribute.notes or attribute.examples or attribute.description:find("\n") then
 		field.documentation = Docomentation.new(attribute.description..rw, attribute.notes, attribute.examples)
 	else
 		field.documentation = attribute.description..rw
@@ -26,12 +26,12 @@ function FieldDoc.fromParameter(parameter)
 	field.name = parameter.name..(parameter.optional and "?" or "")
 	field.type = parameter.type
 	field.documentation = parameter.description
-	return field:tostring()
+	return field
 end
 
 function FieldDoc:tostring()
 	current.field = self
-	local description = string.format("---@field %s %s", self.name, solve_type(self.type))
+	local description = ("---@field %s %s"):format(self.name, solve_type(self.type))
 
 	if type(self.documentation) == "string" then
 		if self.documentation ~= "" then

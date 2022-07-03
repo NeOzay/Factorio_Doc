@@ -6,6 +6,6 @@
 local LuaRCON = {}
 
 ---Print text to the calling RCON interface if any.
----@param message LocalisedString
-function LuaRCON.print(message) end
+---@param _message LocalisedString
+function LuaRCON.print(_message) end
 

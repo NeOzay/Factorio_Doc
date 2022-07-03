@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for rail chain signals.
----@class LuaRailChainSignalControlBehavior
+---@class LuaRailChainSignalControlBehavior:LuaControlBehavior
 ---@field blue_signal SignalID @`[RW]`
 ---@field green_signal SignalID @`[RW]`
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`

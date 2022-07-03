@@ -48,7 +48,7 @@ complex_type.table = function (_type)
 	local def = ("---@class %s"):format(name).."\n"
 	for index, param in ipairs(_type.parameters) do
 		---@cast param -Type
-		def = def..FieldDescription.fromParameter(param)
+		def = def..FieldDescription.fromParameter(param):tostring()
 	end
 
 	table.insert(current.class.extras, def)

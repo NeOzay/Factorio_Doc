@@ -12,9 +12,9 @@
 local LuaTile = {}
 
 ---Cancels deconstruction if it is scheduled, does nothing otherwise.
----@param force ForceIdentification @The force who did the deconstruction order.
----@param player? PlayerIdentification @The player to set the last_user to if any.
-function LuaTile.cancel_deconstruction(force, player) end
+---@param _force ForceIdentification @The force who did the deconstruction order.
+---@param _player? PlayerIdentification @The player to set the last_user to if any.
+function LuaTile.cancel_deconstruction(_force, _player) end
 
 ---What type of things can collide with this tile?
 ---
@@ -22,32 +22,32 @@ function LuaTile.cancel_deconstruction(force, player) end
 ---```lua
 ---game.player.print(tostring(game.player.surface.get_tile(1, 1).collides_with("player-layer")))
 ---```
----@param layer CollisionMaskLayer
+---@param _layer CollisionMaskLayer
 ---@return boolean
-function LuaTile.collides_with(layer) end
+function LuaTile.collides_with(_layer) end
 
 ---Gets all tile ghosts on this tile.
----@param force? ForceIdentification @Get tile ghosts of this force.
+---@param _force? ForceIdentification @Get tile ghosts of this force.
 ---@return LuaTile[]
-function LuaTile.get_tile_ghosts(force) end
+function LuaTile.get_tile_ghosts(_force) end
 
 ---Does this tile have any tile ghosts on it.
----@param force? ForceIdentification @Check for tile ghosts of this force.
+---@param _force? ForceIdentification @Check for tile ghosts of this force.
 ---@return boolean
-function LuaTile.has_tile_ghost(force) end
+function LuaTile.has_tile_ghost(_force) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaTile.help() end
 
 ---Orders deconstruction of this tile by the given force.
----@param force ForceIdentification @The force whose robots are supposed to do the deconstruction.
----@param player? PlayerIdentification @The player to set the last_user to if any.
+---@param _force ForceIdentification @The force whose robots are supposed to do the deconstruction.
+---@param _player? PlayerIdentification @The player to set the last_user to if any.
 ---@return LuaEntity @The deconstructible tile proxy created, if any.
-function LuaTile.order_deconstruction(force, player) end
+function LuaTile.order_deconstruction(_force, _player) end
 
 ---Is this tile marked for deconstruction?
----@param force? ForceIdentification @The force who did the deconstruction order.
+---@param _force? ForceIdentification @The force who did the deconstruction order.
 ---@return boolean
-function LuaTile.to_be_deconstructed(force) end
+function LuaTile.to_be_deconstructed(_force) end
 

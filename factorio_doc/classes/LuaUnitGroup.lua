@@ -18,8 +18,8 @@ local LuaUnitGroup = {}
 ---Make a unit a member of this group. Has the same effect as giving a `group_command` with this group to the unit.
 ---
 ---The member must have the same force as the unit group.
----@param unit LuaEntity
-function LuaUnitGroup.add_member(unit) end
+---@param _unit LuaEntity
+function LuaUnitGroup.add_member(_unit) end
 
 ---Dissolve this group. Its members won't be destroyed, they will be merely unlinked from this group.
 function LuaUnitGroup.destroy() end
@@ -32,12 +32,12 @@ function LuaUnitGroup.help() end
 function LuaUnitGroup.set_autonomous() end
 
 ---Give this group a command.
----@param command Command
-function LuaUnitGroup.set_command(command) end
+---@param _command Command
+function LuaUnitGroup.set_command(_command) end
 
 ---Give this group a distraction command.
----@param command Command
-function LuaUnitGroup.set_distraction_command(command) end
+---@param _command Command
+function LuaUnitGroup.set_distraction_command(_command) end
 
 ---Make the group start moving even if some of its members haven't yet arrived.
 function LuaUnitGroup.start_moving() end

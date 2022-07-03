@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for transport belts.
----@class LuaTransportBeltControlBehavior
+---@class LuaTransportBeltControlBehavior:LuaGenericOnOffControlBehavior
 ---@field enable_disable boolean @If the belt will be enabled/disabled based off the circuit network.`[RW]`
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`
 ---@field read_contents boolean @If the belt will read the contents and send them to the circuit network.`[RW]`

@@ -13,14 +13,14 @@
 local LuaPermissionGroup = {}
 
 ---Adds the given player to this group.
----@param player PlayerIdentification
+---@param _player PlayerIdentification
 ---@return boolean @Whether the player was added.
-function LuaPermissionGroup.add_player(player) end
+function LuaPermissionGroup.add_player(_player) end
 
 ---Whether this group allows the given action.
----@param action defines.input_action @The action in question.
+---@param _action defines.input_action @The action in question.
 ---@return boolean
-function LuaPermissionGroup.allows_action(action) end
+function LuaPermissionGroup.allows_action(_action) end
 
 ---Destroys this group.
 ---@return boolean @Whether the group was successfully destroyed.
@@ -31,13 +31,13 @@ function LuaPermissionGroup.destroy() end
 function LuaPermissionGroup.help() end
 
 ---Removes the given player from this group.
----@param player PlayerIdentification
+---@param _player PlayerIdentification
 ---@return boolean @Whether the player was removed.
-function LuaPermissionGroup.remove_player(player) end
+function LuaPermissionGroup.remove_player(_player) end
 
 ---Sets whether this group allows the performance the given action.
----@param action defines.input_action @The action in question.
----@param allow_action boolean @Whether to allow the specified action.
+---@param _action defines.input_action @The action in question.
+---@param _allow_action boolean @Whether to allow the specified action.
 ---@return boolean @Whether the value was successfully applied.
-function LuaPermissionGroup.set_allows_action(action, allow_action) end
+function LuaPermissionGroup.set_allows_action(_action, _allow_action) end
 

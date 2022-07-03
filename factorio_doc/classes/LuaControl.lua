@@ -120,26 +120,26 @@
 local LuaControl = {}
 
 ---Begins crafting the given count of the given recipe.
----@param count uint @The count to craft.
----@param recipe string|LuaRecipe @The recipe to craft.
----@param silent? boolean @If false and the recipe can't be crafted the requested number of times printing the failure is skipped.
+---@param _count uint @The count to craft.
+---@param _recipe string|LuaRecipe @The recipe to craft.
+---@param _silent? boolean @If false and the recipe can't be crafted the requested number of times printing the failure is skipped.
 ---@return uint @The count that was actually started crafting.
-function LuaControl.begin_crafting(count, recipe, silent) end
+function LuaControl.begin_crafting(_count, _recipe, _silent) end
 
 ---Can at least some items be inserted?
----@param items ItemStackIdentification @Items that would be inserted.
+---@param _items ItemStackIdentification @Items that would be inserted.
 ---@return boolean @`true` if at least a part of the given items could be inserted into this inventory.
-function LuaControl.can_insert(items) end
+function LuaControl.can_insert(_items) end
 
 ---Can a given entity be opened or accessed?
----@param entity LuaEntity
+---@param _entity LuaEntity
 ---@return boolean
-function LuaControl.can_reach_entity(entity) end
+function LuaControl.can_reach_entity(_entity) end
 
 ---Cancels crafting the given count of the given crafting queue index.
----@param count uint @The count to cancel crafting.
----@param index uint @The crafting queue index.
-function LuaControl.cancel_crafting(count, index) end
+---@param _index uint @The crafting queue index.
+---@param _count uint @The count to cancel crafting.
+function LuaControl.cancel_crafting(_index, _count) end
 
 ---Removes the arrow created by `set_gui_arrow`.
 function LuaControl.clear_gui_arrow() end
@@ -150,8 +150,8 @@ function LuaControl.clear_items_inside() end
 ---
 ---
 ---This will silently fail if personal logistics are not researched yet.
----@param slot_index uint @The slot to clear.
-function LuaControl.clear_personal_logistic_slot(slot_index) end
+---@param _slot_index uint @The slot to clear.
+function LuaControl.clear_personal_logistic_slot(_slot_index) end
 
 ---Unselect any selected entity.
 function LuaControl.clear_selected_entity() end
@@ -159,8 +159,8 @@ function LuaControl.clear_selected_entity() end
 ---
 ---
 ---This will silently fail if the vehicle does not use logistics.
----@param slot_index uint @The slot to clear.
-function LuaControl.clear_vehicle_logistic_slot(slot_index) end
+---@param _slot_index uint @The slot to clear.
+function LuaControl.clear_vehicle_logistic_slot(_slot_index) end
 
 ---Disable the flashlight.
 function LuaControl.disable_flashlight() end
@@ -173,44 +173,44 @@ function LuaControl.enable_flashlight() end
 function LuaControl.get_blueprint_entities() end
 
 ---Gets the count of the given recipe that can be crafted.
----@param recipe string|LuaRecipe @The recipe.
+---@param _recipe string|LuaRecipe @The recipe.
 ---@return uint @The count that can be crafted.
-function LuaControl.get_craftable_count(recipe) end
+function LuaControl.get_craftable_count(_recipe) end
 
 ---Get an inventory belonging to this entity. This can be either the "main" inventory or some auxiliary one, like the module slots or logistic trash slots.
 ---
 ---A given [defines.inventory](defines.inventory) is only meaningful for the corresponding LuaObject type. EG: get_inventory(defines.inventory.character_main) is only meaningful if 'this' is a player character. You may get a value back but if the type of 'this' isn't the type referred to by the [defines.inventory](defines.inventory) it's almost guaranteed to not be the inventory asked for.
----@param inventory defines.inventory
+---@param _inventory defines.inventory
 ---@return LuaInventory @The inventory or `nil` if none with the given index was found.
-function LuaControl.get_inventory(inventory) end
+function LuaControl.get_inventory(_inventory) end
 
 ---Get the number of all or some items in this entity.
----@param item? string @Prototype name of the item to count. If not specified, count all items.
+---@param _item? string @Prototype name of the item to count. If not specified, count all items.
 ---@return uint
-function LuaControl.get_item_count(item) end
+function LuaControl.get_item_count(_item) end
 
 ---Gets the main inventory for this character or player if this is a character or player.
 ---@return LuaInventory @The inventory or `nil` if this entity is not a character or player.
 function LuaControl.get_main_inventory() end
 
 ---Gets the parameters of a personal logistic request and auto-trash slot. Only used on `spider-vehicle`.
----@param slot_index uint @The slot to get.
+---@param _slot_index uint @The slot to get.
 ---@return LogisticParameters @The logistic parameters. If personal logistics are not researched yet, their `name` will be `nil`.
-function LuaControl.get_personal_logistic_slot(slot_index) end
+function LuaControl.get_personal_logistic_slot(_slot_index) end
 
 ---Gets the parameters of a vehicle logistic request and auto-trash slot.
----@param slot_index uint @The slot to get.
+---@param _slot_index uint @The slot to get.
 ---@return LogisticParameters @The logistic parameters. If the vehicle does not use logistics, their `name` will be `nil`.
-function LuaControl.get_vehicle_logistic_slot(slot_index) end
+function LuaControl.get_vehicle_logistic_slot(_slot_index) end
 
 ---Does this entity have any item inside it?
 ---@return boolean
 function LuaControl.has_items_inside() end
 
 ---Insert items into this entity. This works the same way as inserters or shift-clicking: the "best" inventory is chosen automatically.
----@param items ItemStackIdentification @The items to insert.
+---@param _items ItemStackIdentification @The items to insert.
 ---@return uint @The number of items that were actually inserted.
-function LuaControl.insert(items) end
+function LuaControl.insert(_items) end
 
 ---Returns whether the player is holding a blueprint. This takes both blueprint items as well as blueprint records from the blueprint library into account.
 ---
@@ -231,56 +231,56 @@ function LuaControl.is_flashlight_enabled() end
 function LuaControl.is_player() end
 
 ---Mines the given entity as if this player (or character) mined it.
----@param entity LuaEntity @The entity to mine
----@param force? boolean @Forces mining the entity even if the items can't fit in the player.
+---@param _entity LuaEntity @The entity to mine
+---@param _force? boolean @Forces mining the entity even if the items can't fit in the player.
 ---@return boolean @Whether the mining succeeded.
-function LuaControl.mine_entity(entity, force) end
+function LuaControl.mine_entity(_entity, _force) end
 
 ---Mines the given tile as if this player (or character) mined it.
----@param tile LuaTile @The tile to mine.
+---@param _tile LuaTile @The tile to mine.
 ---@return boolean @Whether the mining succeeded.
-function LuaControl.mine_tile(tile) end
+function LuaControl.mine_tile(_tile) end
 
 ---Open the technology GUI and select a given technology.
----@param technology? TechnologyIdentification @The technology to select after opening the GUI.
-function LuaControl.open_technology_gui(technology) end
+---@param _technology? TechnologyIdentification @The technology to select after opening the GUI.
+function LuaControl.open_technology_gui(_technology) end
 
 ---Remove items from this entity.
----@param items ItemStackIdentification @The items to remove.
+---@param _items ItemStackIdentification @The items to remove.
 ---@return uint @The number of items that were actually removed.
-function LuaControl.remove_item(items) end
+function LuaControl.remove_item(_items) end
 
 ---Create an arrow which points at this entity. This is used in the tutorial. For examples, see `control.lua` in the campaign missions.
----@param type string @Where to point to. This field determines what other fields are mandatory. May be `"nowhere"`, `"goal"`, `"entity_info"`, `"active_window"`, `"entity"`, `"position"`, `"crafting_queue"`, or `"item_stack"`.
-function LuaControl.set_gui_arrow(type) end
+---@param _type string @Where to point to. This field determines what other fields are mandatory. May be `"nowhere"`, `"goal"`, `"entity_info"`, `"active_window"`, `"entity"`, `"position"`, `"crafting_queue"`, or `"item_stack"`.
+function LuaControl.set_gui_arrow(_type) end
 
 ---Sets a personal logistic request and auto-trash slot to the given value.
 ---
 ---This will silently fail if personal logistics are not researched yet.
----@param slot_index uint @The slot to set.
----@param value LogisticParameters @The logistic request parameters.
+---@param _slot_index uint @The slot to set.
+---@param _value LogisticParameters @The logistic request parameters.
 ---@return boolean @Whether the slot was set successfully. `false` if personal logistics are not researched yet.
-function LuaControl.set_personal_logistic_slot(slot_index, value) end
+function LuaControl.set_personal_logistic_slot(_slot_index, _value) end
 
 ---Sets a vehicle logistic request and auto-trash slot to the given value. Only used on `spider-vehicle`.
----@param slot_index uint @The slot to set.
----@param value LogisticParameters @The logistic request parameters.
+---@param _slot_index uint @The slot to set.
+---@param _value LogisticParameters @The logistic request parameters.
 ---@return boolean @Whether the slot was set successfully. `false` if the vehicle does not use logistics.
-function LuaControl.set_vehicle_logistic_slot(slot_index, value) end
+function LuaControl.set_vehicle_logistic_slot(_slot_index, _value) end
 
 ---Teleport the entity to a given position, possibly on another surface.
 ---
 ---Some entities may not be teleported. For instance, transport belts won't allow teleportation and this method will always return `false` when used on any such entity.
 ---\
 ---You can also pass 1 or 2 numbers as the parameters and they will be used as relative teleport coordinates `'teleport(0, 1)'` to move the entity 1 tile positive y. `'teleport(4)'` to move the entity 4 tiles to the positive x.
----@param position MapPosition @Where to teleport to.
----@param surface? SurfaceIdentification @Surface to teleport to. If not given, will teleport to the entity's current surface. Only players, cars, and spidertrons can be teleported cross-surface.
+---@param _position MapPosition @Where to teleport to.
+---@param _surface? SurfaceIdentification @Surface to teleport to. If not given, will teleport to the entity's current surface. Only players, cars, and spidertrons can be teleported cross-surface.
 ---@return boolean @`true` if the entity was successfully teleported.
-function LuaControl.teleport(position, surface) end
+function LuaControl.teleport(_position, _surface) end
 
 ---Select an entity, as if by hovering the mouse above it.
----@param position MapPosition @Position of the entity to select.
-function LuaControl.update_selected_entity(position) end
+---@param _position MapPosition @Position of the entity to select.
+function LuaControl.update_selected_entity(_position) end
 
 
 ---@class LuaControl.mining_state

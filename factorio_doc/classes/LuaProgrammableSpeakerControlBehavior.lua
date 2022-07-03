@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for programmable speakers.
----@class LuaProgrammableSpeakerControlBehavior
+---@class LuaProgrammableSpeakerControlBehavior:LuaControlBehavior
 ---@field circuit_condition CircuitConditionDefinition @`[RW]`
 ---@field circuit_parameters ProgrammableSpeakerCircuitParameters @`[RW]`
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`

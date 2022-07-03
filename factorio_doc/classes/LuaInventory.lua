@@ -12,23 +12,23 @@
 local LuaInventory = {}
 
 ---Can at least some items be inserted?
----@param items ItemStackIdentification @Items that would be inserted.
+---@param _items ItemStackIdentification @Items that would be inserted.
 ---@return boolean @`true` if at least a part of the given items could be inserted into this inventory.
-function LuaInventory.can_insert(items) end
+function LuaInventory.can_insert(_items) end
 
 ---If the given inventory slot filter can be set to the given filter.
----@param filter string @The item name of the filter
----@param index uint @The item stack index
+---@param _index uint @The item stack index
+---@param _filter string @The item name of the filter
 ---@return boolean
-function LuaInventory.can_set_filter(filter, index) end
+function LuaInventory.can_set_filter(_index, _filter) end
 
 ---Make this inventory empty.
 function LuaInventory.clear() end
 
 ---Counts the number of empty stacks.
----@param include_filtered? boolean @If true, filtered slots will be included. Defaults to false.
+---@param _include_filtered? boolean @If true, filtered slots will be included. Defaults to false.
 ---@return uint
-function LuaInventory.count_empty_stacks(include_filtered) end
+function LuaInventory.count_empty_stacks(_include_filtered) end
 
 ---Destroys this inventory.
 ---
@@ -36,16 +36,16 @@ function LuaInventory.count_empty_stacks(include_filtered) end
 function LuaInventory.destroy() end
 
 ---Finds the first empty stack. Filtered slots are excluded unless a filter item is given.
----@param item? string @If given, empty stacks that are filtered for this item will be included.
+---@param _item? string @If given, empty stacks that are filtered for this item will be included.
 ---@return LuaItemStack @The first empty stack, or `nil` if there aren't any empty stacks.
 ---@return uint @The stack index of the matching stack, if any is found.
-function LuaInventory.find_empty_stack(item) end
+function LuaInventory.find_empty_stack(_item) end
 
 ---Gets the first LuaItemStack in the inventory that matches the given item name.
----@param item string @The item name to find
+---@param _item string @The item name to find
 ---@return LuaItemStack @The first matching stack, or `nil` if none match.
 ---@return uint @The stack index of the matching stack, if any is found.
-function LuaInventory.find_item_stack(item) end
+function LuaInventory.find_item_stack(_item) end
 
 ---Get the current bar. This is the index at which the red area starts.
 ---
@@ -58,9 +58,9 @@ function LuaInventory.get_bar() end
 function LuaInventory.get_contents() end
 
 ---Gets the filter for the given item stack index.
----@param index uint @The item stack index
+---@param _index uint @The item stack index
 ---@return string @The current filter or `nil` if none.
-function LuaInventory.get_filter(index) end
+function LuaInventory.get_filter(_index) end
 
 ---Gets the number of the given item that can be inserted into this inventory.
 ---
@@ -69,22 +69,22 @@ function LuaInventory.get_filter(index) end
 ---The main use for this is in checking how many of a basic item can fit into a basic inventory.
 ---\
 ---This accounts for the 'bar' on the inventory.
----@param item string @The item to check.
-function LuaInventory.get_insertable_count(item) end
+---@param _item string @The item to check.
+function LuaInventory.get_insertable_count(_item) end
 
 ---Get the number of all or some items in this inventory.
----@param item? string @Prototype name of the item to count. If not specified, count all items.
+---@param _item? string @Prototype name of the item to count. If not specified, count all items.
 ---@return uint
-function LuaInventory.get_item_count(item) end
+function LuaInventory.get_item_count(_item) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaInventory.help() end
 
 ---Insert items into this inventory.
----@param items ItemStackIdentification @Items to insert.
+---@param _items ItemStackIdentification @Items to insert.
 ---@return uint @Number of items actually inserted.
-function LuaInventory.insert(items) end
+function LuaInventory.insert(_items) end
 
 ---Does this inventory contain nothing?
 ---@return boolean
@@ -95,31 +95,31 @@ function LuaInventory.is_empty() end
 function LuaInventory.is_filtered() end
 
 ---Remove items from this inventory.
----@param items ItemStackIdentification @Items to remove.
+---@param _items ItemStackIdentification @Items to remove.
 ---@return uint @Number of items actually removed.
-function LuaInventory.remove(items) end
+function LuaInventory.remove(_items) end
 
 ---Resizes the inventory.
 ---
 ---Items in slots beyond the new capacity are deleted.
 ---\
 ---Only inventories created by [LuaGameScript::create_inventory](LuaGameScript::create_inventory) can be resized.
----@param size uint16 @New size of a inventory
-function LuaInventory.resize(size) end
+---@param _size uint16 @New size of a inventory
+function LuaInventory.resize(_size) end
 
 ---Set the current bar.
 ---
 ---Only useable if this inventory supports having a bar.
----@param bar? uint @The new limit. Omitting this parameter will clear the limit.
-function LuaInventory.set_bar(bar) end
+---@param _bar? uint @The new limit. Omitting this parameter will clear the limit.
+function LuaInventory.set_bar(_bar) end
 
 ---Sets the filter for the given item stack index.
 ---
 ---Some inventory slots don't allow some filters (gun ammo can't be filtered for non-ammo).
----@param filter string @The new filter or nil to erase the filter
----@param index uint @The item stack index
+---@param _index uint @The item stack index
+---@param _filter string @The new filter or nil to erase the filter
 ---@return boolean @If the filter was allowed to be set.
-function LuaInventory.set_filter(filter, index) end
+function LuaInventory.set_filter(_index, _filter) end
 
 ---Sorts and merges the items in this inventory.
 function LuaInventory.sort_and_merge() end

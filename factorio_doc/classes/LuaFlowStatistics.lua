@@ -22,40 +22,40 @@ function LuaFlowStatistics.clear() end
 ---Use `sample_index` to access the data used to generate the statistics graphs. Each precision level contains 300 samples of data so at a precision of 1 minute, each sample contains data averaged across 60s / 300 = 0.2s = 12 ticks.
 ---
 ---All return values are normalized to be per-tick for electric networks and per-minute for all other types.
----@param count? boolean @If true, the count of items/fluids/entities is returned instead of the per-time-frame value.
----@param input boolean @Read the input values or the output values
----@param name string @The prototype name.
----@param precision_index defines.flow_precision_index @The precision range to read.
----@param sample_index? uint16 @The sample index to read from within the precision range. If not provided, the entire precision range is read. Must be between 1 and 300 where 1 is the most recent sample and 300 is the oldest.
+---@param _name string @The prototype name.
+---@param _input boolean @Read the input values or the output values
+---@param _precision_index defines.flow_precision_index @The precision range to read.
+---@param _sample_index? uint16 @The sample index to read from within the precision range. If not provided, the entire precision range is read. Must be between 1 and 300 where 1 is the most recent sample and 300 is the oldest.
+---@param _count? boolean @If true, the count of items/fluids/entities is returned instead of the per-time-frame value.
 ---@return double
-function LuaFlowStatistics.get_flow_count(count, input, name, precision_index, sample_index) end
+function LuaFlowStatistics.get_flow_count(_name, _input, _precision_index, _sample_index, _count) end
 
 ---Gets the total input count for a given prototype.
----@param name string @The prototype name.
+---@param _name string @The prototype name.
 ---@return uint64|double
-function LuaFlowStatistics.get_input_count(name) end
+function LuaFlowStatistics.get_input_count(_name) end
 
 ---Gets the total output count for a given prototype.
----@param name string @The prototype name.
+---@param _name string @The prototype name.
 ---@return uint64|double
-function LuaFlowStatistics.get_output_count(name) end
+function LuaFlowStatistics.get_output_count(_name) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaFlowStatistics.help() end
 
 ---Adds a value to this flow statistics.
----@param count float @The count: positive or negative determines if the value goes in the input or output statistics.
----@param name string @The prototype name.
-function LuaFlowStatistics.on_flow(count, name) end
+---@param _name string @The prototype name.
+---@param _count float @The count: positive or negative determines if the value goes in the input or output statistics.
+function LuaFlowStatistics.on_flow(_name, _count) end
 
 ---Sets the total input count for a given prototype.
----@param count uint64|double @The new count. The type depends on the instance of the statistics.
----@param name string @The prototype name.
-function LuaFlowStatistics.set_input_count(count, name) end
+---@param _name string @The prototype name.
+---@param _count uint64|double @The new count. The type depends on the instance of the statistics.
+function LuaFlowStatistics.set_input_count(_name, _count) end
 
 ---Sets the total output count for a given prototype.
----@param count uint64|double @The new count. The type depends on the instance of the statistics.
----@param name string @The prototype name.
-function LuaFlowStatistics.set_output_count(count, name) end
+---@param _name string @The prototype name.
+---@param _count uint64|double @The new count. The type depends on the instance of the statistics.
+function LuaFlowStatistics.set_output_count(_name, _count) end
 

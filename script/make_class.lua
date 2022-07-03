@@ -15,6 +15,7 @@ function ClassDoc.new(class)
 	classDoc.documentation = Docomentation.new(class.description, class.notes, class.examples)
 	classDoc.extras = {}
 	classDoc.fields = {}
+	classDoc.base_classes = class.base_classes
 	local fields = classDoc.fields
 	for index, attribute in ipairs(class.attributes) do
 		fields[index] = FieldDescription.new(attribute)
@@ -29,15 +30,36 @@ function ClassDoc.new(class)
 	return setmetatable(classDoc, ClassDoc)
 end
 
+---@param event Event
+function ClassDoc.fromEvent(event)
+	local classDoc = setmetatable({}, ClassDoc)
+	classDoc.name = event.name
+	classDoc.documentation = Docomentation.new(event.description, event.notes, event.examples)
+	classDoc.extras = {}
+	classDoc.methods = {}
+	classDoc.fields = {}
+	local fields = classDoc.fields
+	for index, field in ipairs(event.data) do
+		fields[index] = FieldDescription.fromParameter(field)
+	end
+	return classDoc
+end
+
 function ClassDoc:tostring()
 	current.class = self
 	local description = ""
 	description = description..self.documentation:tostring()
-	description = description..string.format("---@class %s", self.name).."\n"
+
+	local classHeading = string.format("---@class %s", self.name)
+	if self.base_classes and #self.base_classes > 0 then
+		classHeading = classHeading..(":%s"):format(table.concat(self.base_classes, ", "))
+	end
+	description = description..classHeading.."\n"
+
 	for index, field in ipairs(self.fields) do
 		description = description..field:tostring()
 	end
-	description = description..string.format("local %s = {}", self.name).."\n"
+	description = description..("local %s = {}\n"):format(self.name)
 	description = description.."\n"
 
 	for index, method in ipairs(self.methods) do

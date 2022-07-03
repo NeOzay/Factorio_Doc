@@ -3,7 +3,7 @@
 ---The primary interface for interacting with entities through the Lua API. Entities are everything that exists on the map except for tiles (see [LuaTile](LuaTile)).
 ---
 ---Most functions on LuaEntity also work when the entity is contained in a ghost.
----@class LuaEntity
+---@class LuaEntity:LuaControl
 ---Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).`[RW]`
 ---
 ---Entities that are not active naturally can't be set to be active (setting it to be active will do nothing)
@@ -153,9 +153,10 @@
 ---@field is_military_target boolean @If this entity is a MilitaryTarget. Can be written to if LuaEntityPrototype::allow_run_time_change_of_is_military_target returns true`[RW]`
 ---@field item_requests table<string, uint> @Items this ghost will request when revived or items this item request proxy is requesting. Result is a dictionary mapping each item prototype name to the required count.`[RW]`
 ---@field kills uint @The number of units killed by this turret, artillery turret, or artillery wagon.`[RW]`
----@field last_user LuaPlayer|PlayerIdentification @The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore.
-
-Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentification](PlayerIdentification) can be used when writing.`[RW]`
+---The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore.
+---
+---Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentification](PlayerIdentification) can be used when writing.`[RW]`
+---@field last_user LuaPlayer|PlayerIdentification
 ---@field link_id uint @The link ID this linked container is using.`[RW]`
 ---Neighbour to which this linked belt is connected to. Returns nil if not connected.`[R]`
 ---
@@ -186,13 +187,14 @@ Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentif
 ---@field moving boolean @Returns true if this unit is moving.`[R]`
 ---@field name string @Name of the entity prototype. E.g. "inserter" or "filter-inserter".`[R]`
 ---@field neighbour_bonus double @The current total neighbour bonus of this reactor.`[R]`
----@field neighbours table<string, LuaEntity[]>|LuaEntity[][]|LuaEntity @A list of neighbours for certain types of entities. Applies to electric poles, power switches, underground belts, walls, gates, reactors, cliffs, and pipe-connectable entities.
-
-- When called on an electric pole, this is a dictionary of all connections, indexed by the strings `"copper"`, `"red"`, and `"green"`.
-- When called on a pipe-connectable entity, this is an array of entity arrays of all entities a given fluidbox is connected to.
-- When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.
-- When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".
-- When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".`[R]`
+---A list of neighbours for certain types of entities. Applies to electric poles, power switches, underground belts, walls, gates, reactors, cliffs, and pipe-connectable entities.
+---
+---- When called on an electric pole, this is a dictionary of all connections, indexed by the strings `"copper"`, `"red"`, and `"green"`.
+---- When called on a pipe-connectable entity, this is an array of entity arrays of all entities a given fluidbox is connected to.
+---- When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.
+---- When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".
+---- When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".`[R]`
+---@field neighbours table<string, LuaEntity[]>|LuaEntity[][]|LuaEntity
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`
 ---@field operable boolean @Player can't open gui of this entity and he can't quick insert/input stuff in to the entity when it is not operable.`[RW]`
 ---@field orientation RealOrientation @The smooth orientation of this entity, if it supports orientation.`[RW]`
@@ -223,9 +225,10 @@ Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentif
 ---Writing does nothing if the vehicle doesn't have a turret.
 ---@field relative_turret_orientation RealOrientation
 ---@field remove_unfiltered_items boolean @If items not included in this infinity container filters should be removed from the container.`[RW]`
----@field render_player LuaPlayer|PlayerIdentification @The player that this `simple-entity-with-owner`, `simple-entity-with-force`, `flying-text`, or `highlight-box` is visible to. `nil` means it is rendered for every player.
-
-Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentification](PlayerIdentification) can be used when writing.`[RW]`
+---The player that this `simple-entity-with-owner`, `simple-entity-with-force`, `flying-text`, or `highlight-box` is visible to. `nil` means it is rendered for every player.
+---
+---Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentification](PlayerIdentification) can be used when writing.`[RW]`
+---@field render_player LuaPlayer|PlayerIdentification
 ---The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array means it is rendered for every force.`[RW]`
 ---
 ---Reading will always give an array of [LuaForce](LuaForce)
@@ -266,10 +269,11 @@ Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentif
 ---@field text LocalisedString @The text of this flying-text entity.`[RW]`
 ---@field tick_of_last_attack uint @The last tick this character entity was attacked.`[RW]`
 ---@field tick_of_last_damage uint @The last tick this character entity was damaged.`[RW]`
----@field time_to_live uint @The ticks left before a ghost, combat robot, highlight box or smoke with trigger is destroyed.
-
-- for ghosts set to uint32 max (4,294,967,295) to never expire.
-- for ghosts Cannot be set higher than [LuaForce::ghost_time_to_live](LuaForce::ghost_time_to_live) of the entity's force.`[RW]`
+---The ticks left before a ghost, combat robot, highlight box or smoke with trigger is destroyed.
+---
+---- for ghosts set to uint32 max (4,294,967,295) to never expire.
+---- for ghosts Cannot be set higher than [LuaForce::ghost_time_to_live](LuaForce::ghost_time_to_live) of the entity's force.`[RW]`
+---@field time_to_live uint
 ---@field time_to_next_effect uint @The ticks until the next trigger effect of this smoke-with-trigger.`[RW]`
 ---@field timeout uint @The timeout that's left on this landmine in ticks. It describes the time between the landmine being placed and it being armed.`[RW]`
 ---@field to_be_looted boolean @Will this entity be picked up automatically when the player walks over it?`[RW]`
@@ -301,8 +305,8 @@ Reading this property will return a [LuaPlayer](LuaPlayer), while [PlayerIdentif
 local LuaEntity = {}
 
 ---Adds the given position to this spidertron's autopilot's queue of destinations.
----@param position MapPosition @The position the spidertron should move to.
-function LuaEntity.add_autopilot_destination(position) end
+---@param _position MapPosition @The position the spidertron should move to.
+function LuaEntity.add_autopilot_destination(_position) end
 
 ---Offer a thing on the market.
 ---
@@ -315,34 +319,34 @@ function LuaEntity.add_autopilot_destination(position) end
 ---```lua
 ---market.add_market_item{price={{"iron-ore", 5}, {"stone", 5}}, offer={type="give-item", item="copper-ore"}}
 ---```
----@param offer Offer
-function LuaEntity.add_market_item(offer) end
+---@param _offer Offer
+function LuaEntity.add_market_item(_offer) end
 
 ---Checks if the entity can be destroyed
 ---@return boolean @Whether the entity can be destroyed.
 function LuaEntity.can_be_destroyed() end
 
 ---Whether this character can shoot the given entity or position.
----@param position MapPosition
----@param target LuaEntity
+---@param _target LuaEntity
+---@param _position MapPosition
 ---@return boolean
-function LuaEntity.can_shoot(position, target) end
+function LuaEntity.can_shoot(_target, _position) end
 
 ---Can wires reach between these entities.
----@param entity LuaEntity
+---@param _entity LuaEntity
 ---@return boolean
-function LuaEntity.can_wires_reach(entity) end
+function LuaEntity.can_wires_reach(_entity) end
 
 ---Cancels deconstruction if it is scheduled, does nothing otherwise.
----@param force ForceIdentification @The force who did the deconstruction order.
----@param player? PlayerIdentification @The player to set the `last_user` to if any.
-function LuaEntity.cancel_deconstruction(force, player) end
+---@param _force ForceIdentification @The force who did the deconstruction order.
+---@param _player? PlayerIdentification @The player to set the `last_user` to if any.
+function LuaEntity.cancel_deconstruction(_force, _player) end
 
 ---Cancels upgrade if it is scheduled, does nothing otherwise.
----@param force ForceIdentification @The force who did the upgrade order.
----@param player? PlayerIdentification @The player to set the last_user to if any.
+---@param _force ForceIdentification @The force who did the upgrade order.
+---@param _player? PlayerIdentification @The player to set the last_user to if any.
 ---@return boolean @Whether the cancel was successful.
-function LuaEntity.cancel_upgrade(force, player) end
+function LuaEntity.cancel_upgrade(_force, _player) end
 
 ---Remove all fluids from this entity.
 function LuaEntity.clear_fluid_inside() end
@@ -353,54 +357,54 @@ function LuaEntity.clear_market_items() end
 ---Clear a logistic requester slot.
 ---
 ---Useable only on entities that have requester slots.
----@param slot uint @The slot index.
-function LuaEntity.clear_request_slot(slot) end
+---@param _slot uint @The slot index.
+function LuaEntity.clear_request_slot(_slot) end
 
 ---Clones this entity.
----@param create_build_effect_smoke? boolean @If false, the building effect smoke will not be shown around the new entity.
----@param force? ForceIdentification
----@param position MapPosition @The destination position
----@param surface? LuaSurface @The destination surface
+---@param _position MapPosition @The destination position
+---@param _surface? LuaSurface @The destination surface
+---@param _force? ForceIdentification
+---@param _create_build_effect_smoke? boolean @If false, the building effect smoke will not be shown around the new entity.
 ---@return LuaEntity @The cloned entity or `nil` if this entity can't be cloned/can't be cloned to the given location.
-function LuaEntity.clone(create_build_effect_smoke, force, position, surface) end
+function LuaEntity.clone(_position, _surface, _force, _create_build_effect_smoke) end
 
 ---Connects current linked belt with another one.
 ---
 ---Neighbours have to be of different type. If given linked belt is connected to something else it will be disconnected first. If provided neighbour is connected to something else it will also be disconnected first. Automatically updates neighbour to be connected back to this one.
 ---
 ---Can also be used on entity ghost if it contains linked-belt
----@param neighbour LuaEntity @Another linked belt or entity ghost containing linked belt to connect or nil to disconnect
-function LuaEntity.connect_linked_belts(neighbour) end
+---@param _neighbour LuaEntity @Another linked belt or entity ghost containing linked belt to connect or nil to disconnect
+function LuaEntity.connect_linked_belts(_neighbour) end
 
 ---Connect two devices with a circuit wire or copper cable. Depending on which type of connection should be made, there are different procedures:
 ---
 ---- To connect two electric poles, `target` must be a [LuaEntity](LuaEntity) that specifies another electric pole. This will connect them with copper cable.
 ---- To connect two devices with circuit wire, `target` must be a table of type [WireConnectionDefinition](WireConnectionDefinition).
----@param target LuaEntity|WireConnectionDefinition @The target with which to establish a connection.
+---@param _target LuaEntity|WireConnectionDefinition @The target with which to establish a connection.
 ---@return boolean @Whether the connection was successfully formed.
-function LuaEntity.connect_neighbour(target) end
+function LuaEntity.connect_neighbour(_target) end
 
 ---Connects the rolling stock in the given direction.
----@param direction defines.rail_direction
+---@param _direction defines.rail_direction
 ---@return boolean @Whether any connection was made
-function LuaEntity.connect_rolling_stock(direction) end
+function LuaEntity.connect_rolling_stock(_direction) end
 
 ---Copies settings from the given entity onto this entity.
----@param by_player? PlayerIdentification @If provided, the copying is done 'as' this player and [on_entity_settings_pasted](on_entity_settings_pasted) is triggered.
----@param entity LuaEntity
+---@param _entity LuaEntity
+---@param _by_player? PlayerIdentification @If provided, the copying is done 'as' this player and [on_entity_settings_pasted](on_entity_settings_pasted) is triggered.
 ---@return table<string, uint> @Any items removed from this entity as a result of copying the settings.
-function LuaEntity.copy_settings(by_player, entity) end
+function LuaEntity.copy_settings(_entity, _by_player) end
 
 ---Creates the same smoke that is created when you place a building by hand. You can play the building sound to go with it by using [LuaSurface::play_sound](LuaSurface::play_sound), eg: entity.surface.play_sound{path="entity-build/"..entity.prototype.name, position=entity.position}
 function LuaEntity.create_build_effect_smoke() end
 
 ---Damages the entity.
----@param damage float @The amount of damage to be done.
----@param dealer? LuaEntity @The entity to consider as the damage dealer. Needs to be on the same surface as the entity being damaged.
----@param force ForceIdentification @The force that will be doing the damage.
----@param type? string @The type of damage to be done, defaults to "impact".
+---@param _damage float @The amount of damage to be done.
+---@param _force ForceIdentification @The force that will be doing the damage.
+---@param _type? string @The type of damage to be done, defaults to "impact".
+---@param _dealer? LuaEntity @The entity to consider as the damage dealer. Needs to be on the same surface as the entity being damaged.
 ---@return float @the total damage actually applied after resistances.
-function LuaEntity.damage(damage, dealer, force, type) end
+function LuaEntity.damage(_damage, _force, _type, _dealer) end
 
 ---Depletes and destroys this resource entity.
 function LuaEntity.deplete() end
@@ -408,10 +412,10 @@ function LuaEntity.deplete() end
 ---Destroys the entity.
 ---
 ---Not all entities can be destroyed - things such as rails under trains cannot be destroyed until the train is moved or destroyed.
----@param do_cliff_correction? boolean @Whether neighbouring cliffs should be corrected. Defaults to `false`.
----@param raise_destroy? boolean @If `true`, [script_raised_destroy](script_raised_destroy) will be called. Defaults to `false`.
+---@param _do_cliff_correction? boolean @Whether neighbouring cliffs should be corrected. Defaults to `false`.
+---@param _raise_destroy? boolean @If `true`, [script_raised_destroy](script_raised_destroy) will be called. Defaults to `false`.
 ---@return boolean @Returns `false` if the entity was valid and destruction failed, `true` in all other cases.
-function LuaEntity.destroy(do_cliff_correction, raise_destroy) end
+function LuaEntity.destroy(_do_cliff_correction, _raise_destroy) end
 
 ---Immediately kills the entity. Does nothing if the entity doesn't have health.
 ---
@@ -421,10 +425,10 @@ function LuaEntity.destroy(do_cliff_correction, raise_destroy) end
 ---```lua
 ---entity.die(nil, killer_entity)
 ---```
----@param cause? LuaEntity @The cause to attribute the kill to.
----@param force? ForceIdentification @The force to attribute the kill to.
+---@param _force? ForceIdentification @The force to attribute the kill to.
+---@param _cause? LuaEntity @The cause to attribute the kill to.
 ---@return boolean @Whether the entity was successfully killed.
-function LuaEntity.die(cause, force) end
+function LuaEntity.die(_force, _cause) end
 
 ---Disconnects linked belt from its neighbour.
 ---
@@ -437,13 +441,13 @@ function LuaEntity.disconnect_linked_belts() end
 ---- To remove all wires of a specific color, set `target` to [defines.wire_type.red](defines.wire_type.red) or [defines.wire_type.green](defines.wire_type.green).
 ---- To remove a specific copper cable between two electric poles, `target` must be a [LuaEntity](LuaEntity) that specifies the other pole: `pole1.disconnect_neighbour(pole2)`.
 ---- To remove a specific circuit wire, `target` must be a table of type [WireConnectionDefinition](WireConnectionDefinition).
----@param target? defines.wire_type|LuaEntity|WireConnectionDefinition @The target with which to cut a connection.
-function LuaEntity.disconnect_neighbour(target) end
+---@param _target? defines.wire_type|LuaEntity|WireConnectionDefinition @The target with which to cut a connection.
+function LuaEntity.disconnect_neighbour(_target) end
 
 ---Tries to disconnect this rolling stock in the given direction.
----@param direction defines.rail_direction
+---@param _direction defines.rail_direction
 ---@return boolean @If anything was disconnected
-function LuaEntity.disconnect_rolling_stock(direction) end
+function LuaEntity.disconnect_rolling_stock(_direction) end
 
 ---Get the source of this beam.
 ---@return BeamTarget
@@ -458,26 +462,26 @@ function LuaEntity.get_beam_target() end
 function LuaEntity.get_burnt_result_inventory() end
 
 ---
----@param circuit_connector? defines.circuit_connector_id @The connector to get circuit network for. Must be specified for entities with more than one circuit network connector.
----@param wire defines.wire_type @Wire color of the network connected to this entity.
+---@param _wire defines.wire_type @Wire color of the network connected to this entity.
+---@param _circuit_connector? defines.circuit_connector_id @The connector to get circuit network for. Must be specified for entities with more than one circuit network connector.
 ---@return LuaCircuitNetwork @The circuit network or nil.
-function LuaEntity.get_circuit_network(circuit_connector, wire) end
+function LuaEntity.get_circuit_network(_wire, _circuit_connector) end
 
 ---
----@param rail_connection_direction defines.rail_connection_direction
----@param rail_direction defines.rail_direction
+---@param _rail_direction defines.rail_direction
+---@param _rail_connection_direction defines.rail_connection_direction
 ---@return LuaEntity @Rail connected in the specified manner to this one, `nil` if unsuccessful.
-function LuaEntity.get_connected_rail(rail_connection_direction, rail_direction) end
+function LuaEntity.get_connected_rail(_rail_direction, _rail_connection_direction) end
 
 ---Get the rails that this signal is connected to.
 ---@return LuaEntity[]
 function LuaEntity.get_connected_rails() end
 
 ---Gets rolling stock connected to the given end of this stock.
----@param direction defines.rail_direction
+---@param _direction defines.rail_direction
 ---@return LuaEntity @The rolling stock connected at the given end, `nil` if none is connected there.
 ---@return defines.rail_direction @The rail direction of the connected rolling stock if any.
-function LuaEntity.get_connected_rolling_stock(direction) end
+function LuaEntity.get_connected_rolling_stock(_direction) end
 
 ---Gets the control behavior of the entity (if any).
 ---@return LuaControlBehavior @The control behavior or `nil`.
@@ -494,9 +498,9 @@ function LuaEntity.get_driver() end
 ---Get the filter for a slot in an inserter, loader, or logistic storage container.
 ---
 ---The entity must allow filters.
----@param slot_index uint @Index of the slot to get the filter for.
+---@param _slot_index uint @Index of the slot to get the filter for.
 ---@return string @Prototype name of the item being filtered. `nil` if the given slot has no filter.
-function LuaEntity.get_filter(slot_index) end
+function LuaEntity.get_filter(_slot_index) end
 
 ---Get amounts of all fluids in this entity.
 ---
@@ -507,9 +511,9 @@ function LuaEntity.get_fluid_contents() end
 ---Get the amount of all or some fluid in this entity.
 ---
 ---If information about fluid temperatures is required, [LuaEntity::fluidbox](LuaEntity::fluidbox) should be used instead.
----@param fluid? string @Prototype name of the fluid to count. If not specified, count all fluids.
+---@param _fluid? string @Prototype name of the fluid to count. If not specified, count all fluids.
 ---@return double
-function LuaEntity.get_fluid_count(fluid) end
+function LuaEntity.get_fluid_count(_fluid) end
 
 ---The fuel inventory for this entity or `nil` if this entity doesn't have a fuel inventory.
 ---@return LuaInventory
@@ -524,9 +528,9 @@ function LuaEntity.get_health_ratio() end
 function LuaEntity.get_heat_setting() end
 
 ---Gets the filter for this infinity container at the given index or `nil` if the filter index doesn't exist or is empty.
----@param index uint @The index to get.
+---@param _index uint @The index to get.
 ---@return InfinityInventoryFilter
-function LuaEntity.get_infinity_container_filter(index) end
+function LuaEntity.get_infinity_container_filter(_index) end
 
 ---Gets the filter for this infinity pipe or `nil` if the filter is empty.
 ---@return InfinityPipeFilter
@@ -535,9 +539,9 @@ function LuaEntity.get_infinity_pipe_filter() end
 ---Gets all the `LuaLogisticPoint`s that this entity owns. Optionally returns only the point specified by the index parameter.
 ---
 ---When `index` is not given, this will be a single `LuaLogisticPoint` for most entities. For some (such as the player character), it can be zero or more.
----@param index? defines.logistic_member_index @If provided, only returns the `LuaLogisticPoint` specified by this index.
+---@param _index? defines.logistic_member_index @If provided, only returns the `LuaLogisticPoint` specified by this index.
 ---@return LuaLogisticPoint|LuaLogisticPoint[]
-function LuaEntity.get_logistic_point(index) end
+function LuaEntity.get_logistic_point(_index) end
 
 ---Get all offers in a market as an array.
 ---@return Offer[]
@@ -548,15 +552,15 @@ function LuaEntity.get_market_items() end
 function LuaEntity.get_max_transport_line_index() end
 
 ---Read a single signal from the combined circuit networks.
----@param circuit_connector? defines.circuit_connector_id @The connector to get signals for. Must be specified for entities with more than one circuit network connector.
----@param signal SignalID @The signal to read.
+---@param _signal SignalID @The signal to read.
+---@param _circuit_connector? defines.circuit_connector_id @The connector to get signals for. Must be specified for entities with more than one circuit network connector.
 ---@return int @The current value of the signal.
-function LuaEntity.get_merged_signal(circuit_connector, signal) end
+function LuaEntity.get_merged_signal(_signal, _circuit_connector) end
 
 ---The merged circuit network signals or `nil` if there are no signals.
----@param circuit_connector? defines.circuit_connector_id @The connector to get signals for. Must be specified for entities with more than one circuit network connector.
+---@param _circuit_connector? defines.circuit_connector_id @The connector to get signals for. Must be specified for entities with more than one circuit network connector.
 ---@return Signal[] @The sum of signals on both the red and green networks, or `nil` if it doesn't have a circuit connector.
-function LuaEntity.get_merged_signals(circuit_connector) end
+function LuaEntity.get_merged_signals(_circuit_connector) end
 
 ---Inventory for storing modules of this entity; `nil` if this entity has no module inventory.
 ---@return LuaInventory
@@ -583,18 +587,18 @@ function LuaEntity.get_radius() end
 ---Get the rail at the end of the rail segment this rail is in.
 ---
 ---A rail segment is a continuous section of rail with no branches, signals, nor train stops.
----@param direction defines.rail_direction
+---@param _direction defines.rail_direction
 ---@return LuaEntity @The rail entity.
 ---@return defines.rail_direction @A rail direction pointing out of the rail segment from the end rail.
-function LuaEntity.get_rail_segment_end(direction) end
+function LuaEntity.get_rail_segment_end(_direction) end
 
 ---Get the rail signal or train stop at the start/end of the rail segment this rail is in.
 ---
 ---A rail segment is a continuous section of rail with no branches, signals, nor train stops.
----@param direction defines.rail_direction @The direction of travel relative to this rail.
----@param in_else_out boolean @If true, gets the entity at the entrance of the rail segment, otherwise gets the entity at the exit of the rail segment.
+---@param _direction defines.rail_direction @The direction of travel relative to this rail.
+---@param _in_else_out boolean @If true, gets the entity at the entrance of the rail segment, otherwise gets the entity at the exit of the rail segment.
 ---@return LuaEntity @`nil` if the rail segment doesn't start/end with a signal nor a train stop.
-function LuaEntity.get_rail_segment_entity(direction, in_else_out) end
+function LuaEntity.get_rail_segment_entity(_direction, _in_else_out) end
 
 ---Get the length of the rail segment this rail is in.
 ---
@@ -615,9 +619,9 @@ function LuaEntity.get_recipe() end
 ---Get a logistic requester slot.
 ---
 ---Useable only on entities that have requester slots.
----@param slot uint @The slot index.
+---@param _slot uint @The slot index.
 ---@return SimpleItemStack @Contents of the specified slot; `nil` if the given slot contains no request.
-function LuaEntity.get_request_slot(slot) end
+function LuaEntity.get_request_slot(_slot) end
 
 ---Gets legs of given SpiderVehicle.
 ---@return LuaEntity[]
@@ -632,9 +636,9 @@ function LuaEntity.get_stopped_train() end
 function LuaEntity.get_train_stop_trains() end
 
 ---Get a transport line of a belt or belt connectable entity.
----@param index uint @Index of the requested transport line. Transport lines are 1-indexed.
+---@param _index uint @Index of the requested transport line. Transport lines are 1-indexed.
 ---@return LuaTransportLine
-function LuaEntity.get_transport_line(index) end
+function LuaEntity.get_transport_line(_index) end
 
 ---Returns the new entity direction after upgrading.
 ---@return defines.direction @`nil` if this entity is not marked for upgrade.
@@ -645,9 +649,9 @@ function LuaEntity.get_upgrade_direction() end
 function LuaEntity.get_upgrade_target() end
 
 ---Same as [LuaEntity::has_flag](LuaEntity::has_flag), but targets the inner entity on a entity ghost.
----@param flag string @The flag to test. See [EntityPrototypeFlags](EntityPrototypeFlags) for a list of flags.
+---@param _flag string @The flag to test. See [EntityPrototypeFlags](EntityPrototypeFlags) for a list of flags.
 ---@return boolean @`true` if the entity has the given flag set.
-function LuaEntity.ghost_has_flag(flag) end
+function LuaEntity.ghost_has_flag(_flag) end
 
 ---Has this unit been assigned a command?
 ---@return boolean
@@ -656,18 +660,18 @@ function LuaEntity.has_command() end
 ---Test whether this entity's prototype has a certain flag set.
 ---
 ---`entity.has_flag(f)` is a shortcut for `entity.prototype.has_flag(f)`.
----@param flag string @The flag to test. See [EntityPrototypeFlags](EntityPrototypeFlags) for a list of flags.
+---@param _flag string @The flag to test. See [EntityPrototypeFlags](EntityPrototypeFlags) for a list of flags.
 ---@return boolean @`true` if this entity has the given flag set.
-function LuaEntity.has_flag(flag) end
+function LuaEntity.has_flag(_flag) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaEntity.help() end
 
 ---Insert fluid into this entity. Fluidbox is chosen automatically.
----@param fluid Fluid @Fluid to insert.
+---@param _fluid Fluid @Fluid to insert.
 ---@return double @Amount of fluid actually inserted.
-function LuaEntity.insert_fluid(fluid) end
+function LuaEntity.insert_fluid(_fluid) end
 
 ---
 ---@return boolean @`true` if this gate is currently closed.
@@ -698,9 +702,9 @@ function LuaEntity.is_opening() end
 function LuaEntity.is_registered_for_construction() end
 
 ---Is this entity registered for deconstruction with this force? If false, it means a construction robot has been dispatched to deconstruct it, or it is not marked for deconstruction. The complexity is effectively O(1) - it depends on the number of objects targeting this entity which should be small enough.
----@param force ForceIdentification @The force construction manager to check.
+---@param _force ForceIdentification @The force construction manager to check.
 ---@return boolean
-function LuaEntity.is_registered_for_deconstruction(force) end
+function LuaEntity.is_registered_for_deconstruction(_force) end
 
 ---Is this entity registered for repair? If false, it means a construction robot has been dispatched to upgrade it, or it is not damaged. This is worst-case O(N) complexity where N is the current number of things in the repair queue.
 ---@return boolean
@@ -719,32 +723,32 @@ function LuaEntity.launch_rocket() end
 ---'Standard' operation is to keep calling `LuaEntity.mine` with an inventory until all items are transferred and the items dealt with.
 ---\
 ---The result of mining the entity (the item(s) it produces when mined) will be dropped on the ground if they don't fit into the provided inventory.
----@param force? boolean @If true, when the item(s) don't fit into the given inventory the entity is force mined. If false, the mining operation fails when there isn't enough room to transfer all of the items into the inventory. Defaults to false. This is ignored and acts as `true` if no inventory is provided.
----@param ignore_minable? boolean @If true, the minable state of the entity is ignored. Defaults to `false`. If false, an entity that isn't minable (set as not-minable in the prototype or isn't minable for other reasons) will fail to be mined.
----@param inventory? LuaInventory @If provided the item(s) will be transferred into this inventory. If provided, this must be an inventory created with [LuaGameScript::create_inventory](LuaGameScript::create_inventory) or be a basic inventory owned by some entity.
----@param raise_destroyed? boolean @If true, [script_raised_destroy](script_raised_destroy) will be raised. Defaults to `true`.
+---@param _inventory? LuaInventory @If provided the item(s) will be transferred into this inventory. If provided, this must be an inventory created with [LuaGameScript::create_inventory](LuaGameScript::create_inventory) or be a basic inventory owned by some entity.
+---@param _force? boolean @If true, when the item(s) don't fit into the given inventory the entity is force mined. If false, the mining operation fails when there isn't enough room to transfer all of the items into the inventory. Defaults to false. This is ignored and acts as `true` if no inventory is provided.
+---@param _raise_destroyed? boolean @If true, [script_raised_destroy](script_raised_destroy) will be raised. Defaults to `true`.
+---@param _ignore_minable? boolean @If true, the minable state of the entity is ignored. Defaults to `false`. If false, an entity that isn't minable (set as not-minable in the prototype or isn't minable for other reasons) will fail to be mined.
 ---@return boolean @Whether mining succeeded.
-function LuaEntity.mine(force, ignore_minable, inventory, raise_destroyed) end
+function LuaEntity.mine(_inventory, _force, _raise_destroyed, _ignore_minable) end
 
 ---Sets the entity to be deconstructed by construction robots.
----@param force ForceIdentification @The force whose robots are supposed to do the deconstruction.
----@param player? PlayerIdentification @The player to set the `last_user` to if any.
+---@param _force ForceIdentification @The force whose robots are supposed to do the deconstruction.
+---@param _player? PlayerIdentification @The player to set the `last_user` to if any.
 ---@return boolean @if the entity was marked for deconstruction.
-function LuaEntity.order_deconstruction(force, player) end
+function LuaEntity.order_deconstruction(_force, _player) end
 
 ---Sets the entity to be upgraded by construction robots.
----@param direction? defines.direction @The new direction if any.
----@param force ForceIdentification @The force whose robots are supposed to do the upgrade.
----@param player? PlayerIdentification
----@param target EntityPrototypeIdentification @The prototype of the entity to upgrade to.
+---@param _force ForceIdentification @The force whose robots are supposed to do the upgrade.
+---@param _target EntityPrototypeIdentification @The prototype of the entity to upgrade to.
+---@param _player? PlayerIdentification
+---@param _direction? defines.direction @The new direction if any.
 ---@return boolean @Whether the entity was marked for upgrade.
-function LuaEntity.order_upgrade(direction, force, player, target) end
+function LuaEntity.order_upgrade(_force, _target, _player, _direction) end
 
 ---Plays a note with the given instrument and note.
----@param instrument uint
----@param note uint
+---@param _instrument uint
+---@param _note uint
 ---@return boolean @Whether the request is valid. The sound may or may not be played depending on polyphony settings.
-function LuaEntity.play_note(instrument, note) end
+function LuaEntity.play_note(_instrument, _note) end
 
 ---Release the unit from the spawner which spawned it. This allows the spawner to continue spawning additional units.
 function LuaEntity.release_from_spawner() end
@@ -752,116 +756,116 @@ function LuaEntity.release_from_spawner() end
 ---Remove fluid from this entity.
 ---
 ---If temperature is given only fluid matching that exact temperature is removed. If minimum and maximum is given fluid within that range is removed.
----@param amount double @Amount to remove
----@param maximum_temperature? double
----@param minimum_temperature? double
----@param name string @Fluid prototype name.
----@param temperature? double
+---@param _name string @Fluid prototype name.
+---@param _amount double @Amount to remove
+---@param _minimum_temperature? double
+---@param _maximum_temperature? double
+---@param _temperature? double
 ---@return double @Amount of fluid actually removed.
-function LuaEntity.remove_fluid(amount, maximum_temperature, minimum_temperature, name, temperature) end
+function LuaEntity.remove_fluid(_name, _amount, _minimum_temperature, _maximum_temperature, _temperature) end
 
 ---Remove an offer from a market.
 ---
 ---The other offers are moved down to fill the gap created by removing the offer, which decrements the overall size of the offer array.
----@param offer uint @Index of offer to remove.
+---@param _offer uint @Index of offer to remove.
 ---@return boolean @`true` if the offer was successfully removed; `false` when the given index was not valid.
-function LuaEntity.remove_market_item(offer) end
+function LuaEntity.remove_market_item(_offer) end
 
 ---
----@param force ForceIdentification @The force that requests the gate to be closed.
-function LuaEntity.request_to_close(force) end
+---@param _force ForceIdentification @The force that requests the gate to be closed.
+function LuaEntity.request_to_close(_force) end
 
 ---
----@param extra_time? uint @Extra ticks to stay open.
----@param force ForceIdentification @The force that requests the gate to be open.
-function LuaEntity.request_to_open(extra_time, force) end
+---@param _force ForceIdentification @The force that requests the gate to be open.
+---@param _extra_time? uint @Extra ticks to stay open.
+function LuaEntity.request_to_open(_force, _extra_time) end
 
 ---Revive a ghost. I.e. turn it from a ghost to a real entity or tile.
----@param raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
----@param return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third return value.
+---@param _return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third return value.
+---@param _raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
 ---@return table<string, uint> @Any items the new real entity collided with or `nil` if the ghost could not be revived.
 ---@return LuaEntity @The revived entity if an entity ghost was successfully revived.
 ---@return LuaEntity @The item request proxy if it was requested with `return_item_request_proxy`.
-function LuaEntity.revive(raise_revive, return_item_request_proxy) end
+function LuaEntity.revive(_return_item_request_proxy, _raise_revive) end
 
 ---Rotates this entity as if the player rotated it.
----@param by_player? PlayerIdentification @If not specified, the [on_player_rotated_entity](on_player_rotated_entity) event will not be fired.
----@param enable_looted? boolean @When true, each spilled item will be flagged with the [LuaEntity::to_be_looted](LuaEntity::to_be_looted) flag.
----@param force? LuaForce|string @When provided the spilled items will be marked for deconstruction by this force.
----@param reverse? boolean @If `true`, rotate the entity in the counter-clockwise direction.
----@param spill_items? boolean @If the player is not given should extra items be spilled or returned as a second return value from this.
+---@param _reverse? boolean @If `true`, rotate the entity in the counter-clockwise direction.
+---@param _by_player? PlayerIdentification @If not specified, the [on_player_rotated_entity](on_player_rotated_entity) event will not be fired.
+---@param _spill_items? boolean @If the player is not given should extra items be spilled or returned as a second return value from this.
+---@param _enable_looted? boolean @When true, each spilled item will be flagged with the [LuaEntity::to_be_looted](LuaEntity::to_be_looted) flag.
+---@param _force? LuaForce|string @When provided the spilled items will be marked for deconstruction by this force.
 ---@return boolean @Whether the rotation was successful.
 ---@return table<string, uint> @Count of spilled items indexed by their prototype names if `spill_items` was `true`.
-function LuaEntity.rotate(by_player, enable_looted, force, reverse, spill_items) end
+function LuaEntity.rotate(_reverse, _by_player, _spill_items, _enable_looted, _force) end
 
 ---Set the source of this beam.
----@param source LuaEntity|MapPosition
-function LuaEntity.set_beam_source(source) end
+---@param _source LuaEntity|MapPosition
+function LuaEntity.set_beam_source(_source) end
 
 ---Set the target of this beam.
----@param target LuaEntity|MapPosition
-function LuaEntity.set_beam_target(target) end
+---@param _target LuaEntity|MapPosition
+function LuaEntity.set_beam_target(_target) end
 
 ---Give the entity a command.
----@param command Command
-function LuaEntity.set_command(command) end
+---@param _command Command
+function LuaEntity.set_command(_command) end
 
 ---Give the entity a distraction command.
----@param command Command
-function LuaEntity.set_distraction_command(command) end
+---@param _command Command
+function LuaEntity.set_distraction_command(_command) end
 
 ---Sets the driver of this vehicle.
 ---
 ---This differs over [LuaEntity::set_passenger](LuaEntity::set_passenger) in that the passenger can't drive the vehicle.
----@param driver LuaEntity|PlayerIdentification @The new driver or `nil` to eject the current driver if any.
-function LuaEntity.set_driver(driver) end
+---@param _driver LuaEntity|PlayerIdentification @The new driver or `nil` to eject the current driver if any.
+function LuaEntity.set_driver(_driver) end
 
 ---Set the filter for a slot in an inserter, loader, or logistic storage container.
 ---
 ---The entity must allow filters.
----@param item string @Prototype name of the item to filter.
----@param slot_index uint @Index of the slot to set the filter for.
-function LuaEntity.set_filter(item, slot_index) end
+---@param _slot_index uint @Index of the slot to set the filter for.
+---@param _item string @Prototype name of the item to filter.
+function LuaEntity.set_filter(_slot_index, _item) end
 
 ---Sets the heat setting for this heat interface.
----@param filter HeatSetting @The new setting.
-function LuaEntity.set_heat_setting(filter) end
+---@param _filter HeatSetting @The new setting.
+function LuaEntity.set_heat_setting(_filter) end
 
 ---Sets the filter for this infinity container at the given index.
----@param filter InfinityInventoryFilter @The new filter or `nil` to clear the filter.
----@param index uint @The index to set.
-function LuaEntity.set_infinity_container_filter(filter, index) end
+---@param _index uint @The index to set.
+---@param _filter InfinityInventoryFilter @The new filter or `nil` to clear the filter.
+function LuaEntity.set_infinity_container_filter(_index, _filter) end
 
 ---Sets the filter for this infinity pipe.
----@param filter InfinityPipeFilter @The new filter or `nil` to clear the filter.
-function LuaEntity.set_infinity_pipe_filter(filter) end
+---@param _filter InfinityPipeFilter @The new filter or `nil` to clear the filter.
+function LuaEntity.set_infinity_pipe_filter(_filter) end
 
 ---Sets the passenger of this car or spidertron.
 ---
 ---This differs over [LuaEntity::get_driver](LuaEntity::get_driver) in that the passenger can't drive the car.
----@param passenger LuaEntity|PlayerIdentification
-function LuaEntity.set_passenger(passenger) end
+---@param _passenger LuaEntity|PlayerIdentification
+function LuaEntity.set_passenger(_passenger) end
 
 ---Sets the current recipe in this assembly machine.
----@param recipe string|LuaRecipe @The new recipe or `nil` to clear the recipe.
+---@param _recipe string|LuaRecipe @The new recipe or `nil` to clear the recipe.
 ---@return table<string, uint> @Any items removed from this entity as a result of setting the recipe.
-function LuaEntity.set_recipe(recipe) end
+function LuaEntity.set_recipe(_recipe) end
 
 ---Set a logistic requester slot.
 ---
 ---Useable only on entities that have requester slots.
----@param request ItemStackIdentification @What to request.
----@param slot uint @The slot index.
+---@param _request ItemStackIdentification @What to request.
+---@param _slot uint @The slot index.
 ---@return boolean @Whether the slot was set.
-function LuaEntity.set_request_slot(request, slot) end
+function LuaEntity.set_request_slot(_request, _slot) end
 
 ---Revives a ghost silently.
----@param raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
----@param return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third parameter.
+---@param _return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third parameter.
+---@param _raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
 ---@return table<string, uint> @Any items the new real entity collided with or `nil` if the ghost could not be revived.
 ---@return LuaEntity @The revived entity if an entity ghost was successfully revived.
 ---@return LuaEntity @The item request proxy if it was requested with `return_item_request_proxy`.
-function LuaEntity.silent_revive(raise_revive, return_item_request_proxy) end
+function LuaEntity.silent_revive(_return_item_request_proxy, _raise_revive) end
 
 ---Triggers spawn_decoration actions defined in the entity prototype or does nothing if entity is not "turret" or "unit-spawner".
 function LuaEntity.spawn_decorations() end

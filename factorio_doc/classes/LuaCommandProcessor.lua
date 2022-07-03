@@ -21,13 +21,13 @@ local LuaCommandProcessor = {}
 ---  end
 ---end)
 ---```
----@param function fun(_arg1:CustomCommandData) @The function that will be called when this command is invoked.
----@param help LocalisedString @The localised help message. It will be shown to players using the `/help` command.
----@param name string @The desired name of the command (case sensitive).
-function LuaCommandProcessor.add_command(function, help, name) end
+---@param _name string @The desired name of the command (case sensitive).
+---@param _help LocalisedString @The localised help message. It will be shown to players using the `/help` command.
+---@param _function fun(_arg1:CustomCommandData) @The function that will be called when this command is invoked.
+function LuaCommandProcessor.add_command(_name, _help, _function) end
 
 ---Remove a custom console command.
----@param name string @The name of the command to remove (case sensitive).
+---@param _name string @The name of the command to remove (case sensitive).
 ---@return boolean @Whether the command was successfully removed. Returns `false` if the command didn't exist.
-function LuaCommandProcessor.remove_command(name) end
+function LuaCommandProcessor.remove_command(_name) end
 

@@ -11,14 +11,14 @@ local LuaProfiler = {}
 ---Add the duration of another timer to this timer. Useful to reduce start/stop overhead when accumulating time onto many timers at once.
 ---
 ---If other is running, the time to now will be added.
----@param other LuaProfiler @The timer to add to this timer.
-function LuaProfiler.add(other) end
+---@param _other LuaProfiler @The timer to add to this timer.
+function LuaProfiler.add(_other) end
 
 ---Divides the current duration by a set value. Useful for calculating the average of many iterations.
 ---
 ---Does nothing if this isn't stopped.
----@param number double @The number to divide by. Must be > 0.
-function LuaProfiler.divide(number) end
+---@param _number double @The number to divide by. Must be > 0.
+function LuaProfiler.divide(_number) end
 
 ---All methods and properties that this object supports.
 ---@return string

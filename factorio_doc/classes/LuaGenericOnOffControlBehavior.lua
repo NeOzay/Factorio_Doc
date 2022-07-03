@@ -1,7 +1,7 @@
 ---@meta
 
 ---An abstract base class for behaviors that support switching the entity on or off based on some condition.
----@class LuaGenericOnOffControlBehavior
+---@class LuaGenericOnOffControlBehavior:LuaControlBehavior
 ---The circuit condition.`[RW]`
 ---
 ---`condition` may be `nil` in order to clear the circuit condition.

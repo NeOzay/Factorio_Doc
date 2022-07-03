@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for walls.
----@class LuaWallControlBehavior
+---@class LuaWallControlBehavior:LuaControlBehavior
 ---@field circuit_condition CircuitConditionDefinition @The circuit condition.`[RW]`
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`
 ---@field open_gate boolean @`[RW]`

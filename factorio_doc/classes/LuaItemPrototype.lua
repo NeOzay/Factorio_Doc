@@ -100,14 +100,14 @@
 local LuaItemPrototype = {}
 
 ---Type of this ammo prototype or `nil` if this is not an ammo prototype.
----@param ammo_source_type? string @"default", "player", "turret", or "vehicle"
+---@param _ammo_source_type? string @"default", "player", "turret", or "vehicle"
 ---@return AmmoType
-function LuaItemPrototype.get_ammo_type(ammo_source_type) end
+function LuaItemPrototype.get_ammo_type(_ammo_source_type) end
 
 ---Does this prototype have a flag enabled?
----@param flag string @The flag to check. Can be one of [ItemPrototypeFlags](ItemPrototypeFlags). Any other value will cause an error.
+---@param _flag string @The flag to check. Can be one of [ItemPrototypeFlags](ItemPrototypeFlags). Any other value will cause an error.
 ---@return boolean
-function LuaItemPrototype.has_flag(flag) end
+function LuaItemPrototype.has_flag(_flag) end
 
 ---All methods and properties that this object supports.
 ---@return string

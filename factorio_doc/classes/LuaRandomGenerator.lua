@@ -19,6 +19,6 @@ function LuaRandomGenerator.help() end
 ---Re-seeds the random generator with the given value.
 ---
 ---Seeds that are close together will produce similar results. Seeds from 0 to 341 will produce the same results.
----@param seed uint
-function LuaRandomGenerator.re_seed(seed) end
+---@param _seed uint
+function LuaRandomGenerator.re_seed(_seed) end
 

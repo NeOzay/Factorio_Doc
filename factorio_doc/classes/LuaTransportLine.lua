@@ -10,9 +10,9 @@
 local LuaTransportLine = {}
 
 ---Can an item be inserted at a given position?
----@param position float @Where to insert an item.
+---@param _position float @Where to insert an item.
 ---@return boolean
-function LuaTransportLine.can_insert_at(position) end
+function LuaTransportLine.can_insert_at(_position) end
 
 ---Can an item be inserted at the back of this line?
 ---@return boolean
@@ -26,34 +26,34 @@ function LuaTransportLine.clear() end
 function LuaTransportLine.get_contents() end
 
 ---Count some or all items on this line, similar to how [LuaInventory::get_item_count](LuaInventory::get_item_count) does.
----@param item? string @Prototype name of the item to count. If not specified, count all items.
+---@param _item? string @Prototype name of the item to count. If not specified, count all items.
 ---@return uint
-function LuaTransportLine.get_item_count(item) end
+function LuaTransportLine.get_item_count(_item) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaTransportLine.help() end
 
 ---Insert items at a given position.
----@param items ItemStackIdentification @Items to insert.
----@param position float @Where on the line to insert the items.
+---@param _position float @Where on the line to insert the items.
+---@param _items ItemStackIdentification @Items to insert.
 ---@return boolean @Were the items inserted successfully?
-function LuaTransportLine.insert_at(items, position) end
+function LuaTransportLine.insert_at(_position, _items) end
 
 ---Insert items at the back of this line.
----@param items ItemStackIdentification
+---@param _items ItemStackIdentification
 ---@return boolean @Were the items inserted successfully?
-function LuaTransportLine.insert_at_back(items) end
+function LuaTransportLine.insert_at_back(_items) end
 
 ---Returns whether the associated internal transport line of this line is the same as the others associated internal transport line.
 ---
 ---This can return true even when the [LuaTransportLine::owner](LuaTransportLine::owner)s are different (so `this == other` is false), because the internal transport lines can span multiple tiles.
----@param other LuaTransportLine
+---@param _other LuaTransportLine
 ---@return boolean
-function LuaTransportLine.line_equals(other) end
+function LuaTransportLine.line_equals(_other) end
 
 ---Remove some items from this line.
----@param items ItemStackIdentification @Items to remove.
+---@param _items ItemStackIdentification @Items to remove.
 ---@return uint @Number of items actually removed.
-function LuaTransportLine.remove_item(items) end
+function LuaTransportLine.remove_item(_items) end
 

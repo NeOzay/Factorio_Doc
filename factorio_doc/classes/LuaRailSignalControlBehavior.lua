@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for rail signals.
----@class LuaRailSignalControlBehavior
+---@class LuaRailSignalControlBehavior:LuaControlBehavior
 ---@field circuit_condition CircuitConditionDefinition @The circuit condition when controlling the signal through the circuit network.`[RW]`
 ---@field close_signal boolean @If this will close the rail signal based off the circuit condition.`[RW]`
 ---@field green_signal SignalID @`[RW]`

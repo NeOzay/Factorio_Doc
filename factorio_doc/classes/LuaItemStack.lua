@@ -42,20 +42,21 @@
 ---@field is_selection_tool boolean @If this is a selection tool item.`[R]`
 ---@field is_tool boolean @If this is a tool item.`[R]`
 ---@field is_upgrade_item boolean @If this is a upgrade item.`[R]`
----@field item_number uint @The unique identifier for this item if it has one, `nil` otherwise. Note that this ID stays the same no matter where the item is moved to.
-
-Only these types of items have unique IDs:
-- `"armor"`
-- `"spidertron-remote"`
-- `"selection-tool"`
-- `"copy-paste-tool"`
-- `"upgrade-item"`
-- `"deconstruction-item"`
-- `"blueprint"`
-- `"blueprint-book"`
-- `"item-with-entity-data"`
-- `"item-with-inventory"`
-- `"item-with-tags"``[R]`
+---The unique identifier for this item if it has one, `nil` otherwise. Note that this ID stays the same no matter where the item is moved to.
+---
+---Only these types of items have unique IDs:
+---- `"armor"`
+---- `"spidertron-remote"`
+---- `"selection-tool"`
+---- `"copy-paste-tool"`
+---- `"upgrade-item"`
+---- `"deconstruction-item"`
+---- `"blueprint"`
+---- `"blueprint-book"`
+---- `"item-with-entity-data"`
+---- `"item-with-inventory"`
+---- `"item-with-tags"``[R]`
+---@field item_number uint
 ---@field label string @The current label for this item. Nil when none.`[RW]`
 ---@field label_color Color @The current label color for this item. Nil when none.`[RW]`
 ---@field name string @Prototype name of the item held in this stack.`[R]`
@@ -74,39 +75,39 @@ Only these types of items have unique IDs:
 local LuaItemStack = {}
 
 ---Add ammo to this ammo item.
----@param amount float @Amount of ammo to add.
-function LuaItemStack.add_ammo(amount) end
+---@param _amount float @Amount of ammo to add.
+function LuaItemStack.add_ammo(_amount) end
 
 ---Add durability to this tool item.
----@param amount double @Amount of durability to add.
-function LuaItemStack.add_durability(amount) end
+---@param _amount double @Amount of durability to add.
+function LuaItemStack.add_durability(_amount) end
 
 ---
 ---
 ---Built entities can be come invalid between the building of the blueprint and the function returning if by_player or raise_built is used and one of those events invalidates the entity.
----@param by_player? PlayerIdentification @The player to use if any. If provided [defines.events.on_built_entity](defines.events.on_built_entity) will also be fired on successful entity creation.
----@param direction? defines.direction @The direction to use when building
----@param force ForceIdentification @Force to use for the building
----@param force_build? boolean @When true, anything that can be built is else nothing is built if any one thing can't be built
----@param position MapPosition @The position to build at
----@param raise_built? boolean @If true; [defines.events.script_raised_built](defines.events.script_raised_built) will be fired on successful entity creation. Note: this is ignored if by_player is provided.
----@param skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param surface SurfaceIdentification @Surface to build on
+---@param _surface SurfaceIdentification @Surface to build on
+---@param _force ForceIdentification @Force to use for the building
+---@param _position MapPosition @The position to build at
+---@param _force_build? boolean @When true, anything that can be built is else nothing is built if any one thing can't be built
+---@param _direction? defines.direction @The direction to use when building
+---@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@param _by_player? PlayerIdentification @The player to use if any. If provided [defines.events.on_built_entity](defines.events.on_built_entity) will also be fired on successful entity creation.
+---@param _raise_built? boolean @If true; [defines.events.script_raised_built](defines.events.script_raised_built) will be fired on successful entity creation. Note: this is ignored if by_player is provided.
 ---@return LuaEntity[] @Array of created ghosts
-function LuaItemStack.build_blueprint(by_player, direction, force, force_build, position, raise_built, skip_fog_of_war, surface) end
+function LuaItemStack.build_blueprint(_surface, _force, _position, _force_build, _direction, _skip_fog_of_war, _by_player, _raise_built) end
 
 ---Would a call to [LuaItemStack::set_stack](LuaItemStack::set_stack) succeed?
----@param stack? ItemStackIdentification @Stack that would be set, possibly `nil`.
+---@param _stack? ItemStackIdentification @Stack that would be set, possibly `nil`.
 ---@return boolean
-function LuaItemStack.can_set_stack(stack) end
+function LuaItemStack.can_set_stack(_stack) end
 
 ---Cancel deconstruct the given area with this deconstruction item.
----@param area BoundingBox @The area to deconstruct
----@param by_player? PlayerIdentification @The player to use if any.
----@param force ForceIdentification @Force to use for canceling deconstruction
----@param skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param surface SurfaceIdentification @Surface to cancel deconstruct on
-function LuaItemStack.cancel_deconstruct_area(area, by_player, force, skip_fog_of_war, surface) end
+---@param _surface SurfaceIdentification @Surface to cancel deconstruct on
+---@param _force ForceIdentification @Force to use for canceling deconstruction
+---@param _area BoundingBox @The area to deconstruct
+---@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@param _by_player? PlayerIdentification @The player to use if any.
+function LuaItemStack.cancel_deconstruct_area(_surface, _force, _area, _skip_fog_of_war, _by_player) end
 
 ---Clear this item stack.
 function LuaItemStack.clear() end
@@ -121,37 +122,37 @@ function LuaItemStack.clear_deconstruction_item() end
 function LuaItemStack.clear_upgrade_item() end
 
 ---Sets up this blueprint using the found blueprintable entities/tiles on the surface.
----@param always_include_tiles? boolean @When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.
----@param area BoundingBox @The bounding box
----@param force ForceIdentification @Force to use for the creation
----@param include_entities? boolean @When true, entities are included in the blueprint. Defaults to true.
----@param include_fuel? boolean @When true, train fuel is included in the blueprint, Defaults to true.
----@param include_modules? boolean @When true, modules are included in the blueprint. Defaults to true.
----@param include_station_names? boolean @When true, station names are included in the blueprint. Defaults to false.
----@param include_trains? boolean @When true, trains are included in the blueprint. Defaults to false.
----@param surface SurfaceIdentification @Surface to create from
+---@param _surface SurfaceIdentification @Surface to create from
+---@param _force ForceIdentification @Force to use for the creation
+---@param _area BoundingBox @The bounding box
+---@param _always_include_tiles? boolean @When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.
+---@param _include_entities? boolean @When true, entities are included in the blueprint. Defaults to true.
+---@param _include_modules? boolean @When true, modules are included in the blueprint. Defaults to true.
+---@param _include_station_names? boolean @When true, station names are included in the blueprint. Defaults to false.
+---@param _include_trains? boolean @When true, trains are included in the blueprint. Defaults to false.
+---@param _include_fuel? boolean @When true, train fuel is included in the blueprint, Defaults to true.
 ---@return table<uint, LuaEntity> @The blueprint entity index to source entity mapping.
-function LuaItemStack.create_blueprint(always_include_tiles, area, force, include_entities, include_fuel, include_modules, include_station_names, include_trains, surface) end
+function LuaItemStack.create_blueprint(_surface, _force, _area, _always_include_tiles, _include_entities, _include_modules, _include_station_names, _include_trains, _include_fuel) end
 
 ---Creates the equipment grid for this item if it doesn't exist and this is an item-with-entity-data that supports equipment grids.
 ---@return LuaEquipmentGrid
 function LuaItemStack.create_grid() end
 
 ---Deconstruct the given area with this deconstruction item.
----@param area BoundingBox @The area to deconstruct
----@param by_player? PlayerIdentification @The player to use if any.
----@param force ForceIdentification @Force to use for the deconstruction
----@param skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param surface SurfaceIdentification @Surface to deconstruct on
-function LuaItemStack.deconstruct_area(area, by_player, force, skip_fog_of_war, surface) end
+---@param _surface SurfaceIdentification @Surface to deconstruct on
+---@param _force ForceIdentification @Force to use for the deconstruction
+---@param _area BoundingBox @The area to deconstruct
+---@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@param _by_player? PlayerIdentification @The player to use if any.
+function LuaItemStack.deconstruct_area(_surface, _force, _area, _skip_fog_of_war, _by_player) end
 
 ---Remove ammo from this ammo item.
----@param amount float @Amount of ammo to remove.
-function LuaItemStack.drain_ammo(amount) end
+---@param _amount float @Amount of ammo to remove.
+function LuaItemStack.drain_ammo(_amount) end
 
 ---Remove durability from this tool item.
----@param amount double @Amount of durability to remove.
-function LuaItemStack.drain_durability(amount) end
+---@param _amount double @Amount of durability to remove.
+function LuaItemStack.drain_durability(_amount) end
 
 ---Export a supported item (blueprint, blueprint-book, deconstruction-planner, upgrade-planner, item-with-tags) to a string.
 ---@return string @The exported string
@@ -166,118 +167,118 @@ function LuaItemStack.get_blueprint_entities() end
 function LuaItemStack.get_blueprint_entity_count() end
 
 ---Gets the given tag on the given blueprint entity index in this blueprint item.
----@param index uint @The entity index.
----@param tag string @The tag to get.
+---@param _index uint @The entity index.
+---@param _tag string @The tag to get.
 ---@return AnyBasic
-function LuaItemStack.get_blueprint_entity_tag(index, tag) end
+function LuaItemStack.get_blueprint_entity_tag(_index, _tag) end
 
 ---Gets the tags for the given blueprint entity index in this blueprint item.
----@param index uint
+---@param _index uint
 ---@return Tags
-function LuaItemStack.get_blueprint_entity_tags(index) end
+function LuaItemStack.get_blueprint_entity_tags(_index) end
 
 ---A list of the tiles in this blueprint.
 ---@return Tile[]
 function LuaItemStack.get_blueprint_tiles() end
 
 ---Gets the entity filter at the given index for this deconstruction item.
----@param index uint
+---@param _index uint
 ---@return string
-function LuaItemStack.get_entity_filter(index) end
+function LuaItemStack.get_entity_filter(_index) end
 
 ---Access the inner inventory of an item.
----@param inventory defines.inventory @Index of the inventory to access, which can only be [defines.inventory.item_main](defines.inventory.item_main).
+---@param _inventory defines.inventory @Index of the inventory to access, which can only be [defines.inventory.item_main](defines.inventory.item_main).
 ---@return LuaInventory @`nil` if there is no inventory with the given index.
-function LuaItemStack.get_inventory(inventory) end
+function LuaItemStack.get_inventory(_inventory) end
 
 ---Gets the filter at the given index for this upgrade item.
----@param index uint @The index of the mapper to read.
----@param type string @`"from"` or `"to"`.
+---@param _index uint @The index of the mapper to read.
+---@param _type string @`"from"` or `"to"`.
 ---@return UpgradeFilter
-function LuaItemStack.get_mapper(index, type) end
+function LuaItemStack.get_mapper(_index, _type) end
 
 ---Gets the tag with the given name or returns `nil` if it doesn't exist.
----@param tag_name string
+---@param _tag_name string
 ---@return AnyBasic
-function LuaItemStack.get_tag(tag_name) end
+function LuaItemStack.get_tag(_tag_name) end
 
 ---Gets the tile filter at the given index for this deconstruction item.
----@param index uint
+---@param _index uint
 ---@return string
-function LuaItemStack.get_tile_filter(index) end
+function LuaItemStack.get_tile_filter(_index) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaItemStack.help() end
 
 ---Import a supported item (blueprint, blueprint-book, deconstruction-planner, upgrade-planner, item-with-tags) from a string.
----@param data string @The string to import
+---@param _data string @The string to import
 ---@return int @0 if the import succeeded with no errors. -1 if the import succeeded with errors. 1 if the import failed.
-function LuaItemStack.import_stack(data) end
+function LuaItemStack.import_stack(_data) end
 
 ---Is this blueprint item setup? I.e. is it a non-empty blueprint?
 ---@return boolean
 function LuaItemStack.is_blueprint_setup() end
 
 ---Removes a tag with the given name.
----@param tag string
+---@param _tag string
 ---@return boolean @If the tag existed and was removed.
-function LuaItemStack.remove_tag(tag) end
+function LuaItemStack.remove_tag(_tag) end
 
 ---Set new entities to be a part of this blueprint.
----@param entities BlueprintEntity[] @The new blueprint entities.
-function LuaItemStack.set_blueprint_entities(entities) end
+---@param _entities BlueprintEntity[] @The new blueprint entities.
+function LuaItemStack.set_blueprint_entities(_entities) end
 
 ---Sets the given tag on the given blueprint entity index in this blueprint item.
----@param index uint @The entity index.
----@param tag string @The tag to set.
----@param value AnyBasic @The tag value to set or `nil` to clear the tag.
-function LuaItemStack.set_blueprint_entity_tag(index, tag, value) end
+---@param _index uint @The entity index.
+---@param _tag string @The tag to set.
+---@param _value AnyBasic @The tag value to set or `nil` to clear the tag.
+function LuaItemStack.set_blueprint_entity_tag(_index, _tag, _value) end
 
 ---Sets the tags on the given blueprint entity index in this blueprint item.
----@param index uint @The entity index
----@param tags Tags
-function LuaItemStack.set_blueprint_entity_tags(index, tags) end
+---@param _index uint @The entity index
+---@param _tags Tags
+function LuaItemStack.set_blueprint_entity_tags(_index, _tags) end
 
 ---Set specific tiles in this blueprint.
----@param tiles Tile[] @Tiles to be a part of the blueprint.
-function LuaItemStack.set_blueprint_tiles(tiles) end
+---@param _tiles Tile[] @Tiles to be a part of the blueprint.
+function LuaItemStack.set_blueprint_tiles(_tiles) end
 
 ---Sets the entity filter at the given index for this deconstruction item.
----@param filter string|LuaEntityPrototype|LuaEntity @Setting to nil erases the filter.
----@param index uint
+---@param _index uint
+---@param _filter string|LuaEntityPrototype|LuaEntity @Setting to nil erases the filter.
 ---@return boolean @Whether the new filter was successfully set (ie. was valid).
-function LuaItemStack.set_entity_filter(filter, index) end
+function LuaItemStack.set_entity_filter(_index, _filter) end
 
 ---Sets the module filter at the given index for this upgrade item.
----@param filter UpgradeFilter @The filter to set or `nil`
----@param index uint @The index of the mapper to set.
----@param type string @`from` or `to`.
-function LuaItemStack.set_mapper(filter, index, type) end
+---@param _index uint @The index of the mapper to set.
+---@param _type string @`from` or `to`.
+---@param _filter UpgradeFilter @The filter to set or `nil`
+function LuaItemStack.set_mapper(_index, _type, _filter) end
 
 ---Set this item stack to another item stack.
----@param stack? ItemStackIdentification @Item stack to set it to. Omitting this parameter or passing `nil` will clear this item stack, as if [LuaItemStack::clear](LuaItemStack::clear) was called.
+---@param _stack? ItemStackIdentification @Item stack to set it to. Omitting this parameter or passing `nil` will clear this item stack, as if [LuaItemStack::clear](LuaItemStack::clear) was called.
 ---@return boolean @Whether the stack was set successfully. Returns `false` if this stack was not [valid for write](LuaItemStack::can_set_stack).
-function LuaItemStack.set_stack(stack) end
+function LuaItemStack.set_stack(_stack) end
 
 ---Sets the tag with the given name and value.
----@param tag AnyBasic
----@param tag_name string
-function LuaItemStack.set_tag(tag, tag_name) end
+---@param _tag_name string
+---@param _tag AnyBasic
+function LuaItemStack.set_tag(_tag_name, _tag) end
 
 ---Sets the tile filter at the given index for this deconstruction item.
----@param filter string|LuaTilePrototype|LuaTile @Setting to nil erases the filter.
----@param index uint
+---@param _index uint
+---@param _filter string|LuaTilePrototype|LuaTile @Setting to nil erases the filter.
 ---@return boolean @Whether the new filter was successfully set (ie. was valid).
-function LuaItemStack.set_tile_filter(filter, index) end
+function LuaItemStack.set_tile_filter(_index, _filter) end
 
 ---Swaps this item stack with the given item stack if allowed.
----@param stack LuaItemStack
+---@param _stack LuaItemStack
 ---@return boolean @Whether the 2 stacks were swapped successfully.
-function LuaItemStack.swap_stack(stack) end
+function LuaItemStack.swap_stack(_stack) end
 
 ---Transfers the given item stack into this item stack.
----@param stack ItemStackIdentification
+---@param _stack ItemStackIdentification
 ---@return boolean @`true` if the full stack was transferred.
-function LuaItemStack.transfer_stack(stack) end
+function LuaItemStack.transfer_stack(_stack) end
 

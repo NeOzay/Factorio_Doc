@@ -26,17 +26,17 @@ local LuaLogisticCell = {}
 function LuaLogisticCell.help() end
 
 ---Is a given position within the construction range of this cell?
----@param position MapPosition
+---@param _position MapPosition
 ---@return boolean
-function LuaLogisticCell.is_in_construction_range(position) end
+function LuaLogisticCell.is_in_construction_range(_position) end
 
 ---Is a given position within the logistic range of this cell?
----@param position MapPosition
+---@param _position MapPosition
 ---@return boolean
-function LuaLogisticCell.is_in_logistic_range(position) end
+function LuaLogisticCell.is_in_logistic_range(_position) end
 
 ---Are two cells neighbours?
----@param other LuaLogisticCell
+---@param _other LuaLogisticCell
 ---@return boolean
-function LuaLogisticCell.is_neighbour_with(other) end
+function LuaLogisticCell.is_neighbour_with(_other) end
 

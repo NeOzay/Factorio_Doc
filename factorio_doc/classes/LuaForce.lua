@@ -114,19 +114,19 @@ local LuaForce = {}
 ---Adds a custom chart tag to the given surface and returns the new tag or `nil` if the given position isn't valid for a chart tag.
 ---
 ---The chunk must be charted for a tag to be valid at that location.
----@param surface SurfaceIdentification @Which surface to add the tag to.
----@param tag ChartTagSpec @The tag to add.
+---@param _surface SurfaceIdentification @Which surface to add the tag to.
+---@param _tag ChartTagSpec @The tag to add.
 ---@return LuaCustomChartTag
-function LuaForce.add_chart_tag(surface, tag) end
+function LuaForce.add_chart_tag(_surface, _tag) end
 
 ---Add this technology to the back of the research queue if the queue is enabled. Otherwise, set this technology to be researched now.
----@param technology TechnologyIdentification
+---@param _technology TechnologyIdentification
 ---@return boolean @Whether the technology was successfully added.
-function LuaForce.add_research(technology) end
+function LuaForce.add_research(_technology) end
 
 ---Cancels pending chart requests for the given surface or all surfaces.
----@param surface? SurfaceIdentification
-function LuaForce.cancel_charting(surface) end
+---@param _surface? SurfaceIdentification
+function LuaForce.cancel_charting(_surface) end
 
 ---Stop the research currently in progress. This will remove any dependent technologies from the research queue.
 function LuaForce.cancel_current_research() end
@@ -137,17 +137,17 @@ function LuaForce.cancel_current_research() end
 ---```lua
 ---game.player.force.chart(game.player.surface, {{x = -1024, y = -1024}, {x = 1024, y = 1024}})
 ---```
----@param area BoundingBox @The area on the given surface to chart.
----@param surface SurfaceIdentification
-function LuaForce.chart(area, surface) end
+---@param _surface SurfaceIdentification
+---@param _area BoundingBox @The area on the given surface to chart.
+function LuaForce.chart(_surface, _area) end
 
 ---Chart all generated chunks.
----@param surface? SurfaceIdentification @Which surface to chart or all if not given.
-function LuaForce.chart_all(surface) end
+---@param _surface? SurfaceIdentification @Which surface to chart or all if not given.
+function LuaForce.chart_all(_surface) end
 
 ---Erases chart data for this force.
----@param surface? SurfaceIdentification @Which surface to erase chart data for or if not provided all surfaces charts are erased.
-function LuaForce.clear_chart(surface) end
+---@param _surface? SurfaceIdentification @Which surface to erase chart data for or if not provided all surfaces charts are erased.
+function LuaForce.clear_chart(_surface) end
 
 ---Disable all recipes and technologies. Only recipes and technologies enabled explicitly will be useable from this point.
 function LuaForce.disable_all_prototypes() end
@@ -168,111 +168,111 @@ function LuaForce.enable_all_technologies() end
 function LuaForce.enable_research() end
 
 ---Finds all custom chart tags within the given bounding box on the given surface.
----@param area? BoundingBox
----@param surface SurfaceIdentification
+---@param _surface SurfaceIdentification
+---@param _area? BoundingBox
 ---@return LuaCustomChartTag[]
-function LuaForce.find_chart_tags(area, surface) end
+function LuaForce.find_chart_tags(_surface, _area) end
 
 ---
----@param position MapPosition @Position to find a network for
----@param surface SurfaceIdentification @Surface to search on
+---@param _position MapPosition @Position to find a network for
+---@param _surface SurfaceIdentification @Surface to search on
 ---@return LuaLogisticNetwork @The found network or `nil`.
-function LuaForce.find_logistic_network_by_position(position, surface) end
+function LuaForce.find_logistic_network_by_position(_position, _surface) end
 
 ---
----@param ammo string @Ammo category
+---@param _ammo string @Ammo category
 ---@return double
-function LuaForce.get_ammo_damage_modifier(ammo) end
+function LuaForce.get_ammo_damage_modifier(_ammo) end
 
 ---Is `other` force in this force's cease fire list?
----@param other ForceIdentification
+---@param _other ForceIdentification
 ---@return boolean
-function LuaForce.get_cease_fire(other) end
+function LuaForce.get_cease_fire(_other) end
 
 ---Count entities of given type.
 ---
 ---This function has O(1) time complexity as entity counts are kept and maintained in the game engine.
----@param name string @Prototype name of the entity.
+---@param _name string @Prototype name of the entity.
 ---@return uint @Number of entities of given prototype belonging to this force.
-function LuaForce.get_entity_count(name) end
+function LuaForce.get_entity_count(_name) end
 
 ---Is `other` force in this force's friends list.
----@param other ForceIdentification
+---@param _other ForceIdentification
 ---@return boolean
-function LuaForce.get_friend(other) end
+function LuaForce.get_friend(_other) end
 
 ---
----@param ammo string @Ammo category
+---@param _ammo string @Ammo category
 ---@return double
-function LuaForce.get_gun_speed_modifier(ammo) end
+function LuaForce.get_gun_speed_modifier(_ammo) end
 
 ---Gets if the given recipe is explicitly disabled from being hand crafted.
----@param recipe string|LuaRecipe
+---@param _recipe string|LuaRecipe
 ---@return boolean
-function LuaForce.get_hand_crafting_disabled_for_recipe(recipe) end
+function LuaForce.get_hand_crafting_disabled_for_recipe(_recipe) end
 
 ---Gets the count of a given item launched in rockets.
----@param item string @The item to get
+---@param _item string @The item to get
 ---@return uint @The count of the item that has been launched.
-function LuaForce.get_item_launched(item) end
+function LuaForce.get_item_launched(_item) end
 
 ---Gets the linked inventory for the given prototype and link ID if it exists or `nil`.
----@param link_id uint
----@param prototype EntityPrototypeIdentification
+---@param _prototype EntityPrototypeIdentification
+---@param _link_id uint
 ---@return LuaInventory
-function LuaForce.get_linked_inventory(link_id, prototype) end
+function LuaForce.get_linked_inventory(_prototype, _link_id) end
 
 ---Gets the saved progress for the given technology or `nil` if there is no saved progress.
----@param technology TechnologyIdentification @The technology
+---@param _technology TechnologyIdentification @The technology
 ---@return double @The progress as a percent.
-function LuaForce.get_saved_technology_progress(technology) end
+function LuaForce.get_saved_technology_progress(_technology) end
 
 ---
----@param surface SurfaceIdentification
+---@param _surface SurfaceIdentification
 ---@return MapPosition
-function LuaForce.get_spawn_position(surface) end
+function LuaForce.get_spawn_position(_surface) end
 
 ---Gets train stops matching the given filters.
----@param name? string|string[]
----@param surface? SurfaceIdentification
+---@param _name? string|string[]
+---@param _surface? SurfaceIdentification
 ---@return LuaEntity[]
-function LuaForce.get_train_stops(name, surface) end
+function LuaForce.get_train_stops(_name, _surface) end
 
 ---
----@param surface? SurfaceIdentification @If given only trains on the surface are returned.
+---@param _surface? SurfaceIdentification @If given only trains on the surface are returned.
 ---@return LuaTrain[]
-function LuaForce.get_trains(surface) end
+function LuaForce.get_trains(_surface) end
 
 ---
----@param turret string @Turret prototype name
+---@param _turret string @Turret prototype name
 ---@return double
-function LuaForce.get_turret_attack_modifier(turret) end
+function LuaForce.get_turret_attack_modifier(_turret) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaForce.help() end
 
 ---Has a chunk been charted?
----@param position ChunkPosition @Position of the chunk.
----@param surface SurfaceIdentification
+---@param _surface SurfaceIdentification
+---@param _position ChunkPosition @Position of the chunk.
 ---@return boolean
-function LuaForce.is_chunk_charted(position, surface) end
+function LuaForce.is_chunk_charted(_surface, _position) end
 
 ---Is the given chunk currently charted and visible (not covered by fog of war) on the map.
----@param position ChunkPosition
----@param surface SurfaceIdentification
+---@param _surface SurfaceIdentification
+---@param _position ChunkPosition
 ---@return boolean
-function LuaForce.is_chunk_visible(position, surface) end
+function LuaForce.is_chunk_visible(_surface, _position) end
 
 ---Is this force an enemy? This differs from `get_cease_fire` in that it is always false for neutral force. This is equivalent to checking the `enemy` ForceCondition.
----@param other ForceIdentification
+---@param _other ForceIdentification
 ---@return boolean
-function LuaForce.is_enemy(other) end
+function LuaForce.is_enemy(_other) end
 
 ---Is this force a friend? This differs from `get_friend` in that it is always true for neutral force. This is equivalent to checking the `friend` ForceCondition.
----@param other ForceIdentification
+---@param _other ForceIdentification
 ---@return boolean
-function LuaForce.is_friend(other) end
+function LuaForce.is_friend(_other) end
 
 ---Is pathfinder busy? When the pathfinder is busy, it won't accept any more pathfinding requests.
 ---@return boolean
@@ -282,25 +282,25 @@ function LuaForce.is_pathfinder_busy() end
 function LuaForce.kill_all_units() end
 
 ---Play a sound for every player in this force.
----@param override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
----@param path SoundPath @The sound to play.
----@param position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
----@param volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
-function LuaForce.play_sound(override_sound_type, path, position, volume_modifier) end
+---@param _path SoundPath @The sound to play.
+---@param _position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
+---@param _volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
+---@param _override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
+function LuaForce.play_sound(_path, _position, _volume_modifier, _override_sound_type) end
 
 ---Print text to the chat console of all players on this force.
 ---
 ---Messages that are identical to a message sent in the last 60 ticks are not printed again.
----@param color? Color
----@param message LocalisedString
-function LuaForce.print(color, message) end
+---@param _message LocalisedString
+---@param _color? Color
+function LuaForce.print(_message, _color) end
 
 ---Force a rechart of the whole chart.
 function LuaForce.rechart() end
 
 ---Research all technologies.
----@param include_disabled_prototypes? boolean @Whether technologies that are explicitly disabled in the prototype should also be researched. Defaults to `false`.
-function LuaForce.research_all_technologies(include_disabled_prototypes) end
+---@param _include_disabled_prototypes? boolean @Whether technologies that are explicitly disabled in the prototype should also be researched. Defaults to `false`.
+function LuaForce.research_all_technologies(_include_disabled_prototypes) end
 
 ---Reset everything. All technologies are set to not researched, all modifiers are set to default values.
 function LuaForce.reset() end
@@ -318,52 +318,52 @@ function LuaForce.reset_technologies() end
 function LuaForce.reset_technology_effects() end
 
 ---
----@param ammo string @Ammo category
----@param modifier double
-function LuaForce.set_ammo_damage_modifier(ammo, modifier) end
+---@param _ammo string @Ammo category
+---@param _modifier double
+function LuaForce.set_ammo_damage_modifier(_ammo, _modifier) end
 
 ---Add `other` force to this force's cease fire list. Forces on the cease fire list won't be targeted for attack.
----@param cease_fire boolean
----@param other ForceIdentification
-function LuaForce.set_cease_fire(cease_fire, other) end
+---@param _other ForceIdentification
+---@param _cease_fire boolean
+function LuaForce.set_cease_fire(_other, _cease_fire) end
 
 ---Add `other` force to this force's friends list. Friends have unrestricted access to buildings and turrets won't fire at them.
----@param friend boolean
----@param other ForceIdentification
-function LuaForce.set_friend(friend, other) end
+---@param _other ForceIdentification
+---@param _friend boolean
+function LuaForce.set_friend(_other, _friend) end
 
 ---
----@param ammo string @Ammo category
----@param modifier double
-function LuaForce.set_gun_speed_modifier(ammo, modifier) end
+---@param _ammo string @Ammo category
+---@param _modifier double
+function LuaForce.set_gun_speed_modifier(_ammo, _modifier) end
 
 ---Sets if the given recipe can be hand-crafted. This is used to explicitly disable hand crafting a recipe - it won't allow hand-crafting otherwise not hand-craftable recipes.
----@param hand_crafting_disabled boolean
----@param recipe string|LuaRecipe
-function LuaForce.set_hand_crafting_disabled_for_recipe(hand_crafting_disabled, recipe) end
+---@param _recipe string|LuaRecipe
+---@param _hand_crafting_disabled boolean
+function LuaForce.set_hand_crafting_disabled_for_recipe(_recipe, _hand_crafting_disabled) end
 
 ---Sets the count of a given item launched in rockets.
----@param count uint @The count to set
----@param item string @The item to set
-function LuaForce.set_item_launched(count, item) end
+---@param _item string @The item to set
+---@param _count uint @The count to set
+function LuaForce.set_item_launched(_item, _count) end
 
 ---Sets the saved progress for the given technology. The technology must not be in progress, must not be completed, and the new progress must be < 100%.
----@param progress double @Progress as a percent. Set to `nil` to remove the saved progress.
----@param technology TechnologyIdentification @The technology
-function LuaForce.set_saved_technology_progress(progress, technology) end
+---@param _technology TechnologyIdentification @The technology
+---@param _progress double @Progress as a percent. Set to `nil` to remove the saved progress.
+function LuaForce.set_saved_technology_progress(_technology, _progress) end
 
 ---
----@param position MapPosition @The new position on the given surface.
----@param surface SurfaceIdentification @Surface to set the spawn position for.
-function LuaForce.set_spawn_position(position, surface) end
+---@param _position MapPosition @The new position on the given surface.
+---@param _surface SurfaceIdentification @Surface to set the spawn position for.
+function LuaForce.set_spawn_position(_position, _surface) end
 
 ---
----@param modifier double
----@param turret string @Turret prototype name
-function LuaForce.set_turret_attack_modifier(modifier, turret) end
+---@param _turret string @Turret prototype name
+---@param _modifier double
+function LuaForce.set_turret_attack_modifier(_turret, _modifier) end
 
 ---
----@param position ChunkPosition @The chunk position to unchart.
----@param surface SurfaceIdentification @Surface to unchart on.
-function LuaForce.unchart_chunk(position, surface) end
+---@param _position ChunkPosition @The chunk position to unchart.
+---@param _surface SurfaceIdentification @Surface to unchart on.
+function LuaForce.unchart_chunk(_position, _surface) end
 

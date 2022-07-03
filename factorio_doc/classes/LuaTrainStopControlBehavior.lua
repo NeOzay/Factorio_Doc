@@ -1,7 +1,7 @@
 ---@meta
 
 ---Control behavior for train stops.
----@class LuaTrainStopControlBehavior
+---@class LuaTrainStopControlBehavior:LuaGenericOnOffControlBehavior
 ---@field enable_disable boolean @`true` if the train stop is enabled/disabled through the circuit network.`[RW]`
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`
 ---@field read_from_train boolean @`true` if the train stop should send the train contents to the circuit network.`[RW]`

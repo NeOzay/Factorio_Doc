@@ -12,9 +12,10 @@
 ---@field has_path boolean @If this train has a path.`[R]`
 ---@field id uint @The unique train ID.`[R]`
 ---@field kill_count uint @The total number of kills by this train.`[R]`
----@field killed_players table<uint, uint> @The players killed by this train.
-
-The keys are the player indices, the values are how often this train killed that player.`[R]`
+---The players killed by this train.
+---
+---The keys are the player indices, the values are how often this train killed that player.`[R]`
+---@field killed_players table<uint, uint>
 ---@field locomotives table<string, LuaEntity[]> @Arrays of locomotives. The result is two arrays, indexed by `"front_movers"` and `"back_movers"` containing the locomotives. E.g. `{front_movers={loco1, loco2}, back_movers={loco3}}`.`[R]`
 ---@field manual_mode boolean @When `true`, the train is explicitly controlled by the player or script. When `false`, the train moves autonomously according to its schedule.`[RW]`
 ---@field max_backward_speed double @Current max speed when moving backwards, depends on locomotive prototype and fuel.`[R]`
@@ -60,48 +61,48 @@ function LuaTrain.get_contents() end
 function LuaTrain.get_fluid_contents() end
 
 ---Get the amount of a particular fluid stored in the train.
----@param fluid? string @Fluid name to count. If not given, counts all fluids.
+---@param _fluid? string @Fluid name to count. If not given, counts all fluids.
 ---@return double
-function LuaTrain.get_fluid_count(fluid) end
+function LuaTrain.get_fluid_count(_fluid) end
 
 ---Get the amount of a particular item stored in the train.
----@param item? string @Item name to count. If not given, counts all items.
+---@param _item? string @Item name to count. If not given, counts all items.
 ---@return uint
-function LuaTrain.get_item_count(item) end
+function LuaTrain.get_item_count(_item) end
 
 ---Gets all rails under the train.
 ---@return LuaEntity[]
 function LuaTrain.get_rails() end
 
 ---Go to the station specified by the index in the train's schedule.
----@param index uint
-function LuaTrain.go_to_station(index) end
+---@param _index uint
+function LuaTrain.go_to_station(_index) end
 
 ---All methods and properties that this object supports.
 ---@return string
 function LuaTrain.help() end
 
 ---Insert a stack into the train.
----@param stack ItemStackIdentification
-function LuaTrain.insert(stack) end
+---@param _stack ItemStackIdentification
+function LuaTrain.insert(_stack) end
 
 ---Inserts the given fluid into the first available location in this train.
----@param fluid Fluid
+---@param _fluid Fluid
 ---@return double @The amount inserted.
-function LuaTrain.insert_fluid(fluid) end
+function LuaTrain.insert_fluid(_fluid) end
 
 ---Checks if the path is invalid and tries to re-path if it isn't.
----@param force? boolean @Forces the train to re-path regardless of the current path being valid or not.
+---@param _force? boolean @Forces the train to re-path regardless of the current path being valid or not.
 ---@return boolean @If the train has a path after the repath attempt.
-function LuaTrain.recalculate_path(force) end
+function LuaTrain.recalculate_path(_force) end
 
 ---Remove some fluid from the train.
----@param fluid Fluid
+---@param _fluid Fluid
 ---@return double @The amount of fluid actually removed.
-function LuaTrain.remove_fluid(fluid) end
+function LuaTrain.remove_fluid(_fluid) end
 
 ---Remove some items from the train.
----@param stack ItemStackIdentification @The amount and type of items to remove
+---@param _stack ItemStackIdentification @The amount and type of items to remove
 ---@return uint @Number of items actually removed.
-function LuaTrain.remove_item(stack) end
+function LuaTrain.remove_item(_stack) end
 

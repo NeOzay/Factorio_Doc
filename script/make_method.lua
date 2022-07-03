@@ -6,7 +6,7 @@ local MethodDoc = {}
 MethodDoc.__index = MethodDoc
 ---@param param Parameter
 local function make_param(param)
-	local name = param.name..(param.optional and "?" or "")
+	local name = "_"..param.name..(param.optional and "?" or "")
 	local def = ("---@param %s %s"):format(name, solve_type(param.type))
 	if param.description ~= "" then
 		def = def.." @"..param.description
@@ -33,7 +33,14 @@ function MethodDoc.new(method, parent)
 	methodDoc.parent = parent and parent.."."
 	methodDoc.documentation = Docomentation.new(method.description, method.notes, method.examples)
 	methodDoc.parameters = method.parameters
+	table.sort(methodDoc.parameters, function (a, b)
+		return a.order < b.order
+	end)
 	methodDoc.returns = method.return_values
+	table.sort(methodDoc.returns, function (a, b)
+		return a.order < b.order
+	end)
+
 	return methodDoc
 end
 
@@ -43,7 +50,7 @@ function MethodDoc:tostring()
 	local paramNames = {}
 	for index, param in ipairs(self.parameters) do
 		description = description..make_param(param)
-		table.insert(paramNames, param.name)
+		table.insert(paramNames, "_"..param.name)
 	end
 
 	for index, _return in ipairs(self.returns) do

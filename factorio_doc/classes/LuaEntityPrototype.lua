@@ -144,9 +144,10 @@
 ---@field logistic_radius double @The logistic radius for this roboport prototype or `nil`.`[R]`
 ---@field loot Loot[] @Loot that will be dropped when this entity is killed. `nil` if there is no loot.`[R]`
 ---@field loot_pickup_distance double @`[R]`
----@field manual_range_modifier double @Get the manual range modifier for artillery turret and artillery wagon prototypes. `nil` if not artillery type prototype
-
-subclass(ArtilleryWagon, ArtilleryTurret)`[R]`
+---Get the manual range modifier for artillery turret and artillery wagon prototypes. `nil` if not artillery type prototype
+---
+---subclass(ArtilleryWagon, ArtilleryTurret)`[R]`
+---@field manual_range_modifier double
 ---@field map_color Color @The map color used when charting this entity if a friendly or enemy color isn't defined or `nil`.`[R]`
 ---@field map_generator_bounding_box BoundingBox @The bounding box used for map generator collision checking.`[R]`
 ---@field max_circuit_wire_distance double @The maximum circuit wire distance for this entity. 0 when the entity doesn't support circuit wires.`[R]`
@@ -254,14 +255,14 @@ subclass(ArtilleryWagon, ArtilleryTurret)`[R]`
 local LuaEntityPrototype = {}
 
 ---Gets the base size of the given inventory on this entity or `nil` if the given inventory doesn't exist.
----@param index defines.inventory
+---@param _index defines.inventory
 ---@return uint
-function LuaEntityPrototype.get_inventory_size(index) end
+function LuaEntityPrototype.get_inventory_size(_index) end
 
 ---Test whether this entity prototype has a certain flag set.
----@param flag string @The flag to test. See [EntityPrototypeFlags](EntityPrototypeFlags) for a list of flags.
+---@param _flag string @The flag to test. See [EntityPrototypeFlags](EntityPrototypeFlags) for a list of flags.
 ---@return boolean @`true` if this prototype has the given flag set.
-function LuaEntityPrototype.has_flag(flag) end
+function LuaEntityPrototype.has_flag(_flag) end
 
 ---All methods and properties that this object supports.
 ---@return string

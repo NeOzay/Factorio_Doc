@@ -26,18 +26,18 @@ local LuaRemote = {}
 ---Add a remote interface.
 ---
 ---It is an error if the given interface `name` is already registered.
----@param functions table<string, fun()> @List of functions that are members of the new interface.
----@param name string @Name of the interface.
-function LuaRemote.add_interface(functions, name) end
+---@param _name string @Name of the interface.
+---@param _functions table<string, fun()> @List of functions that are members of the new interface.
+function LuaRemote.add_interface(_name, _functions) end
 
 ---Call a function of an interface.
----@param function string @Function name that belongs to `interface`.
----@param interface string @Interface to look up `function` in.
+---@param _interface string @Interface to look up `function` in.
+---@param _function string @Function name that belongs to `interface`.
 ---@return Any
-function LuaRemote.call(function, interface) end
+function LuaRemote.call(_interface, _function) end
 
 ---Removes an interface with the given name.
----@param name string @Name of the interface.
+---@param _name string @Name of the interface.
 ---@return boolean @Whether the interface was removed. `False` if the interface didn't exist.
-function LuaRemote.remove_interface(name) end
+function LuaRemote.remove_interface(_name) end
 
