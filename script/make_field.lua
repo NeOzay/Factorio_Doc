@@ -25,7 +25,11 @@ function FieldDoc.fromParameter(parameter)
 	local field = setmetatable({}, FieldDoc)
 	field.name = parameter.name..(parameter.optional and "?" or "")
 	field.type = parameter.type
-	field.documentation = parameter.description
+	if parameter.description:find("\n") then
+		field.documentation = Docomentation.new(parameter.description)
+	else
+		field.documentation = parameter.description
+	end
 	return field
 end
 

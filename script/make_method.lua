@@ -1,12 +1,9 @@
-local Docomentation = require"script.make_doc"
-local solve_type = require"script.solve_type"
-
 ---@class MethodDescription
 local MethodDoc = {}
 MethodDoc.__index = MethodDoc
 ---@param param Parameter
 local function make_param(param)
-	local name = "_"..param.name..(param.optional and "?" or "")
+	local name = param.name..(param.optional and "?" or "")
 	local def = ("---@param %s %s"):format(name, solve_type(param.type))
 	if param.description ~= "" then
 		def = def.." @"..param.description
@@ -49,8 +46,9 @@ function MethodDoc:tostring()
 	description = description .. self.documentation:tostring()
 	local paramNames = {}
 	for index, param in ipairs(self.parameters) do
+		param.name = "_"..param.name
 		description = description..make_param(param)
-		table.insert(paramNames, "_"..param.name)
+		table.insert(paramNames, param.name)
 	end
 
 	for index, _return in ipairs(self.returns) do

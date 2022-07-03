@@ -1,0 +1,4 @@
+---@class BuiltinType
+---@field name string
+---@field order number
+---@field description string

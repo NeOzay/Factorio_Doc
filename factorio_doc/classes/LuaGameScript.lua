@@ -77,7 +77,7 @@
 ---
 ---See [LuaGameScript::players](LuaGameScript::players) for accessing all players.`[R]`
 ---@field player LuaPlayer
----@field players table<uint|string, LuaPlayer> @Get a table of all the players that currently exist. This sparse table allows you to find players by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the array part of the table. Iterating with `ipairs()` will not work at all.`[R]`
+---@field players table<number, LuaPlayer> @Get a table of all the players that currently exist. This sparse table allows you to find players by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the array part of the table. Iterating with `ipairs()` will not work at all.`[R]`
 ---@field pollution_statistics LuaFlowStatistics @The pollution statistics for this map.`[R]`
 ---@field recipe_category_prototypes table<string, LuaRecipeCategoryPrototype> @A dictionary containing every LuaRecipeCategoryPrototype indexed by `name`.`[R]`
 ---@field recipe_prototypes table<string, LuaRecipePrototype> @A dictionary containing every LuaRecipePrototype indexed by `name`.`[R]`
