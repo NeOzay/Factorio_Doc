@@ -26,17 +26,35 @@ end
 
 ---@param concept Concept
 concepts_types.enum = function (concept)
-	
+	local def = ("---@alias %s\n"):format(concept.name)
+	for index, member in ipairs(concept.options) do
+		---@cast member -Concept.spec
+		def = def..("---| \"%s\"\n"):format(member.name)
+	end
+	return def
 end
 
 ---@param concept Concept
 concepts_types.flag = function (concept)
+	local members = concept.options--[[@as BasicMember[]
+	]]
+
+	local def = ("---@class %s\n"):format(concept.name)
+
+	for index, param in ipairs(members) do
+		def = def..FieldDescription.fromParameter(param):tostring()
+	end
+	return def
 	
 end
 
 ---@param concept Concept
 concepts_types.union = function (concept)
-	
+	local types = {}
+	for index, spec in ipairs(concept.options) do
+		types[index] = solve_type(spec.type)
+	end
+	return ("---@alias %s %s\n"):format(concept.name, table.concat(types, "|"))
 end
 
 ---@param concept Concept
@@ -57,8 +75,9 @@ end
 
 local function solve_concept()
 	local def = ""
-	for index, concepts in ipairs(concepts) do
-		def = def..(concepts_types[concepts.category](concepts) or ("---@class %s\n"):format(concepts.name)).."\n"
+	for index, concept in ipairs(concepts) do
+		current.class = concept.name
+		def = def..(concepts_types[concept.category](concept) or ("---@class %s\n"):format(concept.name)).."\n"
 	end
 	return def
 end

@@ -16,7 +16,18 @@
 ---@field target? LuaEntity
 ---@field tick uint @The tick this alert was created.
 
----@class Alignment
+---@alias Alignment
+---| "top-left"
+---| "middle-left"
+---| "left"
+---| "bottom-left"
+---| "top-center"
+---| "middle-center"
+---| "center"
+---| "bottom-center"
+---| "top-right"
+---| "right"
+---| "bottom-right"
 
 ---@class AmmoType
 ---@field action? TriggerItem[]
@@ -217,7 +228,27 @@
 
 ---@class CircularProjectileCreationSpecification
 
----@class CliffOrientation
+---@alias CliffOrientation
+---| "west-to-east"
+---| "north-to-south"
+---| "east-to-west"
+---| "south-to-north"
+---| "west-to-north"
+---| "north-to-east"
+---| "east-to-south"
+---| "south-to-west"
+---| "west-to-south"
+---| "north-to-west"
+---| "east-to-north"
+---| "south-to-east"
+---| "west-to-none"
+---| "none-to-east"
+---| "east-to-none"
+---| "none-to-west"
+---| "north-to-none"
+---| "none-to-south"
+---| "south-to-none"
+---| "none-to-north"
 
 ---@class CliffPlacementSettings
 ---@field cliff_elevation_0 float @Elevation at which the first row of cliffs is placed. The default is `10`, and this cannot be set from the map generation GUI.
@@ -254,7 +285,16 @@
 ---@class Command
 ---@field type defines.command @Type of command. The remaining fields depend on the value of this field.
 
----@class ComparatorString
+---@alias ComparatorString
+---| "="
+---| ">"
+---| "<"
+---| "≥"
+---| ">="
+---| "≤"
+---| "<="
+---| "≠"
+---| "!="
 
 ---@class ConfigurationChangedData
 ---@field migration_applied boolean @`true` when mod prototype migrations have been applied since the last time this save was loaded.
@@ -274,7 +314,15 @@
 ---@field prerequisite boolean @The item is a prerequisite for another item in the queue.
 ---@field recipe string @The recipe being crafted.
 
----@class CursorBoxRenderType
+---@alias CursorBoxRenderType
+---| "entity"
+---| "not-allowed"
+---| "electricity"
+---| "pair"
+---| "copy"
+---| "train-visualization"
+---| "logistics"
+---| "blueprint-snap-rectangle"
 
 ---@class CustomCommandData
 ---@field name string @The name of the command.
@@ -344,7 +392,7 @@
 
 ---@class EntityPrototypeFlags
 
----@class EntityPrototypeIdentification
+---@alias EntityPrototypeIdentification LuaEntity|LuaEntityPrototype|string
 
 ---@class EquipmentPoint
 ---@field x uint
@@ -386,13 +434,20 @@
 ---@field minimum_temperature? double @The minimum temperature allowed into the fluidbox.
 ---@field name string @Fluid prototype name of the filtered fluid.
 
----@class FluidIdentification
+---@alias FluidIdentification string|LuaFluidPrototype|Fluid
 
 ---@class FluidPrototypeFilter
 
----@class ForceCondition
+---@alias ForceCondition
+---| "all"
+---| "enemy"
+---| "ally"
+---| "friend"
+---| "not-friend"
+---| "same"
+---| "not-same"
 
----@class ForceIdentification
+---@alias ForceIdentification string|LuaForce
 
 ---@class GameViewSettings
 
@@ -450,7 +505,7 @@
 
 ---@class ItemPrototypeFlags
 
----@class ItemPrototypeIdentification
+---@alias ItemPrototypeIdentification LuaItemStack|LuaItemPrototype|string
 
 ---@class ItemStackDefinition
 ---@field ammo? double @Amount of ammo in the ammo items in the stack.
@@ -460,7 +515,7 @@
 ---@field name string @Prototype name of the item the stack holds.
 ---@field tags? string[] @Tags of the items with tags in the stack.
 
----@class ItemStackIdentification
+---@alias ItemStackIdentification SimpleItemStack|LuaItemStack
 
 ---@class ItemStackLocation
 ---@field inventory defines.inventory
@@ -686,7 +741,7 @@
 ---@field condition_size uint
 ---@field result LuaTilePrototype @The tile prototype.
 
----@class PlayerIdentification
+---@alias PlayerIdentification uint|string|LuaPlayer
 
 ---@class PollutionMapSettings
 ---@field aeging double @The amount of pollution eaten by a chunk's tiles as a percentage of 1. Defaults to `1`.
@@ -783,7 +838,7 @@
 ---@field name? string @Name of the item, fluid or virtual signal.
 ---@field type string @`"item"`, `"fluid"`, or `"virtual"`.
 
----@class SimpleItemStack
+---@alias SimpleItemStack string|ItemStackDefinition
 
 ---@class SmokeSource
 ---@field deviation? MapPosition
@@ -808,7 +863,14 @@
 
 ---@class SoundPath
 
----@class SoundType
+---@alias SoundType
+---| "game-effect"
+---| "gui-effect"
+---| "ambient"
+---| "environment"
+---| "walking"
+---| "alert"
+---| "wind"
 
 ---@class SpawnPointDefinition
 ---@field evolution_factor double @Evolution factor for which this weight applies.
@@ -826,7 +888,7 @@
 ---@field default SteeringMapSetting
 ---@field moving SteeringMapSetting
 
----@class SurfaceIdentification
+---@alias SurfaceIdentification uint|string|LuaSurface
 
 ---@class TabAndContent
 ---@field content LuaGuiElement
@@ -834,7 +896,7 @@
 
 ---@class Tags
 
----@class TechnologyIdentification
+---@alias TechnologyIdentification string|LuaTechnology|LuaTechnologyPrototype
 
 ---@class TechnologyModifier
 ---@field type string @Modifier type. Specifies which of the other fields will be available. Possible values are: `"inserter-stack-size-bonus"`, `"stack-inserter-capacity-bonus"`, `"laboratory-speed"`, `"character-logistic-trash-slots"`, `"maximum-following-robots-count"`, `"worker-robot-speed"`, `"worker-robot-storage"`, `"ghost-time-to-live"`, `"turret-attack"`, `"ammo-damage"`, `"give-item"`, `"gun-speed"`, `"unlock-recipe"`, `"character-crafting-speed"`, `"character-mining-speed"`, `"character-running-speed"`, `"character-build-distance"`, `"character-item-drop-distance"`, `"character-reach-distance"`, `"character-resource-reach-distance"`, `"character-item-pickup-distance"`, `"character-loot-pickup-distance"`, `"character-inventory-slots-bonus"`, `"deconstruction-time-to-live"`, `"max-failed-attempts-per-tick-per-construction-queue"`, `"max-successful-attempts-per-tick-per-construction-queue"`, `"character-health-bonus"`, `"mining-drill-productivity-bonus"`, `"train-braking-force-bonus"`, `"zoom-to-world-enabled"`, `"zoom-to-world-ghost-building-enabled"`, `"zoom-to-world-blueprint-enabled"`, `"zoom-to-world-deconstruction-planner-enabled"`, `"zoom-to-world-upgrade-planner-enabled"`, `"zoom-to-world-selection-tool-enabled"`, `"worker-robot-battery"`, `"laboratory-productivity"`, `"follower-robot-lifetime"`, `"artillery-range"`, `"nothing"`, `"character-additional-mining-categories"`, `"character-logistic-requests"`.

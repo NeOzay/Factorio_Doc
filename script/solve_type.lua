@@ -39,7 +39,7 @@ end
 
 ---@param _type ComplexType
 complex_type.LuaLazyLoadedValue = function (_type)
-	
+	return ("LuaLazyLoadedValue<%s>"):format(solve_type(_type.value))
 end
 
 ---@param _type ComplexType

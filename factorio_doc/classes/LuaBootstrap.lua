@@ -54,8 +54,9 @@ function LuaBootstrap.on_configuration_changed(_f) end
 ---function(event) game.print("Gotta go fast!") end,
 ---{{filter = "name", name = "fast-inserter"}})
 ---```
----@param _event defines.events|defines.events[]|string @The event(s) or custom-input to invoke the handler on.
----@param _f fun(_arg1:EventData) @The handler for this event. Passing `nil` will unregister it.
+---@generic K
+---@param _event defines.events|defines.events[]|string|K @The event(s) or custom-input to invoke the handler on.
+---@param _f fun(_arg1:K) @The handler for this event. Passing `nil` will unregister it.
 ---@param _filters? EventFilter[] @The filters for this event. Can only be used when registering for individual events.
 function LuaBootstrap.on_event(_event, _f, _filters) end
 

@@ -11,7 +11,9 @@ local function make_sub(define)
 		local alias = ("---@alias %s\n"):format(define.name:lower())
 		for index, member in ipairs(define.values) do
 			alias = alias .. ("---| `%s`\n"):format(define.name:lower().."."..member.name)
-			def = def..("---@field %s any"):format(member.name)
+
+			local _type = define.name:find("event") and member.name or "any"
+			def = def..("---@field %s %s"):format(member.name, _type)
 			if member.description ~= "" then
 				def = def.." @"..member.description
 			end
@@ -45,9 +47,11 @@ for index, define in ipairs(_defines) do
 	end
 	def = def.."\n"
 end
+
 def = def.."\n"
 def = def..table.concat(subList, "\n")
 local alias = table.concat(aliasList, "\n")
+
 make_file(def, "./factorio_doc/defines.lua")
 make_file(alias,"./factorio_doc/defines_alias.lua" )
 
