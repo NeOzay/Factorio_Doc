@@ -29,7 +29,7 @@ on_event.custom = [[---Register a handler to run on the specified event(s). Each
 ---```
 ---@generic K
 ---@param _event defines.events|defines.events[]|string|K @The event(s) or custom-input to invoke the handler on.
----@param _f fun(_arg1:K) @The handler for this event. Passing `nil` will unregister it.
+---@param _f fun(event:K) @The handler for this event. Passing `nil` will unregister it.
 ---@param _filters? EventFilter[] @The filters for this event. Can only be used when registering for individual events.
 function LuaBootstrap.on_event(_event, _f, _filters) end
 ]]

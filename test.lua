@@ -1,10 +1,11 @@
----@type table<string|number, string>
-local t
+---@class test
+---@field f1 string @its string
+---@field f2 number @its number
 
----@type number
-local n
----@type "test"
-local s
 
-local test = t[n]
-local test2 = t[s]
+---@param arg test
+local function t(arg)
+	
+end
+
+t{f1 = "", f2 = 1}

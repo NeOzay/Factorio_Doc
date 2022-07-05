@@ -31,6 +31,7 @@ function MethodDoc.new(method, parent)
 		methodDoc.custom = method.custom
 		return methodDoc
 	end
+	---@diagnostic enable
 	methodDoc.raw = method
 	methodDoc.name = method.name
 	methodDoc.parent = parent and parent.."."

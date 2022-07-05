@@ -27,19 +27,6 @@ function Documentation.new(description, notes, examples)
 	return setmetatable(documentation, Documentation)
 end
 
----@param description string
-function Documentation:add_description(description)
-	self.description = description
-end
----@param notes string[]
-function Documentation:add_notes(notes)
-	self.notes = notes or {}
-end
----@param examples string[]
-function Documentation:add_examples(examples)
-	self.examples = examples or {}
-end
-
 function Documentation:tostring()
 	local doc = ""
 	if self.description ~= "" then
