@@ -148,7 +148,6 @@ function LuaControl.clear_gui_arrow() end
 function LuaControl.clear_items_inside() end
 
 ---
----
 ---This will silently fail if personal logistics are not researched yet.
 ---@param _slot_index uint @The slot to clear.
 function LuaControl.clear_personal_logistic_slot(_slot_index) end
@@ -156,7 +155,6 @@ function LuaControl.clear_personal_logistic_slot(_slot_index) end
 ---Unselect any selected entity.
 function LuaControl.clear_selected_entity() end
 
----
 ---
 ---This will silently fail if the vehicle does not use logistics.
 ---@param _slot_index uint @The slot to clear.

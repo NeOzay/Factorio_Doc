@@ -8,7 +8,6 @@
 ---@field type defines.control_behavior.type @The concrete type of this control behavior.`[R]`
 local LuaControlBehavior = {}
 
----
 ---@param _wire defines.wire_type @Wire color of the network connected to this entity.
 ---@param _circuit_connector? defines.circuit_connector_id @The connector to get circuit network for. Must be specified for entities with more than one circuit network connector.
 ---@return LuaCircuitNetwork @The circuit network or nil.

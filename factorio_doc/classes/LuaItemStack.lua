@@ -83,7 +83,6 @@ function LuaItemStack.add_ammo(_amount) end
 function LuaItemStack.add_durability(_amount) end
 
 ---
----
 ---Built entities can be come invalid between the building of the blueprint and the function returning if by_player or raise_built is used and one of those events invalidates the entity.
 ---@param _surface SurfaceIdentification @Surface to build on
 ---@param _force ForceIdentification @Force to use for the building

@@ -16,6 +16,7 @@
 ---@field target? LuaEntity
 ---@field tick uint @The tick this alert was created.
 
+---A [string](string) that specifies where a GUI element should be.
 ---@alias Alignment
 ---| "top-left"
 ---| "middle-left"
@@ -36,8 +37,10 @@
 ---@field energy_consumption? double @Energy consumption of a single shot, if applicable. Defaults to `0`.
 ---@field target_type string @One of `"entity"` (fires at an entity), `"position"` (fires directly at a position), or `"direction"` (fires in a direction).
 
+---Any basic type (string, number, boolean), table, or LuaObject.
 ---@class Any
 
+---Any basic type (string, number, boolean) or table.
 ---@class AnyBasic
 
 ---@class ArithmeticCombinatorParameters
@@ -80,6 +83,7 @@
 ---@field settings table<string, AutoplaceControl>
 ---@field treat_missing_as_default boolean @Whether missing autoplace names for this type should be default enabled.
 
+---Specifies how probability and richness are calculated when placing something on the map. Can be specified either using `probability_expression` and `richness_expression` or by using all the other fields.
 ---@class AutoplaceSpecification
 ---@field control? string @Control prototype name.
 ---@field coverage double
@@ -144,6 +148,7 @@
 ---@field entity? LuaEntity @The target entity.
 ---@field position? MapPosition @The target position.
 
+---The representation of an entity inside of a blueprint. It has at least these fields, but can contain additional ones depending on the kind of entity.
 ---@class BlueprintEntity
 ---@field connections? BlueprintCircuitConnection @The circuit network connections of the entity, if there are any. Only relevant for entities that support circuit connections.
 ---@field control_behavior? BlueprintControlBehavior @The control behavior of the entity, if it has one. The format of the control behavior depends on the entity's type. Only relevant for entities that support control behaviors.
@@ -163,6 +168,17 @@
 ---@field index uint @Index of the icon in the blueprint icons slots. Has to be an integer in the range [1, 4].
 ---@field signal SignalID @The icon to use. It can be any item icon as well as any virtual signal icon.
 
+---Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with [MapPosition](MapPosition), the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero, however it is ignored when provided to the game.
+---
+---Explicit definition: 
+---```lua
+---{left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
+---```
+---\
+---Shorthand: 
+---```lua
+---{{-2, -3}, {5, 8}}
+---```
 ---@class BoundingBox
 ---@field left_top MapPosition
 ---@field [1] MapPosition
@@ -176,18 +192,22 @@
 ---@field equipment? string @Only present when `type` is `"equipment-remote"`. It is the equipment prototype name.
 ---@field type string @One of `"throw"`, `"equipment-remote"`, `"use-on-self"`.
 
+---
+---Either `icon`, `text`, or both must be provided.
 ---@class ChartTagSpec
 ---@field icon? SignalID
 ---@field last_user? PlayerIdentification
 ---@field position MapPosition
 ---@field text? string
 
+---Coordinates of a chunk in a [LuaSurface](LuaSurface) where each integer `x`/`y` represents a different chunk. This uses the same format as [MapPosition](MapPosition), meaning it can be specified either with or without explicit keys. A [MapPosition](MapPosition) can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.
 ---@class ChunkPosition
 ---@field x int
 ---@field [1] int
 ---@field y int
 ---@field [2] int
 
+---A [ChunkPosition](ChunkPosition) with an added bounding box for the area of the chunk.
 ---@class ChunkPositionAndArea
 ---@field area BoundingBox
 ---@field x int
@@ -226,6 +246,9 @@
 ---@field vertical_speed float
 ---@field vertical_speed_deviation float
 
+---An array with the following members:
+---- A [RealOrientation](RealOrientation)
+---- A [Vector](Vector)
 ---@class CircularProjectileCreationSpecification
 
 ---@alias CliffOrientation
@@ -256,12 +279,47 @@
 ---@field name string @Name of the cliff prototype.
 ---@field richness MapGenSize @Corresponds to 'continuity' in the GUI. This value is not used directly, but is used by the 'cliffiness' noise expression, which in combination with elevation and the two cliff elevation properties drives cliff placement (cliffs are placed when elevation crosses the elevation contours defined by `cliff_elevation_0` and `cliff_elevation_interval` when 'cliffiness' is greater than `0.5`). The default 'cliffiness' expression interprets this value such that larger values result in longer unbroken walls of cliffs, and smaller values (between `0` and `1`) result in larger gaps in cliff walls.
 
+---This is a set of masks given as a dictionary[[CollisionMaskLayer](CollisionMaskLayer) &rarr; [boolean](boolean)]. Only set masks are present in the dictionary and they have the value `true`. Unset flags aren't present at all.
 ---@class CollisionMask
 
+---A [string](string) specifying a collision mask layer.
+---
+---Possible values for the string are:
+---- `"ground-tile"`
+---- `"water-tile"`
+---- `"resource-layer"`
+---- `"doodad-layer"`
+---- `"floor-layer"`
+---- `"item-layer"`
+---- `"ghost-layer"`
+---- `"object-layer"`
+---- `"player-layer"`
+---- `"train-layer"`
+---- `"rail-layer"`
+---- `"transport-belt-layer"`
+---- `"not-setup"`
+---
+---Additionally the values `"layer-13"` through `"layer-55"`. These layers are currently unused by the game but may change. If a mod is going to use one of the unused layers it's recommended to start at the higher layers because the base game will take from the lower ones.
 ---@class CollisionMaskLayer
 
+---A [CollisionMask](CollisionMask) which also includes any flags this mask has.
+---
+---Flags such as:
+---- `"not-colliding-with-itself"`: Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
+---- `"consider-tile-transitions"`: Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
+---- `"colliding-with-tiles-only"`: Any prototype with this collision option will only be checked for collision with other prototype's collision masks if they are a tile.
 ---@class CollisionMaskWithFlags
 
+---Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.
+---
+---Similar to [MapPosition](MapPosition), Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).
+---
+---```lua
+---red1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red
+---red2 = {r = 0.5, a = 0.5}                -- Same color as red1
+---black = {}                               -- All channels omitted: black
+---red1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation
+---```
 ---@class Color
 ---@field r? float
 ---@field [1] float
@@ -272,6 +330,7 @@
 ---@field a? float
 ---@field [4] float
 
+---Same as [Color](Color), but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].
 ---@class ColorModifier
 ---@field r? float
 ---@field [1] float
@@ -282,9 +341,12 @@
 ---@field a? float
 ---@field [4] float
 
+---Commands can be given to enemies and unit groups.
 ---@class Command
 ---@field type defines.command @Type of command. The remaining fields depend on the value of this field.
 
+---
+---While the API accepts both versions for `"less/greater than or equal to"` and `"not equal"`, it'll always return `"≥"`, `"≤"` or `"≠"` respectively when reading them back.
 ---@alias ComparatorString
 ---| "="
 ---| ">"
@@ -357,6 +419,7 @@
 ---@field decorative LuaDecorativePrototype
 ---@field position TilePosition
 
+---Technology and recipe difficulty settings. Updating any of the attributes will immediately take effect in the game engine.
 ---@class DifficultySettings
 ---@field recipe_difficulty defines.difficulty_settings.recipe_difficulty
 ---@field research_queue_setting string @Either `"after-victory"`, `"always"` or `"never"`. Changing this to `"always"` or `"after-victory"` does not automatically unlock the research queue. See [LuaForce](LuaForce) for that.
@@ -367,12 +430,32 @@
 ---@field height uint
 ---@field width uint
 
+---These values represent a percentual increase in evolution. This means a value of `0.1` would increase evolution by 10%.
 ---@class EnemyEvolutionMapSettings
 ---@field destroy_factor double @The amount evolution progresses for every destroyed spawner. Defaults to `0.002`.
 ---@field enabled boolean @Whether enemy evolution is enabled at all.
 ---@field pollution_factor double @The amount evolution progresses for every unit of pollution. Defaults to `0.0000009`.
 ---@field time_factor double @The amount evolution naturally progresses by every second. Defaults to `0.000004`.
 
+---Candidate chunks are given scores to determine which one of them should be expanded into. This score takes into account various settings noted below. The iteration is over a square region centered around the chunk for which the calculation is done, and includes the central chunk as well. Distances are calculated as [Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry).
+---
+---The pseudocode algorithm to determine a chunk's score is as follows:
+---
+---```lua
+---player = 0
+---for neighbour in all chunks within enemy_building_influence_radius from chunk:
+---  player += number of player buildings on neighbour
+---          * building_coefficient
+---          * neighbouring_chunk_coefficient^distance(chunk, neighbour)
+---
+---base = 0
+---for neighbour in all chunk within friendly_base_influence_radius from chunk:
+---  base += num of enemy bases on neighbour
+---          * other_base_coefficient
+---          * neighbouring_base_chunk_coefficient^distance(chunk, neighbour)
+---
+---score(chunk) = 1 / (1 + player + base)
+---```
 ---@class EnemyExpansionMapSettings
 ---@field building_coefficient double @Defaults to `0.1`.
 ---@field enabled boolean @Whether enemy expansion is enabled at all.
@@ -390,14 +473,55 @@
 
 ---@class EntityPrototypeFilter
 
+---This is a set of flags given as a dictionary[[string](string) &rarr; [boolean](boolean)]. When a flag is set, it is present in the dictionary with the value `true`. Unset flags aren't present in the dictionary at all. So, the boolean value is meaningless and exists just for easy table lookup if a flag is set.
+---
+---By default, none of these flags are set.
 ---@class EntityPrototypeFlags
+---@field not-rotatable boolean @Prevents the entity from being rotated before or after placement.
+---@field placeable-neutral boolean @Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
+---@field placeable-player boolean @Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
+---@field placeable-enemy boolean @Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
+---@field placeable-off-grid boolean @Determines whether the entity needs to be aligned with the invisible grid within the world. Most entities are confined in this way, with a few exceptions such as trees and land mines.
+---@field player-creation boolean @Makes it possible to blueprint, deconstruct, and repair the entity (which can be turned off again using the specific flags). Makes it possible for the biter AI to target the entity as a distraction. Enables dust to automatically be created when building the entity. If the entity does not have a `map_color` set, this flag makes the entity appear on the map with the default color specified by the UtilityConstants.
+---@field building-direction-8-way boolean @Uses 45 degree angle increments when selecting direction.
+---@field filter-directions boolean @Used to automatically detect the proper direction of the entity if possible. Used by the pump, train stop, and train signal by default.
+---@field fast-replaceable-no-build-while-moving boolean @Fast replace will not apply when building while moving.
+---@field breaths-air boolean @Used to specify that the entity breathes air, and is thus affected by poison.
+---@field not-repairable boolean @Used to specify that the entity can not be 'healed' by repair packs.
+---@field not-on-map boolean @Prevents the entity from being drawn on the map.
+---@field not-deconstructable boolean @Prevents the entity from being deconstructed.
+---@field not-blueprintable boolean @Prevents the entity from being part of a blueprint.
+---@field hidden boolean @Hides the entity from the bonus GUI and from the "made in"-property of recipe tooltips.
+---@field hide-alt-info boolean @Hides the alt-info of this entity when in alt-mode.
+---@field fast-replaceable-no-cross-type-while-moving boolean @Does not fast replace this entity over other entity types when building while moving.
+---@field no-gap-fill-while-building boolean
+---@field not-flammable boolean @Does not apply fire stickers to the entity.
+---@field no-automated-item-removal boolean @Prevents inserters and loaders from taking items from this entity.
+---@field no-automated-item-insertion boolean @Prevents inserters and loaders from inserting items into this entity.
+---@field no-copy-paste boolean @Prevents the entity from being copy-pasted.
+---@field not-selectable-in-game boolean @Disallows selection of the entity even when a selection box is specified for other reasons. For example, selection boxes are used to determine the size of outlines to be shown when highlighting entities inside electric pole ranges.
+---@field not-upgradable boolean @Prevents the entity from being selected by the upgrade planner.
+---@field not-in-kill-statistics boolean @Prevents the entity from being shown in the kill statistics.
 
 ---@alias EntityPrototypeIdentification LuaEntity|LuaEntityPrototype|string
 
+---A table used to define a manual shape for a piece of equipment.
 ---@class EquipmentPoint
 ---@field x uint
 ---@field y uint
 
+---Position inside an equipment grid. This uses the same format as [MapPosition](MapPosition), meaning it can be specified either with or without explicit keys.
+---
+---Explicit definition: 
+---```lua
+---{x = 5, y = 2}
+---{y = 2, x = 5}
+---```
+---\
+---Shorthand: 
+---```lua
+---{1, 2}
+---```
 ---@class EquipmentPosition
 ---@field x int
 ---@field [1] int
@@ -406,11 +530,37 @@
 
 ---@class EquipmentPrototypeFilter
 
+---Information about the event that has been raised. The table can also contain other fields depending on the type of event. See [the list of Factorio events](events.html) for more information on these.
 ---@class EventData
 ---@field mod_name? string @The name of the mod that raised the event if it was raised using [LuaBootstrap::raise_event](LuaBootstrap::raise_event).
 ---@field name defines.events @The identifier of the event this handler was registered to.
 ---@field tick uint @The tick during which the event happened.
 
+---Used to filter out irrelevant event callbacks in a performant way.
+---
+---Available filters:
+---- [LuaEntityClonedEventFilter](LuaEntityClonedEventFilter)
+---- [LuaEntityDamagedEventFilter](LuaEntityDamagedEventFilter)
+---- [LuaPlayerMinedEntityEventFilter](LuaPlayerMinedEntityEventFilter)
+---- [LuaPreRobotMinedEntityEventFilter](LuaPreRobotMinedEntityEventFilter)
+---- [LuaRobotBuiltEntityEventFilter](LuaRobotBuiltEntityEventFilter)
+---- [LuaPostEntityDiedEventFilter](LuaPostEntityDiedEventFilter)
+---- [LuaEntityDiedEventFilter](LuaEntityDiedEventFilter)
+---- [LuaScriptRaisedReviveEventFilter](LuaScriptRaisedReviveEventFilter)
+---- [LuaPrePlayerMinedEntityEventFilter](LuaPrePlayerMinedEntityEventFilter)
+---- [LuaEntityMarkedForDeconstructionEventFilter](LuaEntityMarkedForDeconstructionEventFilter)
+---- [LuaPreGhostDeconstructedEventFilter](LuaPreGhostDeconstructedEventFilter)
+---- [LuaEntityDeconstructionCancelledEventFilter](LuaEntityDeconstructionCancelledEventFilter)
+---- [LuaEntityMarkedForUpgradeEventFilter](LuaEntityMarkedForUpgradeEventFilter)
+---- [LuaSectorScannedEventFilter](LuaSectorScannedEventFilter)
+---- [LuaRobotMinedEntityEventFilter](LuaRobotMinedEntityEventFilter)
+---- [LuaScriptRaisedDestroyEventFilter](LuaScriptRaisedDestroyEventFilter)
+---- [LuaUpgradeCancelledEventFilter](LuaUpgradeCancelledEventFilter)
+---- [LuaScriptRaisedBuiltEventFilter](LuaScriptRaisedBuiltEventFilter)
+---- [LuaPlayerBuiltEntityEventFilter](LuaPlayerBuiltEntityEventFilter)
+---- [LuaPlayerRepairedEntityEventFilter](LuaPlayerRepairedEntityEventFilter)
+---
+---Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
 ---@class EventFilter
 
 ---@class Fluid
@@ -418,6 +568,7 @@
 ---@field name string @Fluid prototype name of the fluid.
 ---@field temperature? double @The temperature. When reading from [LuaFluidBox](LuaFluidBox), this field will always be present. It is not necessary to specify it when writing, however. When not specified, the fluid will be set to the fluid's default temperature as specified in the fluid's prototype.
 
+---A definition of a fluidbox connection point.
 ---@class FluidBoxConnection
 ---@field max_underground_distance? uint @The maximum tile distance this underground connection can connect at if this is an underground pipe.
 ---@field positions Vector[] @The 4 cardinal direction connection points for this pipe. This vector is a table with `x` and `y` keys instead of an array.
@@ -449,6 +600,7 @@
 
 ---@alias ForceIdentification string|LuaForce
 
+---Parameters that affect the look and control of the game. Updating any of the member attributes here will immediately take effect in the game engine.
 ---@class GameViewSettings
 
 ---@class GuiAnchor
@@ -458,9 +610,11 @@
 ---@field position defines.relative_gui_position
 ---@field type? string @If provided, only anchors the GUI element when the opened things type matches the type.
 
+---Used for specifying where a GUI arrow should point to.
 ---@class GuiArrowSpecification
 ---@field type string @This determines which of the following fields will be required. Must be one of `"nowhere"` (will remove the arrow entirely), `"goal"` (will point to the current goal), `"entity_info"`, `"active_window"`, `"entity"`, `"position"`, `"crafting_queue"` or `"item_stack"` (will point to a given item stack in an inventory). Depending on this value, other fields may have to be specified.
 
+---Screen coordinates of a GUI element in a [LuaGui](LuaGui). This uses the same format as [TilePosition](TilePosition), meaning it can be specified either with or without explicit keys.
 ---@class GuiLocation
 ---@field x int
 ---@field [1] int
@@ -471,16 +625,19 @@
 ---@field direction defines.direction
 ---@field position Vector
 
+---The settings used by a heat-interface type entity.
 ---@class HeatSetting
 ---@field mode? string @`"at-least"`, `"at-most"`, `"exactly"`, `"add"`, or `"remove"`. Defaults to `"at-least"`.
 ---@field temperature? double @The target temperature. Defaults to the minimum temperature of the heat buffer.
 
+---A single filter used by an infinity-filters instance.
 ---@class InfinityInventoryFilter
 ---@field count? uint @The count of the filter.
 ---@field index uint @The index of this filter in the filters list.
 ---@field mode? string @`"at-least"`, `"at-most"`, or `"exactly"`. Defaults to `"at-least"`.
 ---@field name string @Name of the item.
 
+---A single filter used by an infinity-pipe type entity.
 ---@class InfinityPipeFilter
 ---@field mode? string @`"at-least"`, `"at-most"`, `"exactly"`, `"add"`, or `"remove"`. Defaults to `"at-least"`.
 ---@field name string @Name of the fluid.
@@ -503,7 +660,21 @@
 
 ---@class ItemPrototypeFilter
 
+---This is a set of flags given as dictionary[[string](string) &rarr; [boolean](boolean)]. When a flag is set, it is present in the dictionary with the value `true`. Unset flags aren't present in the dictionary at all. So, the boolean value is meaningless and exists just for easy table lookup if a flag is set.
+---
+---By default, none of these flags are set.
 ---@class ItemPrototypeFlags
+---@field draw-logistic-overlay boolean @Determines whether the logistics areas of roboports should be drawn when holding this item. Used by the deconstruction planner by default.
+---@field hidden boolean @Hides the item in the logistic requests and filters GUIs (among others).
+---@field always-show boolean @Always shows the item in the logistic requests and filters GUIs (among others) even when the recipe for that item is locked.
+---@field hide-from-bonus-gui boolean @Hides the item from the bonus GUI.
+---@field hide-from-fuel-tooltip boolean @Hides the item from the tooltip that's shown when hovering over a burner inventory.
+---@field not-stackable boolean @Prevents the item from being stacked. It also prevents the item from stacking in assembling machine input slots, which can otherwise exceed the item stack size if required by the recipe. Additionally, the item does not show an item count when in the cursor.
+---@field can-extend-inventory boolean @Makes the item act as an extension to the inventory that it is placed in. Only has an effect for items with inventory.
+---@field primary-place-result boolean @Makes construction bots prefer this item when building the entity specified by its `place_result`.
+---@field mod-openable boolean @Allows the item to be opened by the player, firing the `on_mod_item_opened` event. Only has an effect for selection tool items.
+---@field only-in-cursor boolean @Makes it so the item is deleted when clearing the cursor, instead of being put into the player's inventory. The copy-paste tools use this by default, for example.
+---@field spawnable boolean @Allows the item to be spawned by a quickbar shortcut or custom input.
 
 ---@alias ItemPrototypeIdentification LuaItemStack|LuaItemPrototype|string
 
@@ -521,6 +692,37 @@
 ---@field inventory defines.inventory
 ---@field slot uint
 
+---Localised strings are a way to support translation of in-game text. It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.
+---
+---The key identifies the string template. For example, `"gui-alert-tooltip.attack"` (for the template `"__1__
+---    objects are being damaged"`; see the file `data/core/locale/en.cfg`).
+---
+---The template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.
+---
+---As a special case, when the key is just the empty string, all the parameters will be concatenated (after processing, if any are localised strings). If there is only one parameter, it will be used as is.
+---
+---Furthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.
+---
+---In the English translation, this will print `"No ammo"`; in the Czech translation, it will print `"Bez munice"`: 
+---```lua
+---game.player.print({"description.no-ammo"})
+---```
+--- The `description.no-ammo` template contains no placeholders, so no further parameters are necessary.
+---\
+---In the English translation, this will print `"Durability: 5/9"`; in the Japanese one, it will print `"耐久度: 5/9"`: 
+---```lua
+---game.player.print({"description.durability", 5, 9})
+---```
+---\
+---This will print `"hello"` in all translations: 
+---```lua
+---game.player.print({"", "hello"})
+---```
+---\
+---This will print `"Iron plate: 60"` in the English translation and `"Eisenplatte: 60"` in the German translation. 
+---```lua
+---game.print({"", {"item-name.iron-plate"}, ": ", 60})
+---```
 ---@class LocalisedString
 
 ---@class LogisticFilter
@@ -579,6 +781,7 @@
 
 ---@class LuaUpgradeCancelledEventFilter
 
+---All regular [MapSettings](MapSettings) plus an additional table that contains the [DifficultySettings](DifficultySettings).
 ---@class MapAndDifficultySettings
 ---@field difficulty_settings DifficultySettings
 ---@field enemy_evolution EnemyEvolutionMapSettings
@@ -589,6 +792,7 @@
 ---@field steering SteeringMapSettings
 ---@field unit_group UnitGroupMapSettings
 
+---The data that can be extracted from a map exchange string, as a plain table.
 ---@class MapExchangeStringData
 ---@field map_gen_settings MapGenSettings
 ---@field map_settings MapAndDifficultySettings
@@ -599,6 +803,25 @@
 ---@field default? boolean @Whether this is the preset that is selected by default.
 ---@field order string @The string used to alphabetically sort the presets. It is a simple string that has no additional semantic meaning.
 
+---The 'map type' dropdown in the map generation GUI is actually a selector for elevation generator. The base game sets `property_expression_names.elevation` to `"0_16-elevation"` to reproduce terrain from 0.16 or to `"0_17-island"` for the island preset. If generators are available for other properties, the 'map type' dropdown in the GUI will be renamed to 'elevation' and shown along with selectors for the other selectable properties.
+---
+---Assuming a NamedNoiseExpression with the name "my-alternate-grass1-probability" is defined 
+---```lua
+---local surface = game.player.surface
+---local mgs = surface.map_gen_settings
+---mgs.property_expression_names["tile:grass1:probability"] = "my-alternate-grass1-probability"
+---surface.map_gen_settings = mgs
+---```
+--- would override the probability of grass1 being placed at any given point on the current surface.
+---\
+---To make there be no deep water on (newly generated chunks) a surface: 
+---```lua
+---local surface = game.player.surface
+---local mgs = surface.map_gen_settings
+---mgs.property_expression_names["tile:deepwater:probability"] = -1000
+---surface.map_gen_settings = mgs
+---```
+--- This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal numbers, e.g. `"123"`) are understood to stand for constant value expressions.
 ---@class MapGenSettings
 ---@field autoplace_controls table<string, AutoplaceControl> @Indexed by autoplace control prototype name.
 ---@field autoplace_settings table<string, AutoplaceSettings> @Each setting in this dictionary maps the string type to the settings for that type. Valid types are `"entity"`, `"tile"` and `"decorative"`.
@@ -627,14 +850,46 @@
 ---@field water MapGenSize @The equivalent to 'water coverage' in the map generator GUI. Specifically, when this value is non-zero, `water_level = 10 * log2` (the value of this field), and the elevation generator subtracts water level from elevation before adding starting lakes. If water is set to 'none', elevation is clamped to a small positive value before adding starting lakes. This behavior can be overridden with alternate elevation generators (see `property_expression_names`, below).
 ---@field width uint @Width in tiles. If `0`, the map has 'infinite' width, with the actual limitation being one million tiles in each direction from the center.
 
+---A floating point number specifying an amount.
+---
+---For backwards compatibility, MapGenSizes can also be specified as one of the following strings, which will be converted to a number (when queried, a number will always be returned):
+---
+---- `"none"` - equivalent to `0`
+---- `"very-low"`, `"very-small"`, `"very-poor"` - equivalent to `1/2`
+---- `"low"`, `"small"`, `"poor"` - equivalent to `1/sqrt(2)`
+---- `"normal"`, `"medium"`, `"regular"` - equivalent to `1`
+---- `"high"`, `"big"`, `"good"` - equivalent to `sqrt(2)`
+---- `"very-high"`, `"very-big"`, `"very-good"` - equivalent to `2`
+---
+---The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
 ---@class MapGenSize
 
+---Coordinates on a surface, for example of an entity. MapPositions may be specified either as a dictionary with `x`, `y` as keys, or simply as an array with two elements.
+---
+---The coordinates are saved as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.
+---
+---Explicit definition: 
+---```lua
+---{x = 5.5, y = 2}
+---{y = 2.25, x = 5.125}
+---```
+---\
+---Shorthand: 
+---```lua
+---{1.625, 2.375}
+---```
 ---@class MapPosition
 ---@field x double
 ---@field [1] double
 ---@field y double
 ---@field [2] double
 
+---Various game-related settings. Updating any of the attributes will immediately take effect in the game engine.
+---
+---Increase the number of short paths the pathfinder can cache. 
+---```lua
+---game.map_settings.path_finder.short_cache_size = 15
+---```
 ---@class MapSettings
 ---@field enemy_evolution EnemyEvolutionMapSettings
 ---@field enemy_expansion EnemyExpansionMapSettings
@@ -644,6 +899,7 @@
 ---@field steering SteeringMapSettings
 ---@field unit_group UnitGroupMapSettings
 
+---What is shown in the map view. If a field is not given, that setting will not be changed.
 ---@class MapViewSettings
 ---@field show-electric-network? boolean
 ---@field show-logistic-network? boolean
@@ -658,6 +914,8 @@
 ---@field new_version string @New version of the mod. May be `nil` if the mod is no longer present (i.e. it was just removed).
 ---@field old_version string @Old version of the mod. May be `nil` if the mod wasn't previously present (i.e. it was just added).
 
+---
+---Runtime settings can be changed through console commands and by the mod that owns the settings by writing a new table to the ModSetting.
 ---@class ModSetting
 ---@field value uint|double|boolean|string @The value of the mod setting. The type depends on the setting.
 
@@ -666,14 +924,39 @@
 ---@class ModuleEffectValue
 ---@field bonus float @The percentual increase of the attribute. A value of `0.6` means a 60% increase.
 
+---
+---These are the effects of the vanilla Productivity Module 3 (up to floating point imprecisions): 
+---```lua
+---{consumption={bonus=0.6},
+--- speed={bonus=-0.15},
+--- productivity={bonus=0.06},
+--- pollution={bonus=0.075}}
+---```
 ---@class ModuleEffects
 ---@field consumption? ModuleEffectValue
 ---@field pollution? ModuleEffectValue
 ---@field productivity? ModuleEffectValue
 ---@field speed? ModuleEffectValue
 
+---This is a set of flags given as a dictionary[[string](string) &rarr; [boolean](boolean)]. When a flag is set, it is present in the dictionary with the value `true`. Unset flags aren't present in the dictionary at all.
+---
+---To write to this, use an array[[string](string)] of the mouse buttons that should be possible to use with on button.
+---
+---When setting flags, the flag `"left-and-right"` can also be set which will set `"left"` and `"right"` true.
+---
+---Possible flags when reading are:
+---- `"left"`
+---- `"right"`
+---- `"middle"`
+---- `"button-4"`
+---- `"button-5"`
+---- `"button-6"`
+---- `"button-7"`
+---- `"button-8"`
+---- `"button-9"`
 ---@class MouseButtonFlags
 
+---A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the [wiki](https://wiki.factorio.com/Types/NoiseExpression).
 ---@class NoiseExpression
 ---@field type string @Names the type of the expression and determines what other fields are required.
 
@@ -681,6 +964,7 @@
 ---@field nth_tick uint @The nth tick this handler was registered to.
 ---@field tick uint @The tick during which the event happened.
 
+---A single offer on a market entity.
 ---@class Offer
 ---@field offer TechnologyModifier @The action that will take place when a player accepts the offer. Usually a `"give-item"` modifier.
 ---@field price Ingredient[] @List of prices.
@@ -743,6 +1027,7 @@
 
 ---@alias PlayerIdentification uint|string|LuaPlayer
 
+---These values are for the time frame of one second (60 ticks).
 ---@class PollutionMapSettings
 ---@field aeging double @The amount of pollution eaten by a chunk's tiles as a percentage of 1. Defaults to `1`.
 ---@field diffusion_ratio double @The amount that is diffused to a neighboring chunk (possibly repeated for other directions as well). Defaults to `0.02`.
@@ -757,6 +1042,23 @@
 ---@field pollution_restored_per_tree_damage double @Defaults to `10`.
 ---@field pollution_with_max_forest_damage double @Defaults to `150`.
 
+---
+---Products of the "steel-chest" recipe (an array of Product): 
+---```lua
+---{{type="item", name="steel-chest", amount=1}}
+---```
+---\
+---Products of the "advanced-oil-processing" recipe: 
+---```lua
+---{{type="fluid", name="heavy-oil", amount=1},
+--- {type="fluid", name="light-oil", amount=4.5},
+--- {type="fluid", name="petroleum-gas", amount=5.5}}
+---```
+---\
+---What a custom recipe would look like that had a probability of 0.5 to return a minimum amount of 1 and a maximum amount of 5: 
+---```lua
+---{{type=0, name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
+---```
 ---@class Product
 ---@field amount? double @Amount of the item or fluid to give. If not specified, `amount_min`, `amount_max` and `probability` must all be specified.
 ---@field amount_max? uint|double @Maximum amount of the item or fluid to give. Has no effect when `amount` is specified.
@@ -786,12 +1088,74 @@
 ---@field playback_globally boolean
 ---@field playback_volume double
 
+---Types `"signal"` and `"item-group"` do not support filters.
+---
+---Available filters:
+---- [ItemPrototypeFilter](ItemPrototypeFilter) for type `"item"`
+---- [TilePrototypeFilter](TilePrototypeFilter) for type `"tile"`
+---- [EntityPrototypeFilter](EntityPrototypeFilter) for type `"entity"`
+---- [FluidPrototypeFilter](FluidPrototypeFilter) for type `"fluid"`
+---- [RecipePrototypeFilter](RecipePrototypeFilter) for type `"recipe"`
+---- [DecorativePrototypeFilter](DecorativePrototypeFilter) for type `"decorative"`
+---- [AchievementPrototypeFilter](AchievementPrototypeFilter) for type `"achievement"`
+---- [EquipmentPrototypeFilter](EquipmentPrototypeFilter) for type `"equipment"`
+---- [TechnologyPrototypeFilter](TechnologyPrototypeFilter) for type `"technology"`
+---
+---Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
 ---@class PrototypeFilter
 
+---The smooth orientation. It is a [float](float) in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise. This means a value of `0` indicates "north", a value of `0.5` indicates "south".
+---
+---For example then, a value of `0.625` would indicate "south-west", and a value of `0.875` would indicate "north-west".
 ---@class RealOrientation
 
 ---@class RecipePrototypeFilter
 
+---A value between 0 and 255 inclusive represented by one of the following named [string](string) or string version of the value (for example `"27"` and `"decals"` are both valid). Higher values are rendered on top of lower values.
+---
+---- `"water-tile"`: 15
+---- `"ground-tile"`: 25
+---- `"tile-transition"`: 26
+---- `"decals"`: 27
+---- `"lower-radius-visualization"`: 29
+---- `"radius-visualization"`: 30
+---- `"transport-belt-integration"`: 65
+---- `"resource"`:66
+---- `"building-smoke"`:67
+---- `"decorative"`: 92
+---- `"ground-patch"`: 93
+---- `"ground-patch-higher"`: 94
+---- `"ground-patch-higher2"`: 95
+---- `"remnants"`: 112
+---- `"floor"`: 113
+---- `"transport-belt"`: 114
+---- `"transport-belt-endings"`: 115
+---- `"floor-mechanics-under-corpse"`: 120
+---- `"corpse"`: 121
+---- `"floor-mechanics"`: 122
+---- `"item"`: 123
+---- `"lower-object"`: 124
+---- `"transport-belt-circuit-connector"`: 126
+---- `"lower-object-above-shadow"`: 127
+---- `"object"`: 129
+---- `"higher-object-under"`: 131
+---- `"higher-object-above"`: 132
+---- `"item-in-inserter-hand"`: 134
+---- `"wires"`: 135
+---- `"wires-above"`: 136
+---- `"entity-info-icon"`: 138
+---- `"entity-info-icon-above"`: 139
+---- `"explosion"`: 142
+---- `"projectile"`: 143
+---- `"smoke"`: 144
+---- `"air-object"`: 145
+---- `"air-entity-info-icon"`: 147
+---- `"light-effect"`: 148
+---- `"selection-box"`: 187
+---- `"higher-selection-box"`: 188
+---- `"collision-selection-box"`: 189
+---- `"arrow"`: 190
+---- `"cursor"`: 210
 ---@class RenderLayer
 
 ---@class Resistance
@@ -802,12 +1166,14 @@
 ---@field acceleration defines.riding.acceleration
 ---@field direction defines.riding.direction
 
+---An area defined using the map editor.
 ---@class ScriptArea
 ---@field area BoundingBox
 ---@field color Color
 ---@field id uint
 ---@field name string
 
+---A position defined using the map editor.
 ---@class ScriptPosition
 ---@field color Color
 ---@field id uint
@@ -819,6 +1185,7 @@
 ---@field entity_offset? Vector
 ---@field position? MapPosition
 
+---One vertex of a ScriptRenderPolygon.
 ---@class ScriptRenderVertexTarget
 ---@field target MapPosition|LuaEntity
 ---@field target_offset? Vector @Only used if `target` is a LuaEntity.
@@ -828,8 +1195,29 @@
 ---@field derived_type string @E.g. `"tree"`.
 ---@field name string @E.g. `"tree-05"`.
 
+---This is a set of flags given as a dictionary[[string](string) &rarr; [boolean](boolean)]. Set flags are present in the dictionary with the value `true`; unset flags aren't present at all.
 ---@class SelectionModeFlags
+---@field blueprint boolean @Entities that can be selected for blueprint.
+---@field deconstruct boolean @Entities that can be marked for deconstruction.
+---@field cancel-deconstruct boolean @Entities that can be marked for deconstruction cancelling.
+---@field items boolean
+---@field trees boolean
+---@field buildable-type boolean @Buildable entities.
+---@field nothing boolean @Only select an area.
+---@field items-to-place boolean @Entities that can be placed using an item.
+---@field any-entity boolean
+---@field any-tile boolean
+---@field same-force boolean @Entities with the same force as the selector.
+---@field not-same-force boolean
+---@field friend boolean
+---@field enemy boolean
+---@field upgrade boolean
+---@field cancel-upgrade boolean
+---@field entity-with-health boolean
+---@field entity-with-force boolean
+---@field entity-with-owner boolean
 
+---An actual signal transmitted by the network.
 ---@class Signal
 ---@field count int @Value of the signal.
 ---@field signal SignalID @ID of the signal.
@@ -838,8 +1226,33 @@
 ---@field name? string @Name of the item, fluid or virtual signal.
 ---@field type string @`"item"`, `"fluid"`, or `"virtual"`.
 
+---
+---Both of these lines specify an item stack of one iron plate: 
+---```lua
+---{name="iron-plate"}
+---```
+--- 
+---```
+---{name="iron-plate", count=1}
+---```
+---\
+---This is a stack of 47 copper plates: 
+---```lua
+---{name="copper-plate", count=47}
+---```
+---\
+---These are both full stacks of iron plates (for iron-plate, a full stack is 100 plates): 
+---```lua
+---"iron-plate"
+---```
+--- 
+---```
+---{name="iron-plate", count=100}
+---```
 ---@alias SimpleItemStack string|ItemStackDefinition
 
+---
+---The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array.
 ---@class SmokeSource
 ---@field deviation? MapPosition
 ---@field east_position? Vector
@@ -861,8 +1274,34 @@
 ---@field vertical_speed_slowdown float
 ---@field west_position? Vector
 
+---A sound defined by a [string](string). It can be either the name of a [sound prototype](https://wiki.factorio.com/Prototype/Sound) defined in the data stage or a path in the form `"type/name"`. The latter option can be sorted into three categories.
+---
+---The validity of a SoundPath can be verified at runtime using [LuaGameScript::is_valid_sound_path](LuaGameScript::is_valid_sound_path).
+---
+---The utility and ambient types each contain general use sound prototypes defined by the game itself.
+---- `"utility"` - Uses the [UtilitySounds](https://wiki.factorio.com/Prototype/UtilitySounds) prototype. Example: `"utility/wire_connect_pole"`
+---- `"ambient"` - Uses [AmbientSound](https://wiki.factorio.com/Prototype/AmbientSound) prototypes. Example: `"ambient/resource-deficiency"`
+---
+---The following types can be combined with any tile name as long as its prototype defines the
+---    corresponding sound.
+---- `"tile-walking"` - Uses [Tile::walking_sound](https://wiki.factorio.com/Prototype/Tile#walking_sound). Example: `"tile-walking/concrete"`
+---- `"tile-mined"` - Uses [Tile::mined_sound](https://wiki.factorio.com/Prototype/Tile#mined_sound)
+---- `"tile-build-small"` - Uses [Tile::build_sound](https://wiki.factorio.com/Prototype/Tile#build_sound). Example: `"tile-build-small/concrete"`
+---- `"tile-build-medium"` - Uses [Tile::build_sound](https://wiki.factorio.com/Prototype/Tile#build_sound)
+---- `"tile-build-large"` - Uses [Tile::build_sound](https://wiki.factorio.com/Prototype/Tile#build_sound)
+---
+---The following types can be combined with any entity name as long as its prototype defines the
+---    corresponding sound.
+---- `"entity-build"` - Uses [Entity::build_sound](https://wiki.factorio.com/Prototype/Entity#build_sound). Example: `"entity-build/wooden-chest"`
+---- `"entity-mined"` - Uses [Entity::mined_sound](https://wiki.factorio.com/Prototype/Entity#mined_sound)
+---- `"entity-mining"` - Uses [Entity::mining_sound](https://wiki.factorio.com/Prototype/Entity#mining_sound)
+---- `"entity-vehicle_impact"` - Uses [Entity::vehicle_impact_sound](https://wiki.factorio.com/Prototype/Entity#vehicle_impact_sound)
+---- `"entity-rotated"` - Uses [Entity::rotated_sound](https://wiki.factorio.com/Prototype/Entity#rotated_sound)
+---- `"entity-open"` - Uses [Entity::open_sound](https://wiki.factorio.com/Prototype/Entity#open_sound)
+---- `"entity-close"` - Uses [Entity::close_sound](https://wiki.factorio.com/Prototype/Entity#close_sound)
 ---@class SoundPath
 
+---Defines which slider in the game's sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.
 ---@alias SoundType
 ---| "game-effect"
 ---| "gui-effect"
@@ -876,6 +1315,23 @@
 ---@field evolution_factor double @Evolution factor for which this weight applies.
 ---@field weight double @Probability of spawning this unit at this evolution factor.
 
+---It is specified by [string](string). It can be either the name of a [sprite prototype](https://wiki.factorio.com/Prototype/Sprite) defined in the data stage or a path in form "type/name".
+---
+---The validity of a SpritePath can be verified at runtime using [LuaGameScript::is_valid_sprite_path](LuaGameScript::is_valid_sprite_path).
+---
+---The supported types are:
+---- `"item"` - for example "item/iron-plate" is the icon sprite of iron plate
+---- `"entity"` - for example "entity/small-biter" is the icon sprite of the small biter
+---- `"technology"`
+---- `"recipe"`
+---- `"item-group"`
+---- `"fluid"`
+---- `"tile"`
+---- `"virtual-signal"`
+---- `"achievement"`
+---- `"equipment"`
+---- `"file"` - path to an image file located inside the current scenario. This file is not preloaded so it will be slower; for frequently used sprites, it is better to define sprite prototype and use it instead.
+---- `"utility"` - sprite defined in the utility-sprites object, these are the pictures used by the game internally for the UI.
 ---@class SpritePath
 
 ---@class SteeringMapSetting
@@ -894,10 +1350,16 @@
 ---@field content LuaGuiElement
 ---@field tab LuaGuiElement
 
+---A dictionary of string to the four basic Lua types: `string`, `boolean`, `number`, `table`.
+---
+---```lua
+---{a = 1, b = true, c = "three", d = {e = "f"}}
+---```
 ---@class Tags
 
 ---@alias TechnologyIdentification string|LuaTechnology|LuaTechnologyPrototype
 
+---The effect that is applied when a technology is researched. It is a table that contains at least the field `type`.
 ---@class TechnologyModifier
 ---@field type string @Modifier type. Specifies which of the other fields will be available. Possible values are: `"inserter-stack-size-bonus"`, `"stack-inserter-capacity-bonus"`, `"laboratory-speed"`, `"character-logistic-trash-slots"`, `"maximum-following-robots-count"`, `"worker-robot-speed"`, `"worker-robot-storage"`, `"ghost-time-to-live"`, `"turret-attack"`, `"ammo-damage"`, `"give-item"`, `"gun-speed"`, `"unlock-recipe"`, `"character-crafting-speed"`, `"character-mining-speed"`, `"character-running-speed"`, `"character-build-distance"`, `"character-item-drop-distance"`, `"character-reach-distance"`, `"character-resource-reach-distance"`, `"character-item-pickup-distance"`, `"character-loot-pickup-distance"`, `"character-inventory-slots-bonus"`, `"deconstruction-time-to-live"`, `"max-failed-attempts-per-tick-per-construction-queue"`, `"max-successful-attempts-per-tick-per-construction-queue"`, `"character-health-bonus"`, `"mining-drill-productivity-bonus"`, `"train-braking-force-bonus"`, `"zoom-to-world-enabled"`, `"zoom-to-world-ghost-building-enabled"`, `"zoom-to-world-blueprint-enabled"`, `"zoom-to-world-deconstruction-planner-enabled"`, `"zoom-to-world-upgrade-planner-enabled"`, `"zoom-to-world-selection-tool-enabled"`, `"worker-robot-battery"`, `"laboratory-productivity"`, `"follower-robot-lifetime"`, `"artillery-range"`, `"nothing"`, `"character-additional-mining-categories"`, `"character-logistic-requests"`.
 
@@ -907,6 +1369,7 @@
 ---@field name string @The prototype name of the tile.
 ---@field position TilePosition @The position of the tile.
 
+---Coordinates of a tile on a [LuaSurface](LuaSurface) where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
 ---@class TilePosition
 ---@field x int
 ---@field [1] int
@@ -947,6 +1410,7 @@
 ---@field trigger_target_mask TriggerTargetMask
 ---@field type string @One of `"direct"`, `"area"`, `"line"`, `"cluster"`.
 
+---This is a set of trigger target masks given as a dictionary[[string](string) &rarr; [boolean](boolean)].
 ---@class TriggerTargetMask
 
 ---@class UnitGroupMapSettings
@@ -972,6 +1436,11 @@
 ---@field name? string @Name of the item, or entity.
 ---@field type string @`"item"`, or `"entity"`.
 
+---A vector is a two-element array containing the `x` and `y` components. In some specific cases, the vector is a table with `x` and `y` keys instead, which the documentation will point out.
+---
+---```lua
+---right = {1.0, 0.0}
+---```
 ---@class Vector
 
 ---@class VehicleAutomaticTargetingParameters

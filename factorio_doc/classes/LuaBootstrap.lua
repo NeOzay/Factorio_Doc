@@ -91,11 +91,9 @@ function LuaBootstrap.on_load(_f) end
 ---@param _f fun(_arg1:NthTickEventData) @The handler to run. Passing `nil` will unregister it for the provided nth-tick(s).
 function LuaBootstrap.on_nth_tick(_tick, _f) end
 
----
 ---@param _entity LuaEntity @The entity that was built.
 function LuaBootstrap.raise_biter_base_built(_entity) end
 
----
 ---@param _player_index uint @The player doing the chatting.
 ---@param _message string @The chat message to send.
 function LuaBootstrap.raise_console_chat(_player_index, _message) end
@@ -121,39 +119,32 @@ function LuaBootstrap.raise_console_chat(_player_index, _message) end
 ---@param _data table @Table with extra data that will be passed to the event handler. Any invalid LuaObjects will silently stop the event from being raised.
 function LuaBootstrap.raise_event(_event, _data) end
 
----
 ---@param _player_index uint @The player who did the purchasing.
 ---@param _market LuaEntity @The market entity.
 ---@param _offer_index uint @The index of the offer purchased.
 ---@param _count uint @The amount of offers purchased.
 function LuaBootstrap.raise_market_item_purchased(_player_index, _market, _offer_index, _count) end
 
----
 ---@param _item_stack LuaItemStack @The item that has been crafted.
 ---@param _player_index uint @The player doing the crafting.
 ---@param _recipe LuaRecipe @The recipe used to craft this item.
 function LuaBootstrap.raise_player_crafted_item(_item_stack, _player_index, _recipe) end
 
----
 ---@param _player_index uint @The player transferred from or to.
 ---@param _entity LuaEntity @The entity transferred from or to.
 ---@param _from_player boolean @Whether the transfer was from player to entity. If `false`, the transfer was from entity to player.
 function LuaBootstrap.raise_player_fast_transferred(_player_index, _entity, _from_player) end
 
----
 ---@param _entity LuaEntity @The entity that has been built.
 function LuaBootstrap.raise_script_built(_entity) end
 
----
 ---@param _entity LuaEntity @The entity that was destroyed.
 function LuaBootstrap.raise_script_destroy(_entity) end
 
----
 ---@param _entity LuaEntity @The entity that was revived.
 ---@param _tags? Tags @The tags associated with this entity, if any.
 function LuaBootstrap.raise_script_revive(_entity, _tags) end
 
----
 ---@param _surface_index uint @The surface whose tiles have been changed.
 ---@param _tiles Tile[] @The tiles that have been changed.
 function LuaBootstrap.raise_script_set_tiles(_surface_index, _tiles) end

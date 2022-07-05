@@ -173,13 +173,11 @@ function LuaForce.enable_research() end
 ---@return LuaCustomChartTag[]
 function LuaForce.find_chart_tags(_surface, _area) end
 
----
 ---@param _position MapPosition @Position to find a network for
 ---@param _surface SurfaceIdentification @Surface to search on
 ---@return LuaLogisticNetwork @The found network or `nil`.
 function LuaForce.find_logistic_network_by_position(_position, _surface) end
 
----
 ---@param _ammo string @Ammo category
 ---@return double
 function LuaForce.get_ammo_damage_modifier(_ammo) end
@@ -201,7 +199,6 @@ function LuaForce.get_entity_count(_name) end
 ---@return boolean
 function LuaForce.get_friend(_other) end
 
----
 ---@param _ammo string @Ammo category
 ---@return double
 function LuaForce.get_gun_speed_modifier(_ammo) end
@@ -227,7 +224,6 @@ function LuaForce.get_linked_inventory(_prototype, _link_id) end
 ---@return double @The progress as a percent.
 function LuaForce.get_saved_technology_progress(_technology) end
 
----
 ---@param _surface SurfaceIdentification
 ---@return MapPosition
 function LuaForce.get_spawn_position(_surface) end
@@ -238,12 +234,10 @@ function LuaForce.get_spawn_position(_surface) end
 ---@return LuaEntity[]
 function LuaForce.get_train_stops(_name, _surface) end
 
----
 ---@param _surface? SurfaceIdentification @If given only trains on the surface are returned.
 ---@return LuaTrain[]
 function LuaForce.get_trains(_surface) end
 
----
 ---@param _turret string @Turret prototype name
 ---@return double
 function LuaForce.get_turret_attack_modifier(_turret) end
@@ -317,7 +311,6 @@ function LuaForce.reset_technologies() end
 ---Reapplies all possible research effects, including unlocked recipes. Any custom changes are lost. Preserves research state of technologies.
 function LuaForce.reset_technology_effects() end
 
----
 ---@param _ammo string @Ammo category
 ---@param _modifier double
 function LuaForce.set_ammo_damage_modifier(_ammo, _modifier) end
@@ -332,7 +325,6 @@ function LuaForce.set_cease_fire(_other, _cease_fire) end
 ---@param _friend boolean
 function LuaForce.set_friend(_other, _friend) end
 
----
 ---@param _ammo string @Ammo category
 ---@param _modifier double
 function LuaForce.set_gun_speed_modifier(_ammo, _modifier) end
@@ -352,17 +344,14 @@ function LuaForce.set_item_launched(_item, _count) end
 ---@param _progress double @Progress as a percent. Set to `nil` to remove the saved progress.
 function LuaForce.set_saved_technology_progress(_technology, _progress) end
 
----
 ---@param _position MapPosition @The new position on the given surface.
 ---@param _surface SurfaceIdentification @Surface to set the spawn position for.
 function LuaForce.set_spawn_position(_position, _surface) end
 
----
 ---@param _turret string @Turret prototype name
 ---@param _modifier double
 function LuaForce.set_turret_attack_modifier(_turret, _modifier) end
 
----
 ---@param _position ChunkPosition @The chunk position to unchart.
 ---@param _surface SurfaceIdentification @Surface to unchart on.
 function LuaForce.unchart_chunk(_position, _surface) end

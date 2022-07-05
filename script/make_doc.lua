@@ -41,7 +41,10 @@ function Documentation:add_examples(examples)
 end
 
 function Documentation:tostring()
-	local doc = add_balise(self.description).."\n"
+	local doc = ""
+	if self.description ~= "" then
+		doc = add_balise(self.description).."\n"
+	end
 	local notes = {}
 	for index, note in ipairs(self.notes) do
 		notes[index] = add_balise(note)

@@ -13,8 +13,7 @@ end
 local LuaBootstrap = getObject(data.classes, "LuaBootstrap")
 local on_event = getObject(LuaBootstrap.methods, "on_event")
 
-on_event.custom = [[
----Register a handler to run on the specified event(s). Each mod can only register once for every event, as any additional registration will overwrite the previous one. This holds true even if different filters are used for subsequent registrations.
+on_event.custom = [[---Register a handler to run on the specified event(s). Each mod can only register once for every event, as any additional registration will overwrite the previous one. This holds true even if different filters are used for subsequent registrations.
 ---
 ---Register for the [on_tick](on_tick) event to print the current tick to console each tick. 
 ---```lua
@@ -36,8 +35,7 @@ function LuaBootstrap.on_event(_event, _f, _filters) end
 ]]
 
 local LuaLazyLoadedValue = getObject(data.classes, "LuaLazyLoadedValue")
-LuaBootstrap.custom = [[
----A lazily loaded value. For performance reasons, we sometimes return a custom lazily-loaded value type instead of the native Lua value. This custom type lazily constructs the necessary value when [LuaLazyLoadedValue::get](LuaLazyLoadedValue::get) is called, therefore preventing its unnecessary construction in some cases.
+LuaLazyLoadedValue.custom = [[---A lazily loaded value. For performance reasons, we sometimes return a custom lazily-loaded value type instead of the native Lua value. This custom type lazily constructs the necessary value when [LuaLazyLoadedValue::get](LuaLazyLoadedValue::get) is called, therefore preventing its unnecessary construction in some cases.
 ---
 ---An instance of LuaLazyLoadedValue is only valid during the event it was created from and cannot be saved.
 ---@class LuaLazyLoadedValue<K>: {object_name:string; valid:boolean; get:fun():K; help:fun():string}

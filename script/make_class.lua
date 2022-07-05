@@ -9,13 +9,23 @@ ClassDoc.__index = ClassDoc
 ---@return ClassDescription
 function ClassDoc.new(class)
 	---@class ClassDescription
-	local classDoc = {}
+	local classDoc = setmetatable({}, ClassDoc)
+
+	---@diagnostic disable
+	if class.custom then
+		classDoc.custom = class.custom
+		classDoc.name = class.name
+		return classDoc
+	end
+	---@diagnostic enable
+
 	classDoc.raw = class
 	classDoc.name = class.name
 	classDoc.documentation = Docomentation.new(class.description, class.notes, class.examples)
 	classDoc.extras = {}
 	classDoc.fields = {}
 	classDoc.base_classes = class.base_classes
+	classDoc.operators = class.operators
 	local fields = classDoc.fields
 	for index, attribute in ipairs(class.attributes) do
 		fields[index] = FieldDescription.new(attribute)
@@ -26,8 +36,17 @@ function ClassDoc.new(class)
 	for index, m in ipairs(class.methods) do
 		methods[index] = MethodDescription.new(m, class.name)
 	end
+	for index, operator in ipairs(classDoc.operators) do
+		if operator.name == "index" then
+			---@cast operator -Method
+			operator.name = "[number]"
+			local field = FieldDescription.new(operator)
+			table.insert(classDoc.fields, field)
+		end
 
-	return setmetatable(classDoc, ClassDoc)
+	end
+
+	return classDoc
 end
 
 ---@param event Event
@@ -46,6 +65,9 @@ function ClassDoc.fromEvent(event)
 end
 
 function ClassDoc:tostring()
+	if self.custom then
+		return self.custom
+	end
 	current.class = self
 	local description = ""
 	description = description..self.documentation:tostring()
@@ -71,7 +93,7 @@ function ClassDoc:tostring()
 		for index, extra in ipairs(self.extras) do
 			description = description..extra.."\n"
 		end
-		
+
 	end
 	return description
 end

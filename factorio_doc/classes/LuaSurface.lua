@@ -68,7 +68,6 @@ function LuaSurface.build_checkerboard(_area) end
 ---@param _force? ForceIdentification @Force the new base will belong to. Defaults to enemy.
 function LuaSurface.build_enemy_base(_position, _unit_count, _force) end
 
----
 ---@param _property_names string[] @Names of properties (e.g. "elevation") to calculate
 ---@param _positions MapPosition[] @Positions for which to calculate property values
 ---@return table<string, double[]> @Table of property value lists, keyed by property name
@@ -268,7 +267,6 @@ function LuaSurface.create_entity(_name, _position, _direction, _force, _target,
 ---@param _frame_speed float
 function LuaSurface.create_particle(_name, _position, _movement, _height, _vertical_speed, _frame_speed) end
 
----
 ---@param _name string @The smoke prototype name to create.
 ---@param _position MapPosition @Where to create the smoke.
 function LuaSurface.create_trivial_smoke(_name, _position) end
@@ -287,12 +285,10 @@ function LuaSurface.create_unit_group(_position, _force) end
 ---@param _item? LuaItemStack @The deconstruction item to use if any.
 function LuaSurface.deconstruct_area(_area, _force, _player, _skip_fog_of_war, _item) end
 
----
 ---@param _prototype string @The decorative prototype to check
 ---@param _position MapPosition @The position to check
 function LuaSurface.decorative_prototype_collides(_prototype, _position) end
 
----
 ---@param _position ChunkPosition @The chunk position to delete
 function LuaSurface.delete_chunk(_position) end
 
@@ -318,7 +314,6 @@ function LuaSurface.edit_script_area(_id, _area) end
 ---@param _area ScriptPosition
 function LuaSurface.edit_script_position(_id, _area) end
 
----
 ---@param _prototype EntityPrototypeIdentification @The entity prototype to check
 ---@param _position MapPosition @The position to check
 ---@param _use_map_generation_bounding_box boolean @If the map generation bounding box should be used instead of the collision bounding box
@@ -596,7 +591,6 @@ function LuaSurface.get_total_pollution() end
 ---@return LuaEntity[]
 function LuaSurface.get_train_stops(_name, _force) end
 
----
 ---@param _force? ForceIdentification @If given only trains matching this force are returned.
 ---@return LuaTrain[]
 function LuaSurface.get_trains(_force) end

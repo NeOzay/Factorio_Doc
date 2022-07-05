@@ -461,13 +461,11 @@ function LuaEntity.get_beam_target() end
 ---@return LuaInventory
 function LuaEntity.get_burnt_result_inventory() end
 
----
 ---@param _wire defines.wire_type @Wire color of the network connected to this entity.
 ---@param _circuit_connector? defines.circuit_connector_id @The connector to get circuit network for. Must be specified for entities with more than one circuit network connector.
 ---@return LuaCircuitNetwork @The circuit network or nil.
 function LuaEntity.get_circuit_network(_wire, _circuit_connector) end
 
----
 ---@param _rail_direction defines.rail_direction
 ---@param _rail_connection_direction defines.rail_connection_direction
 ---@return LuaEntity @Rail connected in the specified manner to this one, `nil` if unsuccessful.
@@ -673,11 +671,9 @@ function LuaEntity.help() end
 ---@return double @Amount of fluid actually inserted.
 function LuaEntity.insert_fluid(_fluid) end
 
----
 ---@return boolean @`true` if this gate is currently closed.
 function LuaEntity.is_closed() end
 
----
 ---@return boolean @`true` if this gate is currently closing
 function LuaEntity.is_closing() end
 
@@ -689,11 +685,9 @@ function LuaEntity.is_connected_to_electric_network() end
 ---@return boolean
 function LuaEntity.is_crafting() end
 
----
 ---@return boolean @`true` if this gate is currently opened.
 function LuaEntity.is_opened() end
 
----
 ---@return boolean @`true` if this gate is currently opening.
 function LuaEntity.is_opening() end
 
@@ -714,7 +708,6 @@ function LuaEntity.is_registered_for_repair() end
 ---@return boolean
 function LuaEntity.is_registered_for_upgrade() end
 
----
 ---@return boolean @`true` if the rocket was successfully launched. Return value of `false` means the silo is not ready for launch.
 function LuaEntity.launch_rocket() end
 
@@ -771,11 +764,9 @@ function LuaEntity.remove_fluid(_name, _amount, _minimum_temperature, _maximum_t
 ---@return boolean @`true` if the offer was successfully removed; `false` when the given index was not valid.
 function LuaEntity.remove_market_item(_offer) end
 
----
 ---@param _force ForceIdentification @The force that requests the gate to be closed.
 function LuaEntity.request_to_close(_force) end
 
----
 ---@param _force ForceIdentification @The force that requests the gate to be open.
 ---@param _extra_time? uint @Extra ticks to stay open.
 function LuaEntity.request_to_open(_force, _extra_time) end

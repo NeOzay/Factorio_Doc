@@ -41,11 +41,14 @@ concepts_types.flag = function (concept)
 
 	local def = ("---@class %s\n"):format(concept.name)
 
-	for index, param in ipairs(members) do
-		def = def..FieldDescription.fromParameter(param):tostring()
+	for index, member in ipairs(members) do
+		local field = ("---@field %s boolean"):format(member.name)
+		if member.description ~= "" then
+			field = field.." @"..member.description
+		end
+		def = def..field.."\n"
 	end
 	return def
-	
 end
 
 ---@param concept Concept
@@ -77,6 +80,7 @@ local function solve_concept()
 	local def = ""
 	for index, concept in ipairs(concepts) do
 		current.class = concept.name
+		def = def..Docomentation.new(concept.description, concept.notes, concept.examples):tostring()
 		def = def..(concepts_types[concept.category](concept) or ("---@class %s\n"):format(concept.name)).."\n"
 	end
 	return def

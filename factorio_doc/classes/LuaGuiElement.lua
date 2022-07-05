@@ -166,6 +166,7 @@
 ---@field visible boolean @Sets whether this GUI element is visible or completely hidden, taking no space in the layout.`[RW]`
 ---@field word_wrap boolean @Whether this text-box will word-wrap automatically. Defaults to `false`.`[RW]`
 ---@field zoom double @The zoom this camera or minimap is using. This value must be positive.`[RW]`
+---@field [number] LuaGuiElement @The indexing operator. Gets children by name.`[R]`
 local LuaGuiElement = {}
 
 ---Add a new child element to this GuiElement.

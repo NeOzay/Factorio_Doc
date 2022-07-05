@@ -11,3 +11,4 @@
 ---@field surface LuaSurface @The surface selected.
 ---@field tick uint @Tick the event was generated.
 local on_player_setup_blueprint = {}
+

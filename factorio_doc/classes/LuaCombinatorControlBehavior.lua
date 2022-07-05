@@ -1,6 +1,5 @@
 ---@meta
 
----
 ---@class LuaCombinatorControlBehavior:LuaControlBehavior
 ---@field signals_last_tick Signal[] @The circuit network signals sent by this combinator last tick.`[R]`
 local LuaCombinatorControlBehavior = {}

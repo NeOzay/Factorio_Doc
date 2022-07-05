@@ -16,6 +16,7 @@
 ---@field object_name string @The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.`[R]`
 ---@field owner LuaEntity @The entity that owns this fluidbox.`[R]`
 ---@field valid boolean @Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.`[R]`
+---@field [number] Fluid @Access, set or clear a fluid box. The index must always be in bounds (see [LuaFluidBox::operator #](LuaFluidBox::operator #)). New fluidboxes may not be added or removed using this operator. If the given fluid box doesn't contain any fluid, `nil` is returned. Similarly, `nil` can be written to a fluid box to remove all fluid from it.`[R]`
 local LuaFluidBox = {}
 
 ---Flushes all fluid from this fluidbox and its fluid system.

@@ -7,6 +7,7 @@
 ---@field output_lines LuaTransportLine[] @The transport lines that this transport line outputs items to or an empty table if none.`[R]`
 ---@field owner LuaEntity @The entity this transport line belongs to.`[R]`
 ---@field valid boolean @Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.`[R]`
+---@field [number] LuaItemStack @The indexing operator.`[R]`
 local LuaTransportLine = {}
 
 ---Can an item be inserted at a given position?

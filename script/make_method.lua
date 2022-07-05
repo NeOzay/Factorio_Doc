@@ -25,6 +25,12 @@ end
 function MethodDoc.new(method, parent)
 	---@class MethodDescription
 	local methodDoc = setmetatable({}, MethodDoc)
+
+	---@diagnostic disable
+	if method.custom then
+		methodDoc.custom = method.custom
+		return methodDoc
+	end
 	methodDoc.raw = method
 	methodDoc.name = method.name
 	methodDoc.parent = parent and parent.."."
@@ -42,6 +48,10 @@ function MethodDoc.new(method, parent)
 end
 
 function MethodDoc:tostring()
+	if self.custom then
+		return self.custom
+	end
+
 	local description = ""
 	description = description .. self.documentation:tostring()
 	local paramNames = {}

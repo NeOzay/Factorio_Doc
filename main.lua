@@ -20,6 +20,7 @@ data = json.decode(rawData)--[[@as Toplevel]]
 
 
 current = {}
+require("custom")
 
 local function setupClass()
 	for i = 1, #data.classes, 1 do
@@ -30,7 +31,7 @@ end
 
 
 require("script.make_builtinTypes")
---setupClass()
+setupClass()
 require("script.make_define")
 require("script.make_event")
 require("script.make_globalObject")

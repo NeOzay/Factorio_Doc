@@ -12,7 +12,6 @@
 ---@field wire_type defines.wire_type @The wire type this network is associated with.`[R]`
 local LuaCircuitNetwork = {}
 
----
 ---@param _signal SignalID @The signal to read.
 ---@return int @The current value of the signal.
 function LuaCircuitNetwork.get_signal(_signal) end
