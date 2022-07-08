@@ -3,9 +3,7 @@
 ---@field f2 number @its number
 
 
----@param arg test
+---@param arg {arg:string, lol:number}
 local function t(arg)
 	
 end
-
-t{f1 = "", f2 = 1}

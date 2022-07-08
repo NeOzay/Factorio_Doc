@@ -11,6 +11,14 @@ local function make_param(param)
 	return def.."\n"
 end
 
+
+
+	for index, param in ipairs(self.parameters) do
+		param.name = "_"..param.name
+		description = description..make_param(param)
+		table.insert(paramNames, param.name)
+	end
+
 ---@param returns Parameter
 local function make_returns(returns)
 	local def = ("---@return %s"):format(solve_type(returns.type))
@@ -45,6 +53,8 @@ function MethodDoc.new(method, parent)
 		return a.order < b.order
 	end)
 
+	methodDoc.table_type = method.takes_table
+
 	return methodDoc
 end
 
@@ -56,11 +66,7 @@ function MethodDoc:tostring()
 	local description = ""
 	description = description .. self.documentation:tostring()
 	local paramNames = {}
-	for index, param in ipairs(self.parameters) do
-		param.name = "_"..param.name
-		description = description..make_param(param)
-		table.insert(paramNames, param.name)
-	end
+
 
 	for index, _return in ipairs(self.returns) do
 		description = description..make_returns(_return)

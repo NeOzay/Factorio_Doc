@@ -36,8 +36,7 @@ end
 
 ---@param concept Concept
 concepts_types.flag = function (concept)
-	local members = concept.options--[[@as BasicMember[]
-	]]
+	local members = concept.options--[[@as BasicMember[] ]]
 
 	local def = ("---@class %s\n"):format(concept.name)
 
@@ -67,12 +66,19 @@ end
 
 ---@param concept Concept
 concepts_types.struct = function (concept)
-	
+	local attributes = concept.attributes
+
+	local def = ("---@class %s\n"):format(concept.name)
+	for index, attribute in ipairs(attributes) do
+		local field = FieldDescription.new(attribute)
+		def = def..field:tostring()
+	end
+	return def
 end
 
 ---@param concept Concept
 concepts_types.concept = function (concept)
-	
+	return ("---@alias %s any\n"):format(concept.name)
 end
 
 

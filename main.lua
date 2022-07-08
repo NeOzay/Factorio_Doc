@@ -15,7 +15,7 @@ do
 	rawData = f:read("*a")
 	f:close()
 end
----@type Toplevel
+
 data = json.decode(rawData)--[[@as Toplevel]]
 
 
