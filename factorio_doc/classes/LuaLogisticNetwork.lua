@@ -59,16 +59,23 @@ function LuaLogisticNetwork.insert(_item, _members) end
 function LuaLogisticNetwork.remove_item(_item, _members) end
 
 ---Find a logistic point to drop the specific item stack.
----@param _stack ItemStackIdentification @Name of the item to select.
----@param _members? string @When given, it will find from only the specific type of member. Must be `"storage"`, `"storage-empty"`, `"storage-empty-slot"` or `"requester"`. If not specified, selects with normal priorities.
+---@param _table LuaLogisticNetwork.select_drop_point
 ---@return LuaLogisticPoint @`nil` if no point was found.
-function LuaLogisticNetwork.select_drop_point(_stack, _members) end
+function LuaLogisticNetwork.select_drop_point(_table) end
 
 ---Find the 'best' logistic point with this item ID and from the given position or from given chest type.
----@param _name string @Name of the item to select.
----@param _position? MapPosition @When given, it will find the storage 'best' storage point from this position.
----@param _include_buffers? boolean @Whether to consider buffer chests or not. Defaults to false. Only considered if selecting with position.
----@param _members? string @When given, it will find from only the specific type of member. Must be `"storage"`, `"passive-provider"`, `"buffer"` or `"active-provider"`. If not specified, selects with normal priorities. Not considered if position is specified.
+---@param _table LuaLogisticNetwork.select_pickup_point
 ---@return LuaLogisticPoint @`nil` if no point was found.
-function LuaLogisticNetwork.select_pickup_point(_name, _position, _include_buffers, _members) end
+function LuaLogisticNetwork.select_pickup_point(_table) end
+
+
+---@class LuaLogisticNetwork.select_drop_point
+---@field stack ItemStackIdentification @Name of the item to select.
+---@field members? string @When given, it will find from only the specific type of member. Must be `"storage"`, `"storage-empty"`, `"storage-empty-slot"` or `"requester"`. If not specified, selects with normal priorities.
+
+---@class LuaLogisticNetwork.select_pickup_point
+---@field name string @Name of the item to select.
+---@field position? MapPosition @When given, it will find the storage 'best' storage point from this position.
+---@field include_buffers? boolean @Whether to consider buffer chests or not. Defaults to false. Only considered if selecting with position.
+---@field members? string @When given, it will find from only the specific type of member. Must be `"storage"`, `"passive-provider"`, `"buffer"` or `"active-provider"`. If not specified, selects with normal priorities. Not considered if position is specified.
 

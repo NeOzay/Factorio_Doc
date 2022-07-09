@@ -344,11 +344,9 @@ function LuaGameScript.get_script_inventories(_mod) end
 function LuaGameScript.get_surface(_surface) end
 
 ---Gets train stops matching the given filters.
----@param _name? string|string[]
----@param _surface? SurfaceIdentification
----@param _force? ForceIdentification
+---@param _table LuaGameScript.get_train_stops
 ---@return LuaEntity[]
-function LuaGameScript.get_train_stops(_name, _surface, _force) end
+function LuaGameScript.get_train_stops(_table) end
 
 ---Is this the demo version of Factorio?
 ---@return boolean
@@ -397,11 +395,8 @@ function LuaGameScript.mute_player(_player) end
 function LuaGameScript.parse_map_exchange_string(_map_exchange_string) end
 
 ---Play a sound for every player in the game.
----@param _path SoundPath @The sound to play.
----@param _position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
----@param _volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
----@param _override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
-function LuaGameScript.play_sound(_path, _position, _volume_modifier, _override_sound_type) end
+---@param _table LuaGameScript.play_sound
+function LuaGameScript.play_sound(_table) end
 
 ---Print text to the chat console all players.
 ---
@@ -458,12 +453,8 @@ function LuaGameScript.save_atlas() end
 function LuaGameScript.server_save(_name) end
 
 ---Set scenario state.
----@param _game_finished boolean
----@param _player_won boolean
----@param _next_level string
----@param _can_continue boolean
----@param _victorious_force ForceIdentification
-function LuaGameScript.set_game_state(_game_finished, _player_won, _next_level, _can_continue, _victorious_force) end
+---@param _table LuaGameScript.set_game_state
+function LuaGameScript.set_game_state(_table) end
 
 ---Forces the screenshot saving system to wait until all queued screenshots have been written to disk.
 function LuaGameScript.set_wait_for_screenshots_to_finish() end
@@ -471,12 +462,8 @@ function LuaGameScript.set_wait_for_screenshots_to_finish() end
 ---Show an in-game message dialog.
 ---
 ---Can only be used when the map contains exactly one player.
----@param _text LocalisedString @What the dialog should say
----@param _image? string @Path to an image to show on the dialog
----@param _point_to? GuiArrowSpecification @If specified, dialog will show an arrow pointing to this place. When not specified, the arrow will point to the player's position. (Use `point_to={type="nowhere"}` to remove the arrow entirely.) The dialog itself will be placed near the arrow's target.
----@param _style? string @The gui style to use for this speech bubble. Must be of type speech_bubble.
----@param _wrapper_frame_style? string @Must be of type flow_style.
-function LuaGameScript.show_message_dialog(_text, _image, _point_to, _style, _wrapper_frame_style) end
+---@param _table LuaGameScript.show_message_dialog
+function LuaGameScript.show_message_dialog(_table) end
 
 ---Convert a table to a JSON string
 ---@param _data table
@@ -486,32 +473,12 @@ function LuaGameScript.table_to_json(_data) end
 ---Take a screenshot of the game and save it to the `script-output` folder, located in the game's [user data directory](https://wiki.factorio.com/User_data_directory). The name of the image file can be specified via the `path` parameter.
 ---
 ---If Factorio is running headless, this function will do nothing.
----@param _player? PlayerIdentification @The player to focus on. Defaults to the local player.
----@param _by_player? PlayerIdentification @If defined, the screenshot will only be taken for this player.
----@param _surface? SurfaceIdentification @If defined, the screenshot will be taken on this surface.
----@param _position? MapPosition @If defined, the screenshot will be centered on this position. Otherwise, the screenshot will center on `player`.
----@param _resolution? TilePosition @The maximum allowed resolution is 16384x16384 (8192x8192 when `anti_alias` is `true`), but the maximum recommended resolution is 4096x4096 (resp. 2048x2048).
----@param _zoom? double @The map zoom to take the screenshot at. Defaults to `1`.
----@param _path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"screenshot.png"`.
----@param _show_gui? boolean @Whether to include GUIs in the screenshot or not. Defaults to `false`.
----@param _show_entity_info? boolean @Whether to include entity info ("Alt mode") or not. Defaults to `false`.
----@param _show_cursor_building_preview? boolean @When `true` and when `player` is specified, the building preview for the item in the player's cursor will also be rendered. Defaults to `false`.
----@param _anti_alias? boolean @Whether to render in double resolution and downscale the result (including GUI). Defaults to `false`.
----@param _quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
----@param _allow_in_replay? boolean @Whether to save the screenshot even during replay playback. Defaults to `false`.
----@param _daytime? double @Overrides the current surface daytime for the duration of screenshot rendering.
----@param _water_tick? uint @Overrides the tick of water animation, if animated water is enabled.
----@param _force_render? boolean @Screenshot requests are processed in between game update and render. The game may skip rendering (ie. drop frames) if the previous frame has not finished rendering or the game simulation starts to fall below 60 updates per second. If `force_render` is set to `true`, the game won't drop frames and process the screenshot request at the end of the update in which the request was created. This is not honored on multiplayer clients that are catching up to server. Defaults to `false`.
-function LuaGameScript.take_screenshot(_player, _by_player, _surface, _position, _resolution, _zoom, _path, _show_gui, _show_entity_info, _show_cursor_building_preview, _anti_alias, _quality, _allow_in_replay, _daytime, _water_tick, _force_render) end
+---@param _table LuaGameScript.take_screenshot
+function LuaGameScript.take_screenshot(_table) end
 
 ---Take a screenshot of the technology screen and save it to the `script-output` folder, located in the game's [user data directory](https://wiki.factorio.com/User_data_directory). The name of the image file can be specified via the `path` parameter.
----@param _force? ForceIdentification @The force whose technology to screenshot. If not given, the `"player`" force is used.
----@param _path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"technology-screenshot.png"`.
----@param _by_player? PlayerIdentification @If given, the screenshot will only be taken for this player.
----@param _selected_technology? TechnologyIdentification @The technology to highlight.
----@param _skip_disabled? boolean @If `true`, disabled technologies will be skipped. Their successors will be attached to the disabled technology's parents. Defaults to `false`.
----@param _quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
-function LuaGameScript.take_technology_screenshot(_force, _path, _by_player, _selected_technology, _skip_disabled, _quality) end
+---@param _table LuaGameScript.take_technology_screenshot
+function LuaGameScript.take_technology_screenshot(_table) end
 
 ---Unbans the given player from this multiplayer game. Does nothing if this is a single player game of if the player running this isn't an admin.
 ---@param _player PlayerIdentification @The player to unban.
@@ -527,4 +494,56 @@ function LuaGameScript.unmute_player(_player) end
 ---@param _append? boolean @If `true`, `data` will be appended to the end of the file. Defaults to `false`, which will overwrite any pre-existing file with the new `data`.
 ---@param _for_player? uint @If given, the file will only be written for this `player_index`. Providing `0` will only write to the server's output if present.
 function LuaGameScript.write_file(_filename, _data, _append, _for_player) end
+
+
+---@class LuaGameScript.get_train_stops
+---@field name? string|string[]
+---@field surface? SurfaceIdentification
+---@field force? ForceIdentification
+
+---@class LuaGameScript.play_sound
+---@field path SoundPath @The sound to play.
+---@field position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
+---@field volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
+---@field override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
+
+---@class LuaGameScript.set_game_state
+---@field game_finished boolean
+---@field player_won boolean
+---@field next_level string
+---@field can_continue boolean
+---@field victorious_force ForceIdentification
+
+---@class LuaGameScript.show_message_dialog
+---@field text LocalisedString @What the dialog should say
+---@field image? string @Path to an image to show on the dialog
+---@field point_to? GuiArrowSpecification @If specified, dialog will show an arrow pointing to this place. When not specified, the arrow will point to the player's position. (Use `point_to={type="nowhere"}` to remove the arrow entirely.) The dialog itself will be placed near the arrow's target.
+---@field style? string @The gui style to use for this speech bubble. Must be of type speech_bubble.
+---@field wrapper_frame_style? string @Must be of type flow_style.
+
+---@class LuaGameScript.take_screenshot
+---@field player? PlayerIdentification @The player to focus on. Defaults to the local player.
+---@field by_player? PlayerIdentification @If defined, the screenshot will only be taken for this player.
+---@field surface? SurfaceIdentification @If defined, the screenshot will be taken on this surface.
+---@field position? MapPosition @If defined, the screenshot will be centered on this position. Otherwise, the screenshot will center on `player`.
+---@field resolution? TilePosition @The maximum allowed resolution is 16384x16384 (8192x8192 when `anti_alias` is `true`), but the maximum recommended resolution is 4096x4096 (resp. 2048x2048).
+---@field zoom? double @The map zoom to take the screenshot at. Defaults to `1`.
+---@field path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"screenshot.png"`.
+---@field show_gui? boolean @Whether to include GUIs in the screenshot or not. Defaults to `false`.
+---@field show_entity_info? boolean @Whether to include entity info ("Alt mode") or not. Defaults to `false`.
+---@field show_cursor_building_preview? boolean @When `true` and when `player` is specified, the building preview for the item in the player's cursor will also be rendered. Defaults to `false`.
+---@field anti_alias? boolean @Whether to render in double resolution and downscale the result (including GUI). Defaults to `false`.
+---@field quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
+---@field allow_in_replay? boolean @Whether to save the screenshot even during replay playback. Defaults to `false`.
+---@field daytime? double @Overrides the current surface daytime for the duration of screenshot rendering.
+---@field water_tick? uint @Overrides the tick of water animation, if animated water is enabled.
+---@field force_render? boolean @Screenshot requests are processed in between game update and render. The game may skip rendering (ie. drop frames) if the previous frame has not finished rendering or the game simulation starts to fall below 60 updates per second. If `force_render` is set to `true`, the game won't drop frames and process the screenshot request at the end of the update in which the request was created. This is not honored on multiplayer clients that are catching up to server. Defaults to `false`.
+
+---@class LuaGameScript.take_technology_screenshot
+---@field force? ForceIdentification @The force whose technology to screenshot. If not given, the `"player`" force is used.
+---@field path? string @The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"technology-screenshot.png"`.
+---@field by_player? PlayerIdentification @If given, the screenshot will only be taken for this player.
+---@field selected_technology? TechnologyIdentification @The technology to highlight.
+---@field skip_disabled? boolean @If `true`, disabled technologies will be skipped. Their successors will be attached to the disabled technology's parents. Defaults to `false`.
+---@field quality? int @The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.
 

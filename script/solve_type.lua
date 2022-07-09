@@ -44,7 +44,7 @@ end
 
 ---@param _type ComplexType
 complex_type.table = function (_type)
-	local name = current.class.name.."."..current.field.name
+	local name = current.class.name.."."..current.field
 	local def = ("---@class %s\n"):format(name)
 	for index, param in ipairs(_type.parameters) do
 		---@cast param -Type

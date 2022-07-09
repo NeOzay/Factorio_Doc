@@ -22,13 +22,9 @@ function LuaFlowStatistics.clear() end
 ---Use `sample_index` to access the data used to generate the statistics graphs. Each precision level contains 300 samples of data so at a precision of 1 minute, each sample contains data averaged across 60s / 300 = 0.2s = 12 ticks.
 ---
 ---All return values are normalized to be per-tick for electric networks and per-minute for all other types.
----@param _name string @The prototype name.
----@param _input boolean @Read the input values or the output values
----@param _precision_index defines.flow_precision_index @The precision range to read.
----@param _sample_index? uint16 @The sample index to read from within the precision range. If not provided, the entire precision range is read. Must be between 1 and 300 where 1 is the most recent sample and 300 is the oldest.
----@param _count? boolean @If true, the count of items/fluids/entities is returned instead of the per-time-frame value.
+---@param _table LuaFlowStatistics.get_flow_count
 ---@return double
-function LuaFlowStatistics.get_flow_count(_name, _input, _precision_index, _sample_index, _count) end
+function LuaFlowStatistics.get_flow_count(_table) end
 
 ---Gets the total input count for a given prototype.
 ---@param _name string @The prototype name.
@@ -58,4 +54,12 @@ function LuaFlowStatistics.set_input_count(_name, _count) end
 ---@param _name string @The prototype name.
 ---@param _count uint64|double @The new count. The type depends on the instance of the statistics.
 function LuaFlowStatistics.set_output_count(_name, _count) end
+
+
+---@class LuaFlowStatistics.get_flow_count
+---@field name string @The prototype name.
+---@field input boolean @Read the input values or the output values
+---@field precision_index defines.flow_precision_index @The precision range to read.
+---@field sample_index? uint16 @The sample index to read from within the precision range. If not provided, the entire precision range is read. Must be between 1 and 300 where 1 is the most recent sample and 300 is the oldest.
+---@field count? boolean @If true, the count of items/fluids/entities is returned instead of the per-time-frame value.
 

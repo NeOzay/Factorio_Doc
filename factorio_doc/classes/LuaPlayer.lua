@@ -107,28 +107,18 @@ function LuaPlayer.associate_character(_character) end
 ---Anything built will fire normal player-built events.
 ---\
 ---The cursor stack will automatically be reduced as if the player built normally.
----@param _position MapPosition @Where the entity would be placed
----@param _direction? defines.direction @Direction the entity would be placed
----@param _alt? boolean @If alt build should be used instead of normal build. Defaults to normal.
----@param _terrain_building_size? uint @The size for building terrain if building terrain. Defaults to 2.
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
-function LuaPlayer.build_from_cursor(_position, _direction, _alt, _terrain_building_size, _skip_fog_of_war) end
+---@param _table LuaPlayer.build_from_cursor
+function LuaPlayer.build_from_cursor(_table) end
 
 ---Checks if this player can build what ever is in the cursor on the surface the player is on.
----@param _position MapPosition @Where the entity would be placed
----@param _direction? defines.direction @Direction the entity would be placed
----@param _alt? boolean @If alt build should be used instead of normal build. Defaults to normal.
----@param _terrain_building_size? uint @The size for building terrain if building terrain. Defaults to 2.
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@param _table LuaPlayer.can_build_from_cursor
 ---@return boolean
-function LuaPlayer.can_build_from_cursor(_position, _direction, _alt, _terrain_building_size, _skip_fog_of_war) end
+function LuaPlayer.can_build_from_cursor(_table) end
 
 ---Checks if this player can build the give entity at the given location on the surface the player is on.
----@param _name string @Name of the entity to check
----@param _position MapPosition @Where the entity would be placed
----@param _direction? defines.direction @Direction the entity would be placed
+---@param _table LuaPlayer.can_place_entity
 ---@return boolean
-function LuaPlayer.can_place_entity(_name, _position, _direction) end
+function LuaPlayer.can_place_entity(_table) end
 
 ---Clear the chat console.
 function LuaPlayer.clear_console() end
@@ -149,11 +139,8 @@ function LuaPlayer.close_map() end
 ---Asks the player if they would like to connect to the given server.
 ---
 ---This only does anything when used on a multiplayer peer. Single player and server hosts will ignore the prompt.
----@param _address string @The server (address:port) if port is not given the default Factorio port is used.
----@param _name? LocalisedString @The name of the server.
----@param _description? LocalisedString
----@param _password? string @The password if different from the one used to join this game. Note, if the current password is not empty but the one required to join the new server is an empty string should be given for this field.
-function LuaPlayer.connect_to_server(_address, _name, _description, _password) end
+---@param _table LuaPlayer.connect_to_server
+function LuaPlayer.connect_to_server(_table) end
 
 ---Creates and attaches a character entity to this player.
 ---
@@ -167,13 +154,8 @@ function LuaPlayer.create_character(_character) end
 ---If no custom `speed` is set and the text is longer than 25 characters, its `time_to_live` and `speed` are dynamically adjusted to give players more time to read it.
 ---\
 ---Local flying text is not saved, which means it will disappear after a save/load-cycle.
----@param _text LocalisedString @The flying text to show.
----@param _position? MapPosition @The location on the map at which to show the flying text.
----@param _create_at_cursor? boolean @If `true`, the flying text is created at the player's cursor. Defaults to `false`.
----@param _color? Color @The color of the flying text. Defaults to white text.
----@param _time_to_live? uint @The amount of ticks that the flying text will be shown for. Defaults to `80`.
----@param _speed? double @The speed at which the text rises upwards in tiles/second. Can't be a negative value.
-function LuaPlayer.create_local_flying_text(_text, _position, _create_at_cursor, _color, _time_to_live, _speed) end
+---@param _table LuaPlayer.create_local_flying_text
+function LuaPlayer.create_local_flying_text(_table) end
 
 ---Disables alerts for the given alert category.
 ---@param _alert_type defines.alert_type
@@ -193,9 +175,9 @@ function LuaPlayer.disable_recipe_subgroups() end
 function LuaPlayer.disassociate_character(_character) end
 
 ---Start/end wire dragging at the specified location, wire type is based on the cursor contents
----@param _position MapPosition @Position at which cursor was clicked. Used only to decide which side of arithmetic combinator, decider combinator or power switch is to be connected. Entity itself to be connected is based on the player's selected entity.
+---@param _table LuaPlayer.drag_wire
 ---@return boolean @`true` if the action did something
-function LuaPlayer.drag_wire(_position) end
+function LuaPlayer.drag_wire(_table) end
 
 ---Enables alerts for the given alert category.
 ---@param _alert_type defines.alert_type
@@ -217,13 +199,9 @@ function LuaPlayer.exit_cutscene() end
 function LuaPlayer.get_active_quick_bar_page(_index) end
 
 ---Get all alerts matching the given filters, or all alerts if no filters are given.
----@param _entity? LuaEntity
----@param _prototype? LuaEntityPrototype
----@param _position? MapPosition
----@param _type? defines.alert_type
----@param _surface? SurfaceIdentification
+---@param _table LuaPlayer.get_alerts
 ---@return table<uint, table<defines.alert_type, Alert[]>> @A mapping of surface index to an array of arrays of [alerts](Alert) indexed by the [alert type](defines.alert_type).
-function LuaPlayer.get_alerts(_entity, _prototype, _position, _type, _surface) end
+function LuaPlayer.get_alerts(_table) end
 
 ---The characters associated with this player.
 ---
@@ -297,11 +275,8 @@ function LuaPlayer.open_map(_position, _scale) end
 function LuaPlayer.pipette_entity(_entity) end
 
 ---Play a sound for this player.
----@param _path SoundPath @The sound to play.
----@param _position? MapPosition @Where the sound should be played. If not given, it's played at the current position of the player.
----@param _volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
----@param _override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
-function LuaPlayer.play_sound(_path, _position, _volume_modifier, _override_sound_type) end
+---@param _table LuaPlayer.play_sound
+function LuaPlayer.play_sound(_table) end
 
 ---Print text to the chat console.
 ---
@@ -321,14 +296,8 @@ function LuaPlayer.print_lua_object_statistics() end
 function LuaPlayer.print_robot_jobs() end
 
 ---Removes all alerts matching the given filters or if an empty filters table is given all alerts are removed.
----@param _entity? LuaEntity
----@param _prototype? LuaEntityPrototype
----@param _position? MapPosition
----@param _type? defines.alert_type
----@param _surface? SurfaceIdentification
----@param _icon? SignalID
----@param _message? LocalisedString
-function LuaPlayer.remove_alert(_entity, _prototype, _position, _type, _surface, _icon, _message) end
+---@param _table LuaPlayer.remove_alert
+function LuaPlayer.remove_alert(_table) end
 
 ---Requests a translation for the given localised string. If the request is successful the [on_string_translated](on_string_translated) event will be fired at a later time with the results.
 ---
@@ -347,14 +316,8 @@ function LuaPlayer.set_active_quick_bar_page(_screen_index, _page_index) end
 ---Setting a player to [defines.controllers.editor](defines.controllers.editor) auto promotes the player to admin and enables cheat mode.
 ---\
 ---Setting a player to [defines.controllers.editor](defines.controllers.editor) also requires the calling player be an admin.
----@param _type defines.controllers @Which controller to use.
----@param _character? LuaEntity @Entity to control. Mandatory when `type` is [defines.controllers.character](defines.controllers.character), ignored otherwise.
----@param _waypoints? CutsceneWaypoint @List of waypoints for the cutscene controller. This parameter is mandatory when `type` is [defines.controllers.cutscene](defines.controllers.cutscene).
----@param _start_position? MapPosition @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), the cutscene will start at this position. If not given the start position will be the player position.
----@param _start_zoom? double @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), the cutscene will start at this zoom level. If not given the start zoom will be the players zoom.
----@param _final_transition_time? uint @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), it is the time in ticks it will take for the camera to pan from the final waypoint back to the starting position. If not given the camera will not pan back to the start position/zoom.
----@param _chart_mode_cutoff? double @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), the game will switch to chart-mode (map zoomed out) rendering when the zoom level is less than this value.
-function LuaPlayer.set_controller(_type, _character, _waypoints, _start_position, _start_zoom, _final_transition_time, _chart_mode_cutoff) end
+---@param _table LuaPlayer.set_controller
+function LuaPlayer.set_controller(_table) end
 
 ---Setup the screen to be shown when the game is finished.
 ---@param _message LocalisedString @Message to be shown.
@@ -411,4 +374,72 @@ function LuaPlayer.use_from_cursor(_position) end
 ---@param _position MapPosition
 ---@param _scale? double
 function LuaPlayer.zoom_to_world(_position, _scale) end
+
+
+---@class LuaPlayer.build_from_cursor
+---@field position MapPosition @Where the entity would be placed
+---@field direction? defines.direction @Direction the entity would be placed
+---@field alt? boolean @If alt build should be used instead of normal build. Defaults to normal.
+---@field terrain_building_size? uint @The size for building terrain if building terrain. Defaults to 2.
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+
+---@class LuaPlayer.can_build_from_cursor
+---@field position MapPosition @Where the entity would be placed
+---@field direction? defines.direction @Direction the entity would be placed
+---@field alt? boolean @If alt build should be used instead of normal build. Defaults to normal.
+---@field terrain_building_size? uint @The size for building terrain if building terrain. Defaults to 2.
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+
+---@class LuaPlayer.can_place_entity
+---@field name string @Name of the entity to check
+---@field position MapPosition @Where the entity would be placed
+---@field direction? defines.direction @Direction the entity would be placed
+
+---@class LuaPlayer.connect_to_server
+---@field address string @The server (address:port) if port is not given the default Factorio port is used.
+---@field name? LocalisedString @The name of the server.
+---@field description? LocalisedString
+---@field password? string @The password if different from the one used to join this game. Note, if the current password is not empty but the one required to join the new server is an empty string should be given for this field.
+
+---@class LuaPlayer.create_local_flying_text
+---@field text LocalisedString @The flying text to show.
+---@field position? MapPosition @The location on the map at which to show the flying text.
+---@field create_at_cursor? boolean @If `true`, the flying text is created at the player's cursor. Defaults to `false`.
+---@field color? Color @The color of the flying text. Defaults to white text.
+---@field time_to_live? uint @The amount of ticks that the flying text will be shown for. Defaults to `80`.
+---@field speed? double @The speed at which the text rises upwards in tiles/second. Can't be a negative value.
+
+---@class LuaPlayer.drag_wire
+---@field position MapPosition @Position at which cursor was clicked. Used only to decide which side of arithmetic combinator, decider combinator or power switch is to be connected. Entity itself to be connected is based on the player's selected entity.
+
+---@class LuaPlayer.get_alerts
+---@field entity? LuaEntity
+---@field prototype? LuaEntityPrototype
+---@field position? MapPosition
+---@field type? defines.alert_type
+---@field surface? SurfaceIdentification
+
+---@class LuaPlayer.play_sound
+---@field path SoundPath @The sound to play.
+---@field position? MapPosition @Where the sound should be played. If not given, it's played at the current position of the player.
+---@field volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
+---@field override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
+
+---@class LuaPlayer.remove_alert
+---@field entity? LuaEntity
+---@field prototype? LuaEntityPrototype
+---@field position? MapPosition
+---@field type? defines.alert_type
+---@field surface? SurfaceIdentification
+---@field icon? SignalID
+---@field message? LocalisedString
+
+---@class LuaPlayer.set_controller
+---@field type defines.controllers @Which controller to use.
+---@field character? LuaEntity @Entity to control. Mandatory when `type` is [defines.controllers.character](defines.controllers.character), ignored otherwise.
+---@field waypoints? CutsceneWaypoint @List of waypoints for the cutscene controller. This parameter is mandatory when `type` is [defines.controllers.cutscene](defines.controllers.cutscene).
+---@field start_position? MapPosition @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), the cutscene will start at this position. If not given the start position will be the player position.
+---@field start_zoom? double @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), the cutscene will start at this zoom level. If not given the start zoom will be the players zoom.
+---@field final_transition_time? uint @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), it is the time in ticks it will take for the camera to pan from the final waypoint back to the starting position. If not given the camera will not pan back to the start position/zoom.
+---@field chart_mode_cutoff? double @If specified and `type` is [defines.controllers.cutscene](defines.controllers.cutscene), the game will switch to chart-mode (map zoomed out) rendering when the zoom level is less than this value.
 

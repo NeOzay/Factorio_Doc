@@ -10,6 +10,7 @@
 ---@field variant_parameter_description? string
 ---@field options? Concept.spec[]|BasicMember[]
 ---@field attributes? Attribute[]
+---@field custom string
 
 ---@class Concept.spec
 ---@field type Type

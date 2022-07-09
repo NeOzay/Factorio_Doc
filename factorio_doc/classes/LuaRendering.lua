@@ -20,83 +20,26 @@ function LuaRendering.clear(_mod_name) end
 function LuaRendering.destroy(_id) end
 
 ---Create an animation.
----@param _animation string @Name of an [animation prototype](https://wiki.factorio.com/Prototype/Animation).
----@param _orientation? RealOrientation @The orientation of the animation. Default is 0.
----@param _x_scale? double @Horizontal scale of the animation. Default is 1.
----@param _y_scale? double @Vertical scale of the animation. Default is 1.
----@param _tint? Color
----@param _render_layer? RenderLayer
----@param _animation_speed? double @How many frames the animation goes forward per tick. Default is 1.
----@param _animation_offset? double @Offset of the animation in frames. Default is 0.
----@param _orientation_target? MapPosition|LuaEntity @If given, the animation rotates so that it faces this target. Note that `orientation` is still applied to the animation.
----@param _orientation_target_offset? Vector @Only used if `orientation_target` is a LuaEntity.
----@param _oriented_offset? Vector @Offsets the center of the animation if `orientation_target` is given. This offset will rotate together with the animation.
----@param _target MapPosition|LuaEntity @Center of the animation.
----@param _target_offset? Vector @Only used if `target` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_animation
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_animation(_animation, _orientation, _x_scale, _y_scale, _tint, _render_layer, _animation_speed, _animation_offset, _orientation_target, _orientation_target_offset, _oriented_offset, _target, _target_offset, _surface, _time_to_live, _forces, _players, _visible, _only_in_alt_mode) end
+function LuaRendering.draw_animation(_table) end
 
 ---Create an arc.
----@param _color Color
----@param _max_radius double @The radius of the outer edge of the arc, in tiles.
----@param _min_radius double @The radius of the inner edge of the arc, in tiles.
----@param _start_angle float @Where the arc starts, in radian.
----@param _angle float @The angle of the arc, in radian.
----@param _target MapPosition|LuaEntity
----@param _target_offset? Vector @Only used if `target` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _draw_on_ground? boolean @If this should be drawn below sprites and entities.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_arc
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_arc(_color, _max_radius, _min_radius, _start_angle, _angle, _target, _target_offset, _surface, _time_to_live, _forces, _players, _visible, _draw_on_ground, _only_in_alt_mode) end
+function LuaRendering.draw_arc(_table) end
 
 ---Create a circle.
----@param _color Color
----@param _radius double @In tiles.
----@param _width? float @Width of the outline, used only if filled = false. Value is in pixels (32 per tile).
----@param _filled boolean @If the circle should be filled.
----@param _target MapPosition|LuaEntity
----@param _target_offset? Vector @Only used if `target` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _draw_on_ground? boolean @If this should be drawn below sprites and entities.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_circle
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_circle(_color, _radius, _width, _filled, _target, _target_offset, _surface, _time_to_live, _forces, _players, _visible, _draw_on_ground, _only_in_alt_mode) end
+function LuaRendering.draw_circle(_table) end
 
 ---Create a light.
 ---
 ---The base game uses the utility sprites `light_medium` and `light_small` for lights.
----@param _sprite SpritePath
----@param _orientation? RealOrientation @The orientation of the light. Default is 0.
----@param _scale? float @Default is 1.
----@param _intensity? float @Default is 1.
----@param _minimum_darkness? float @The minimum darkness at which this light is rendered. Default is 0.
----@param _oriented? boolean @If this light has the same orientation as the entity target, default is false. Note that `orientation` is still applied to the sprite.
----@param _color? Color @Defaults to white (no tint).
----@param _target MapPosition|LuaEntity @Center of the light.
----@param _target_offset? Vector @Only used if `target` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_light
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_light(_sprite, _orientation, _scale, _intensity, _minimum_darkness, _oriented, _color, _target, _target_offset, _surface, _time_to_live, _forces, _players, _visible, _only_in_alt_mode) end
+function LuaRendering.draw_light(_table) end
 
 ---Create a line.
 ---
@@ -109,59 +52,19 @@ function LuaRendering.draw_light(_sprite, _orientation, _scale, _intensity, _min
 ---```lua
 ---rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {0, 5}, color = {r = 1}, width = 3, gap_length = 1, dash_length = 1}
 ---```
----@param _color Color
----@param _width float @In pixels (32 per tile).
----@param _gap_length? double @Length of the gaps that this line has, in tiles. Default is 0.
----@param _dash_length? double @Length of the dashes that this line has. Used only if gap_length > 0. Default is 0.
----@param _from MapPosition|LuaEntity
----@param _from_offset? Vector @Only used if `from` is a LuaEntity.
----@param _to MapPosition|LuaEntity
----@param _to_offset? Vector @Only used if `to` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _draw_on_ground? boolean @If this should be drawn below sprites and entities.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_line
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_line(_color, _width, _gap_length, _dash_length, _from, _from_offset, _to, _to_offset, _surface, _time_to_live, _forces, _players, _visible, _draw_on_ground, _only_in_alt_mode) end
+function LuaRendering.draw_line(_table) end
 
 ---Create a triangle mesh defined by a triangle strip.
----@param _color Color
----@param _vertices ScriptRenderVertexTarget[]
----@param _target? MapPosition|LuaEntity @Acts like an offset applied to all vertices that are not set to an entity.
----@param _target_offset? Vector @Only used if `target` is a LuaEntity.
----@param _orientation? RealOrientation @The orientation applied to all vertices. Default is 0.
----@param _orientation_target? MapPosition|LuaEntity @If given, the vertices (that are not set to an entity) rotate so that it faces this target. Note that `orientation` is still applied.
----@param _orientation_target_offset? Vector @Only used if `orientation_target` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _draw_on_ground? boolean @If this should be drawn below sprites and entities.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_polygon
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_polygon(_color, _vertices, _target, _target_offset, _orientation, _orientation_target, _orientation_target_offset, _surface, _time_to_live, _forces, _players, _visible, _draw_on_ground, _only_in_alt_mode) end
+function LuaRendering.draw_polygon(_table) end
 
 ---Create a rectangle.
----@param _color Color
----@param _width? float @Width of the outline, used only if filled = false. Value is in pixels (32 per tile).
----@param _filled boolean @If the rectangle should be filled.
----@param _left_top MapPosition|LuaEntity
----@param _left_top_offset? Vector @Only used if `left_top` is a LuaEntity.
----@param _right_bottom MapPosition|LuaEntity
----@param _right_bottom_offset? Vector @Only used if `right_bottom` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _draw_on_ground? boolean @If this should be drawn below sprites and entities.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_rectangle
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_rectangle(_color, _width, _filled, _left_top, _left_top_offset, _right_bottom, _right_bottom_offset, _surface, _time_to_live, _forces, _players, _visible, _draw_on_ground, _only_in_alt_mode) end
+function LuaRendering.draw_rectangle(_table) end
 
 ---Create a sprite.
 ---
@@ -174,48 +77,16 @@ function LuaRendering.draw_rectangle(_color, _width, _filled, _left_top, _left_t
 ---```lua
 ---rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, target_offset = {0, -2}, surface = game.player.surface}
 ---```
----@param _sprite SpritePath
----@param _orientation? RealOrientation @The orientation of the sprite. Default is 0.
----@param _x_scale? double @Horizontal scale of the sprite. Default is 1.
----@param _y_scale? double @Vertical scale of the sprite. Default is 1.
----@param _tint? Color
----@param _render_layer? RenderLayer
----@param _orientation_target? MapPosition|LuaEntity @If given, the sprite rotates so that it faces this target. Note that `orientation` is still applied to the sprite.
----@param _orientation_target_offset? Vector @Only used if `orientation_target` is a LuaEntity.
----@param _oriented_offset? Vector @Offsets the center of the sprite if `orientation_target` is given. This offset will rotate together with the sprite.
----@param _target MapPosition|LuaEntity @Center of the sprite.
----@param _target_offset? Vector @Only used if `target` is a LuaEntity.
----@param _surface SurfaceIdentification
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_sprite
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_sprite(_sprite, _orientation, _x_scale, _y_scale, _tint, _render_layer, _orientation_target, _orientation_target_offset, _oriented_offset, _target, _target_offset, _surface, _time_to_live, _forces, _players, _visible, _only_in_alt_mode) end
+function LuaRendering.draw_sprite(_table) end
 
 ---Create a text.
 ---
 ---Not all fonts support scaling.
----@param _text LocalisedString @The text to display.
----@param _surface SurfaceIdentification
----@param _target MapPosition|LuaEntity
----@param _target_offset? Vector @Only used if `target` is a LuaEntity.
----@param _color Color
----@param _scale? double
----@param _font? string @Name of font to use. Defaults to the same font as flying-text.
----@param _time_to_live? uint @In ticks. Defaults to living forever.
----@param _forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
----@param _players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
----@param _visible? boolean @If this is rendered to anyone at all. Defaults to true.
----@param _draw_on_ground? boolean @If this should be drawn below sprites and entities.
----@param _orientation? RealOrientation @The orientation of the text. Default is 0.
----@param _alignment? string @Defaults to "left". Other options are "right" and "center".
----@param _vertical_alignment? string @Defaults to "top". Other options are "middle", "baseline" and "bottom".
----@param _scale_with_zoom? boolean @Defaults to false. If true, the text scales with player zoom, resulting in it always being the same size on screen, and the size compared to the game world changes.
----@param _only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+---@param _table LuaRendering.draw_text
 ---@return uint64 @Id of the render object
-function LuaRendering.draw_text(_text, _surface, _target, _target_offset, _color, _scale, _font, _time_to_live, _forces, _players, _visible, _draw_on_ground, _orientation, _alignment, _vertical_alignment, _scale_with_zoom, _only_in_alt_mode) end
+function LuaRendering.draw_text(_table) end
 
 ---Get the alignment of the text with this id.
 ---@param _id uint64
@@ -683,4 +554,161 @@ function LuaRendering.set_x_scale(_id, _x_scale) end
 ---@param _id uint64
 ---@param _y_scale double
 function LuaRendering.set_y_scale(_id, _y_scale) end
+
+
+---@class LuaRendering.draw_animation
+---@field animation string @Name of an [animation prototype](https://wiki.factorio.com/Prototype/Animation).
+---@field orientation? RealOrientation @The orientation of the animation. Default is 0.
+---@field x_scale? double @Horizontal scale of the animation. Default is 1.
+---@field y_scale? double @Vertical scale of the animation. Default is 1.
+---@field tint? Color
+---@field render_layer? RenderLayer
+---@field animation_speed? double @How many frames the animation goes forward per tick. Default is 1.
+---@field animation_offset? double @Offset of the animation in frames. Default is 0.
+---@field orientation_target? MapPosition|LuaEntity @If given, the animation rotates so that it faces this target. Note that `orientation` is still applied to the animation.
+---@field orientation_target_offset? Vector @Only used if `orientation_target` is a LuaEntity.
+---@field oriented_offset? Vector @Offsets the center of the animation if `orientation_target` is given. This offset will rotate together with the animation.
+---@field target MapPosition|LuaEntity @Center of the animation.
+---@field target_offset? Vector @Only used if `target` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_arc
+---@field color Color
+---@field max_radius double @The radius of the outer edge of the arc, in tiles.
+---@field min_radius double @The radius of the inner edge of the arc, in tiles.
+---@field start_angle float @Where the arc starts, in radian.
+---@field angle float @The angle of the arc, in radian.
+---@field target MapPosition|LuaEntity
+---@field target_offset? Vector @Only used if `target` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field draw_on_ground? boolean @If this should be drawn below sprites and entities.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_circle
+---@field color Color
+---@field radius double @In tiles.
+---@field width? float @Width of the outline, used only if filled = false. Value is in pixels (32 per tile).
+---@field filled boolean @If the circle should be filled.
+---@field target MapPosition|LuaEntity
+---@field target_offset? Vector @Only used if `target` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field draw_on_ground? boolean @If this should be drawn below sprites and entities.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_light
+---@field sprite SpritePath
+---@field orientation? RealOrientation @The orientation of the light. Default is 0.
+---@field scale? float @Default is 1.
+---@field intensity? float @Default is 1.
+---@field minimum_darkness? float @The minimum darkness at which this light is rendered. Default is 0.
+---@field oriented? boolean @If this light has the same orientation as the entity target, default is false. Note that `orientation` is still applied to the sprite.
+---@field color? Color @Defaults to white (no tint).
+---@field target MapPosition|LuaEntity @Center of the light.
+---@field target_offset? Vector @Only used if `target` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_line
+---@field color Color
+---@field width float @In pixels (32 per tile).
+---@field gap_length? double @Length of the gaps that this line has, in tiles. Default is 0.
+---@field dash_length? double @Length of the dashes that this line has. Used only if gap_length > 0. Default is 0.
+---@field from MapPosition|LuaEntity
+---@field from_offset? Vector @Only used if `from` is a LuaEntity.
+---@field to MapPosition|LuaEntity
+---@field to_offset? Vector @Only used if `to` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field draw_on_ground? boolean @If this should be drawn below sprites and entities.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_polygon
+---@field color Color
+---@field vertices ScriptRenderVertexTarget[]
+---@field target? MapPosition|LuaEntity @Acts like an offset applied to all vertices that are not set to an entity.
+---@field target_offset? Vector @Only used if `target` is a LuaEntity.
+---@field orientation? RealOrientation @The orientation applied to all vertices. Default is 0.
+---@field orientation_target? MapPosition|LuaEntity @If given, the vertices (that are not set to an entity) rotate so that it faces this target. Note that `orientation` is still applied.
+---@field orientation_target_offset? Vector @Only used if `orientation_target` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field draw_on_ground? boolean @If this should be drawn below sprites and entities.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_rectangle
+---@field color Color
+---@field width? float @Width of the outline, used only if filled = false. Value is in pixels (32 per tile).
+---@field filled boolean @If the rectangle should be filled.
+---@field left_top MapPosition|LuaEntity
+---@field left_top_offset? Vector @Only used if `left_top` is a LuaEntity.
+---@field right_bottom MapPosition|LuaEntity
+---@field right_bottom_offset? Vector @Only used if `right_bottom` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field draw_on_ground? boolean @If this should be drawn below sprites and entities.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_sprite
+---@field sprite SpritePath
+---@field orientation? RealOrientation @The orientation of the sprite. Default is 0.
+---@field x_scale? double @Horizontal scale of the sprite. Default is 1.
+---@field y_scale? double @Vertical scale of the sprite. Default is 1.
+---@field tint? Color
+---@field render_layer? RenderLayer
+---@field orientation_target? MapPosition|LuaEntity @If given, the sprite rotates so that it faces this target. Note that `orientation` is still applied to the sprite.
+---@field orientation_target_offset? Vector @Only used if `orientation_target` is a LuaEntity.
+---@field oriented_offset? Vector @Offsets the center of the sprite if `orientation_target` is given. This offset will rotate together with the sprite.
+---@field target MapPosition|LuaEntity @Center of the sprite.
+---@field target_offset? Vector @Only used if `target` is a LuaEntity.
+---@field surface SurfaceIdentification
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
+
+---@class LuaRendering.draw_text
+---@field text LocalisedString @The text to display.
+---@field surface SurfaceIdentification
+---@field target MapPosition|LuaEntity
+---@field target_offset? Vector @Only used if `target` is a LuaEntity.
+---@field color Color
+---@field scale? double
+---@field font? string @Name of font to use. Defaults to the same font as flying-text.
+---@field time_to_live? uint @In ticks. Defaults to living forever.
+---@field forces? ForceIdentification[] @The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
+---@field players? PlayerIdentification[] @The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
+---@field visible? boolean @If this is rendered to anyone at all. Defaults to true.
+---@field draw_on_ground? boolean @If this should be drawn below sprites and entities.
+---@field orientation? RealOrientation @The orientation of the text. Default is 0.
+---@field alignment? string @Defaults to "left". Other options are "right" and "center".
+---@field vertical_alignment? string @Defaults to "top". Other options are "middle", "baseline" and "bottom".
+---@field scale_with_zoom? boolean @Defaults to false. If true, the text scales with player zoom, resulting in it always being the same size on screen, and the size compared to the game world changes.
+---@field only_in_alt_mode? boolean @If this should only be rendered in alt mode. Defaults to false.
 

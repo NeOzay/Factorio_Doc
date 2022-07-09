@@ -78,16 +78,20 @@ end
 
 ---@param concept Concept
 concepts_types.concept = function (concept)
-	return ("---@alias %s any\n"):format(concept.name)
+	return ("---@alias %s  any\n"):format(concept.name)
 end
 
 
 local function solve_concept()
 	local def = ""
 	for index, concept in ipairs(concepts) do
-		current.class = concept.name
-		def = def..Docomentation.new(concept.description, concept.notes, concept.examples):tostring()
-		def = def..(concepts_types[concept.category](concept) or ("---@class %s\n"):format(concept.name)).."\n"
+		if concept.custom then
+			def = def..concept.custom
+		else
+			current.class = concept.name
+			def = def..Docomentation.new(concept.description, concept.notes, concept.examples):tostring()
+			def = def..(concepts_types[concept.category](concept) or ("---@class %s\n"):format(concept.name)).."\n"
+		end
 	end
 	return def
 end

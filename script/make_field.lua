@@ -34,7 +34,7 @@ function FieldDoc.fromParameter(parameter)
 end
 
 function FieldDoc:tostring()
-	current.field = self
+	current.field = self.name
 	local description = ("---@field %s %s"):format(self.name, solve_type(self.type))
 
 	if type(self.documentation) == "string" then

@@ -120,11 +120,9 @@
 local LuaControl = {}
 
 ---Begins crafting the given count of the given recipe.
----@param _count uint @The count to craft.
----@param _recipe string|LuaRecipe @The recipe to craft.
----@param _silent? boolean @If false and the recipe can't be crafted the requested number of times printing the failure is skipped.
+---@param _table LuaControl.begin_crafting
 ---@return uint @The count that was actually started crafting.
-function LuaControl.begin_crafting(_count, _recipe, _silent) end
+function LuaControl.begin_crafting(_table) end
 
 ---Can at least some items be inserted?
 ---@param _items ItemStackIdentification @Items that would be inserted.
@@ -137,9 +135,8 @@ function LuaControl.can_insert(_items) end
 function LuaControl.can_reach_entity(_entity) end
 
 ---Cancels crafting the given count of the given crafting queue index.
----@param _index uint @The crafting queue index.
----@param _count uint @The count to cancel crafting.
-function LuaControl.cancel_crafting(_index, _count) end
+---@param _table LuaControl.cancel_crafting
+function LuaControl.cancel_crafting(_table) end
 
 ---Removes the arrow created by `set_gui_arrow`.
 function LuaControl.clear_gui_arrow() end
@@ -249,8 +246,8 @@ function LuaControl.open_technology_gui(_technology) end
 function LuaControl.remove_item(_items) end
 
 ---Create an arrow which points at this entity. This is used in the tutorial. For examples, see `control.lua` in the campaign missions.
----@param _type string @Where to point to. This field determines what other fields are mandatory. May be `"nowhere"`, `"goal"`, `"entity_info"`, `"active_window"`, `"entity"`, `"position"`, `"crafting_queue"`, or `"item_stack"`.
-function LuaControl.set_gui_arrow(_type) end
+---@param _table LuaControl.set_gui_arrow
+function LuaControl.set_gui_arrow(_table) end
 
 ---Sets a personal logistic request and auto-trash slot to the given value.
 ---
@@ -296,4 +293,16 @@ function LuaControl.update_selected_entity(_position) end
 ---@class LuaControl.walking_state
 ---@field direction defines.direction @Direction where the player is walking
 ---@field walking boolean @If `false`, the player is currently not walking; otherwise it's going somewhere
+
+---@class LuaControl.begin_crafting
+---@field count uint @The count to craft.
+---@field recipe string|LuaRecipe @The recipe to craft.
+---@field silent? boolean @If false and the recipe can't be crafted the requested number of times printing the failure is skipped.
+
+---@class LuaControl.cancel_crafting
+---@field index uint @The crafting queue index.
+---@field count uint @The count to cancel crafting.
+
+---@class LuaControl.set_gui_arrow
+---@field type string @Where to point to. This field determines what other fields are mandatory. May be `"nowhere"`, `"goal"`, `"entity_info"`, `"active_window"`, `"entity"`, `"position"`, `"crafting_queue"`, or `"item_stack"`.
 

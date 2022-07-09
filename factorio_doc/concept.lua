@@ -38,10 +38,10 @@
 ---@field target_type string @One of `"entity"` (fires at an entity), `"position"` (fires directly at a position), or `"direction"` (fires in a direction).
 
 ---Any basic type (string, number, boolean), table, or LuaObject.
----@alias Any any
+---@alias Any  any
 
 ---Any basic type (string, number, boolean) or table.
----@alias AnyBasic any
+---@alias AnyBasic  any
 
 ---@class ArithmeticCombinatorParameters
 ---@field first_constant? int @Constant to use as the first argument of the operation. Has no effect when `first_signal` is set. Defaults to `0`.
@@ -249,7 +249,7 @@
 ---An array with the following members:
 ---- A [RealOrientation](RealOrientation)
 ---- A [Vector](Vector)
----@alias CircularProjectileCreationSpecification any
+---@alias CircularProjectileCreationSpecification  any
 
 ---@alias CliffOrientation
 ---| "west-to-east"
@@ -280,7 +280,7 @@
 ---@field richness MapGenSize @Corresponds to 'continuity' in the GUI. This value is not used directly, but is used by the 'cliffiness' noise expression, which in combination with elevation and the two cliff elevation properties drives cliff placement (cliffs are placed when elevation crosses the elevation contours defined by `cliff_elevation_0` and `cliff_elevation_interval` when 'cliffiness' is greater than `0.5`). The default 'cliffiness' expression interprets this value such that larger values result in longer unbroken walls of cliffs, and smaller values (between `0` and `1`) result in larger gaps in cliff walls.
 
 ---This is a set of masks given as a dictionary[[CollisionMaskLayer](CollisionMaskLayer) &rarr; [boolean](boolean)]. Only set masks are present in the dictionary and they have the value `true`. Unset flags aren't present at all.
----@alias CollisionMask any
+---@alias CollisionMask  any
 
 ---A [string](string) specifying a collision mask layer.
 ---
@@ -300,7 +300,7 @@
 ---- `"not-setup"`
 ---
 ---Additionally the values `"layer-13"` through `"layer-55"`. These layers are currently unused by the game but may change. If a mod is going to use one of the unused layers it's recommended to start at the higher layers because the base game will take from the lower ones.
----@alias CollisionMaskLayer any
+---@alias CollisionMaskLayer  any
 
 ---A [CollisionMask](CollisionMask) which also includes any flags this mask has.
 ---
@@ -308,7 +308,7 @@
 ---- `"not-colliding-with-itself"`: Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
 ---- `"consider-tile-transitions"`: Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
 ---- `"colliding-with-tiles-only"`: Any prototype with this collision option will only be checked for collision with other prototype's collision masks if they are a tile.
----@alias CollisionMaskWithFlags any
+---@alias CollisionMaskWithFlags  any
 
 ---Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.
 ---
@@ -561,7 +561,7 @@
 ---- [LuaPlayerRepairedEntityEventFilter](LuaPlayerRepairedEntityEventFilter)
 ---
 ---Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
----@alias EventFilter any
+---@alias EventFilter  any
 
 ---@class Fluid
 ---@field amount double @Amount of the fluid.
@@ -734,7 +734,7 @@
 ---```lua
 ---game.print({"", {"item-name.iron-plate"}, ": ", 60})
 ---```
----@alias LocalisedString any
+---@alias LocalisedString  any
 
 ---@class LogisticFilter
 ---@field count uint @The count for this filter.
@@ -873,7 +873,7 @@
 ---- `"very-high"`, `"very-big"`, `"very-good"` - equivalent to `2`
 ---
 ---The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
----@alias MapGenSize any
+---@alias MapGenSize  any
 
 ---Coordinates on a surface, for example of an entity. MapPositions may be specified either as a dictionary with `x`, `y` as keys, or simply as an array with two elements.
 ---
@@ -965,7 +965,7 @@
 ---- `"button-7"`
 ---- `"button-8"`
 ---- `"button-9"`
----@alias MouseButtonFlags any
+---@alias MouseButtonFlags  any
 
 ---A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the [wiki](https://wiki.factorio.com/Types/NoiseExpression).
 ---@class NoiseExpression
@@ -1113,12 +1113,12 @@
 ---- [TechnologyPrototypeFilter](TechnologyPrototypeFilter) for type `"technology"`
 ---
 ---Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
----@alias PrototypeFilter any
+---@alias PrototypeFilter  any
 
 ---The smooth orientation. It is a [float](float) in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise. This means a value of `0` indicates "north", a value of `0.5` indicates "south".
 ---
 ---For example then, a value of `0.625` would indicate "south-west", and a value of `0.875` would indicate "north-west".
----@alias RealOrientation any
+---@alias RealOrientation  any
 
 ---@class RecipePrototypeFilter
 
@@ -1167,7 +1167,7 @@
 ---- `"collision-selection-box"`: 189
 ---- `"arrow"`: 190
 ---- `"cursor"`: 210
----@alias RenderLayer any
+---@alias RenderLayer  any
 
 ---@class Resistance
 ---@field decrease float @Absolute damage decrease
@@ -1310,7 +1310,7 @@
 ---- `"entity-rotated"` - Uses [Entity::rotated_sound](https://wiki.factorio.com/Prototype/Entity#rotated_sound)
 ---- `"entity-open"` - Uses [Entity::open_sound](https://wiki.factorio.com/Prototype/Entity#open_sound)
 ---- `"entity-close"` - Uses [Entity::close_sound](https://wiki.factorio.com/Prototype/Entity#close_sound)
----@alias SoundPath any
+---@alias SoundPath  any
 
 ---Defines which slider in the game's sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.
 ---@alias SoundType
@@ -1343,7 +1343,7 @@
 ---- `"equipment"`
 ---- `"file"` - path to an image file located inside the current scenario. This file is not preloaded so it will be slower; for frequently used sprites, it is better to define sprite prototype and use it instead.
 ---- `"utility"` - sprite defined in the utility-sprites object, these are the pictures used by the game internally for the UI.
----@alias SpritePath any
+---@alias SpritePath  any
 
 ---@class SteeringMapSetting
 ---@field force_unit_fuzzy_goto_behavior boolean @Used to make steering look better for aesthetic purposes.
@@ -1366,7 +1366,7 @@
 ---```lua
 ---{a = 1, b = true, c = "three", d = {e = "f"}}
 ---```
----@alias Tags any
+---@alias Tags  any
 
 ---@alias TechnologyIdentification string|LuaTechnology|LuaTechnologyPrototype
 
@@ -1422,7 +1422,7 @@
 ---@field type string @One of `"direct"`, `"area"`, `"line"`, `"cluster"`.
 
 ---This is a set of trigger target masks given as a dictionary[[string](string) &rarr; [boolean](boolean)].
----@alias TriggerTargetMask any
+---@alias TriggerTargetMask  any
 
 ---@class UnitGroupMapSettings
 ---@field max_gathering_unit_groups uint @The maximum number of automatically created unit groups gathering for attack at any time. Defaults to `30`.
@@ -1452,7 +1452,7 @@
 ---```lua
 ---right = {1.0, 0.0}
 ---```
----@alias Vector any
+---@alias Vector  any
 
 ---@class VehicleAutomaticTargetingParameters
 ---@field auto_target_with_gunner boolean

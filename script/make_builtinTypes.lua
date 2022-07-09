@@ -14,7 +14,7 @@ local function makeType(types)
 	local description = ""
 	for index, type in ipairs(types) do
 		if not baseTypes[type.name] then
-			description = description..("---@alias %s %s @%s\n"):format(type.name, "number", type.description)
+			description = description..("---@class %s:%s @%s\n"):format(type.name, "number, integer", type.description)
 		end
 	end
 	make_file(description, "./factorio_doc/builtin_types.lua")

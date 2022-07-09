@@ -18,10 +18,9 @@
 local LuaEquipmentGrid = {}
 
 ---Check whether moving an equipment would succeed.
----@param _equipment LuaEquipment @The equipment to move
----@param _position EquipmentPosition @Where to put it
+---@param _table LuaEquipmentGrid.can_move
 ---@return boolean
-function LuaEquipmentGrid.can_move(_equipment, _position) end
+function LuaEquipmentGrid.can_move(_table) end
 
 ---Clear all equipment from the grid, removing it without actually returning it.
 ---@param _by_player? PlayerIdentification @If provided, the action is done 'as' this player and [on_player_removed_equipment](on_player_removed_equipment) is triggered.
@@ -41,27 +40,41 @@ function LuaEquipmentGrid.get_contents() end
 function LuaEquipmentGrid.help() end
 
 ---Move an equipment within this grid.
----@param _equipment LuaEquipment @The equipment to move
----@param _position EquipmentPosition @Where to put it
+---@param _table LuaEquipmentGrid.move
 ---@return boolean @`true` if the equipment was successfully moved.
-function LuaEquipmentGrid.move(_equipment, _position) end
+function LuaEquipmentGrid.move(_table) end
 
 ---Insert an equipment into the grid.
----@param _name string @Equipment prototype name
----@param _position? EquipmentPosition @Grid position to put the equipment in.
----@param _by_player? PlayerIdentification @If provided the action is done 'as' this player and [on_player_placed_equipment](on_player_placed_equipment) is triggered.
+---@param _table LuaEquipmentGrid.put
 ---@return LuaEquipment @The newly-added equipment, or `nil` if the equipment could not be added.
-function LuaEquipmentGrid.put(_name, _position, _by_player) end
+function LuaEquipmentGrid.put(_table) end
 
 ---Remove an equipment from the grid.
----@param _position? EquipmentPosition @Take the equipment that contains this position in the grid.
----@param _equipment? LuaEquipment @Take this exact equipment.
----@param _by_player? PlayerIdentification @If provided the action is done 'as' this player and [on_player_removed_equipment](on_player_removed_equipment) is triggered.
+---@param _table LuaEquipmentGrid.take
 ---@return SimpleItemStack @The removed equipment, or `nil` if no equipment was removed.
-function LuaEquipmentGrid.take(_position, _equipment, _by_player) end
+function LuaEquipmentGrid.take(_table) end
 
 ---Remove all equipment from the grid.
 ---@param _by_player? PlayerIdentification @If provided, the action is done 'as' this player and [on_player_removed_equipment](on_player_removed_equipment) is triggered.
 ---@return table<string, uint> @Count of each removed equipment, indexed by their prototype names.
 function LuaEquipmentGrid.take_all(_by_player) end
+
+
+---@class LuaEquipmentGrid.can_move
+---@field equipment LuaEquipment @The equipment to move
+---@field position EquipmentPosition @Where to put it
+
+---@class LuaEquipmentGrid.move
+---@field equipment LuaEquipment @The equipment to move
+---@field position EquipmentPosition @Where to put it
+
+---@class LuaEquipmentGrid.put
+---@field name string @Equipment prototype name
+---@field position? EquipmentPosition @Grid position to put the equipment in.
+---@field by_player? PlayerIdentification @If provided the action is done 'as' this player and [on_player_placed_equipment](on_player_placed_equipment) is triggered.
+
+---@class LuaEquipmentGrid.take
+---@field position? EquipmentPosition @Take the equipment that contains this position in the grid.
+---@field equipment? LuaEquipment @Take this exact equipment.
+---@field by_player? PlayerIdentification @If provided the action is done 'as' this player and [on_player_removed_equipment](on_player_removed_equipment) is triggered.
 

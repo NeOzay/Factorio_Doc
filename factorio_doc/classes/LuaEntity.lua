@@ -361,12 +361,9 @@ function LuaEntity.clear_market_items() end
 function LuaEntity.clear_request_slot(_slot) end
 
 ---Clones this entity.
----@param _position MapPosition @The destination position
----@param _surface? LuaSurface @The destination surface
----@param _force? ForceIdentification
----@param _create_build_effect_smoke? boolean @If false, the building effect smoke will not be shown around the new entity.
+---@param _table LuaEntity.clone
 ---@return LuaEntity @The cloned entity or `nil` if this entity can't be cloned/can't be cloned to the given location.
-function LuaEntity.clone(_position, _surface, _force, _create_build_effect_smoke) end
+function LuaEntity.clone(_table) end
 
 ---Connects current linked belt with another one.
 ---
@@ -412,10 +409,9 @@ function LuaEntity.deplete() end
 ---Destroys the entity.
 ---
 ---Not all entities can be destroyed - things such as rails under trains cannot be destroyed until the train is moved or destroyed.
----@param _do_cliff_correction? boolean @Whether neighbouring cliffs should be corrected. Defaults to `false`.
----@param _raise_destroy? boolean @If `true`, [script_raised_destroy](script_raised_destroy) will be called. Defaults to `false`.
+---@param _table LuaEntity.destroy
 ---@return boolean @Returns `false` if the entity was valid and destruction failed, `true` in all other cases.
-function LuaEntity.destroy(_do_cliff_correction, _raise_destroy) end
+function LuaEntity.destroy(_table) end
 
 ---Immediately kills the entity. Does nothing if the entity doesn't have health.
 ---
@@ -466,10 +462,9 @@ function LuaEntity.get_burnt_result_inventory() end
 ---@return LuaCircuitNetwork @The circuit network or nil.
 function LuaEntity.get_circuit_network(_wire, _circuit_connector) end
 
----@param _rail_direction defines.rail_direction
----@param _rail_connection_direction defines.rail_connection_direction
+---@param _table LuaEntity.get_connected_rail
 ---@return LuaEntity @Rail connected in the specified manner to this one, `nil` if unsuccessful.
-function LuaEntity.get_connected_rail(_rail_direction, _rail_connection_direction) end
+function LuaEntity.get_connected_rail(_table) end
 
 ---Get the rails that this signal is connected to.
 ---@return LuaEntity[]
@@ -716,12 +711,9 @@ function LuaEntity.launch_rocket() end
 ---'Standard' operation is to keep calling `LuaEntity.mine` with an inventory until all items are transferred and the items dealt with.
 ---\
 ---The result of mining the entity (the item(s) it produces when mined) will be dropped on the ground if they don't fit into the provided inventory.
----@param _inventory? LuaInventory @If provided the item(s) will be transferred into this inventory. If provided, this must be an inventory created with [LuaGameScript::create_inventory](LuaGameScript::create_inventory) or be a basic inventory owned by some entity.
----@param _force? boolean @If true, when the item(s) don't fit into the given inventory the entity is force mined. If false, the mining operation fails when there isn't enough room to transfer all of the items into the inventory. Defaults to false. This is ignored and acts as `true` if no inventory is provided.
----@param _raise_destroyed? boolean @If true, [script_raised_destroy](script_raised_destroy) will be raised. Defaults to `true`.
----@param _ignore_minable? boolean @If true, the minable state of the entity is ignored. Defaults to `false`. If false, an entity that isn't minable (set as not-minable in the prototype or isn't minable for other reasons) will fail to be mined.
+---@param _table LuaEntity.mine
 ---@return boolean @Whether mining succeeded.
-function LuaEntity.mine(_inventory, _force, _raise_destroyed, _ignore_minable) end
+function LuaEntity.mine(_table) end
 
 ---Sets the entity to be deconstructed by construction robots.
 ---@param _force ForceIdentification @The force whose robots are supposed to do the deconstruction.
@@ -730,12 +722,9 @@ function LuaEntity.mine(_inventory, _force, _raise_destroyed, _ignore_minable) e
 function LuaEntity.order_deconstruction(_force, _player) end
 
 ---Sets the entity to be upgraded by construction robots.
----@param _force ForceIdentification @The force whose robots are supposed to do the upgrade.
----@param _target EntityPrototypeIdentification @The prototype of the entity to upgrade to.
----@param _player? PlayerIdentification
----@param _direction? defines.direction @The new direction if any.
+---@param _table LuaEntity.order_upgrade
 ---@return boolean @Whether the entity was marked for upgrade.
-function LuaEntity.order_upgrade(_force, _target, _player, _direction) end
+function LuaEntity.order_upgrade(_table) end
 
 ---Plays a note with the given instrument and note.
 ---@param _instrument uint
@@ -749,13 +738,9 @@ function LuaEntity.release_from_spawner() end
 ---Remove fluid from this entity.
 ---
 ---If temperature is given only fluid matching that exact temperature is removed. If minimum and maximum is given fluid within that range is removed.
----@param _name string @Fluid prototype name.
----@param _amount double @Amount to remove
----@param _minimum_temperature? double
----@param _maximum_temperature? double
----@param _temperature? double
+---@param _table LuaEntity.remove_fluid
 ---@return double @Amount of fluid actually removed.
-function LuaEntity.remove_fluid(_name, _amount, _minimum_temperature, _maximum_temperature, _temperature) end
+function LuaEntity.remove_fluid(_table) end
 
 ---Remove an offer from a market.
 ---
@@ -772,22 +757,17 @@ function LuaEntity.request_to_close(_force) end
 function LuaEntity.request_to_open(_force, _extra_time) end
 
 ---Revive a ghost. I.e. turn it from a ghost to a real entity or tile.
----@param _return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third return value.
----@param _raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
+---@param _table LuaEntity.revive
 ---@return table<string, uint> @Any items the new real entity collided with or `nil` if the ghost could not be revived.
 ---@return LuaEntity @The revived entity if an entity ghost was successfully revived.
 ---@return LuaEntity @The item request proxy if it was requested with `return_item_request_proxy`.
-function LuaEntity.revive(_return_item_request_proxy, _raise_revive) end
+function LuaEntity.revive(_table) end
 
 ---Rotates this entity as if the player rotated it.
----@param _reverse? boolean @If `true`, rotate the entity in the counter-clockwise direction.
----@param _by_player? PlayerIdentification @If not specified, the [on_player_rotated_entity](on_player_rotated_entity) event will not be fired.
----@param _spill_items? boolean @If the player is not given should extra items be spilled or returned as a second return value from this.
----@param _enable_looted? boolean @When true, each spilled item will be flagged with the [LuaEntity::to_be_looted](LuaEntity::to_be_looted) flag.
----@param _force? LuaForce|string @When provided the spilled items will be marked for deconstruction by this force.
+---@param _table LuaEntity.rotate
 ---@return boolean @Whether the rotation was successful.
 ---@return table<string, uint> @Count of spilled items indexed by their prototype names if `spill_items` was `true`.
-function LuaEntity.rotate(_reverse, _by_player, _spill_items, _enable_looted, _force) end
+function LuaEntity.rotate(_table) end
 
 ---Set the source of this beam.
 ---@param _source LuaEntity|MapPosition
@@ -851,12 +831,11 @@ function LuaEntity.set_recipe(_recipe) end
 function LuaEntity.set_request_slot(_request, _slot) end
 
 ---Revives a ghost silently.
----@param _return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third parameter.
----@param _raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
+---@param _table LuaEntity.silent_revive
 ---@return table<string, uint> @Any items the new real entity collided with or `nil` if the ghost could not be revived.
 ---@return LuaEntity @The revived entity if an entity ghost was successfully revived.
 ---@return LuaEntity @The item request proxy if it was requested with `return_item_request_proxy`.
-function LuaEntity.silent_revive(_return_item_request_proxy, _raise_revive) end
+function LuaEntity.silent_revive(_table) end
 
 ---Triggers spawn_decoration actions defined in the entity prototype or does nothing if entity is not "turret" or "unit-spawner".
 function LuaEntity.spawn_decorations() end
@@ -888,4 +867,52 @@ function LuaEntity.update_connections() end
 ---@class LuaEntity.circuit_connected_entities
 ---@field green LuaEntity[] @Entities connected via the green wire.
 ---@field red LuaEntity[] @Entities connected via the red wire.
+
+---@class LuaEntity.clone
+---@field position MapPosition @The destination position
+---@field surface? LuaSurface @The destination surface
+---@field force? ForceIdentification
+---@field create_build_effect_smoke? boolean @If false, the building effect smoke will not be shown around the new entity.
+
+---@class LuaEntity.destroy
+---@field do_cliff_correction? boolean @Whether neighbouring cliffs should be corrected. Defaults to `false`.
+---@field raise_destroy? boolean @If `true`, [script_raised_destroy](script_raised_destroy) will be called. Defaults to `false`.
+
+---@class LuaEntity.get_connected_rail
+---@field rail_direction defines.rail_direction
+---@field rail_connection_direction defines.rail_connection_direction
+
+---@class LuaEntity.mine
+---@field inventory? LuaInventory @If provided the item(s) will be transferred into this inventory. If provided, this must be an inventory created with [LuaGameScript::create_inventory](LuaGameScript::create_inventory) or be a basic inventory owned by some entity.
+---@field force? boolean @If true, when the item(s) don't fit into the given inventory the entity is force mined. If false, the mining operation fails when there isn't enough room to transfer all of the items into the inventory. Defaults to false. This is ignored and acts as `true` if no inventory is provided.
+---@field raise_destroyed? boolean @If true, [script_raised_destroy](script_raised_destroy) will be raised. Defaults to `true`.
+---@field ignore_minable? boolean @If true, the minable state of the entity is ignored. Defaults to `false`. If false, an entity that isn't minable (set as not-minable in the prototype or isn't minable for other reasons) will fail to be mined.
+
+---@class LuaEntity.order_upgrade
+---@field force ForceIdentification @The force whose robots are supposed to do the upgrade.
+---@field target EntityPrototypeIdentification @The prototype of the entity to upgrade to.
+---@field player? PlayerIdentification
+---@field direction? defines.direction @The new direction if any.
+
+---@class LuaEntity.remove_fluid
+---@field name string @Fluid prototype name.
+---@field amount double @Amount to remove
+---@field minimum_temperature? double
+---@field maximum_temperature? double
+---@field temperature? double
+
+---@class LuaEntity.revive
+---@field return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third return value.
+---@field raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
+
+---@class LuaEntity.rotate
+---@field reverse? boolean @If `true`, rotate the entity in the counter-clockwise direction.
+---@field by_player? PlayerIdentification @If not specified, the [on_player_rotated_entity](on_player_rotated_entity) event will not be fired.
+---@field spill_items? boolean @If the player is not given should extra items be spilled or returned as a second return value from this.
+---@field enable_looted? boolean @When true, each spilled item will be flagged with the [LuaEntity::to_be_looted](LuaEntity::to_be_looted) flag.
+---@field force? LuaForce|string @When provided the spilled items will be marked for deconstruction by this force.
+
+---@class LuaEntity.silent_revive
+---@field return_item_request_proxy? boolean @If `true` the function will return item request proxy as the third parameter.
+---@field raise_revive? boolean @If true, and an entity ghost; [script_raised_revive](script_raised_revive) will be called. Else if true, and a tile ghost; [script_raised_set_tiles](script_raised_set_tiles) will be called.
 

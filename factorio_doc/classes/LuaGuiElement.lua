@@ -170,19 +170,9 @@
 local LuaGuiElement = {}
 
 ---Add a new child element to this GuiElement.
----@param _type string @The kind of element to add. Has to be one of the GUI element types listed at the top of this page.
----@param _name? string @Name of the child element. It must be unique within the parent element.
----@param _caption? LocalisedString @Text displayed on the child element. For frames, this is their title. For other elements, like buttons or labels, this is the content. Whilst this attribute may be used on all elements, it doesn't make sense for tables and flows as they won't display it.
----@param _tooltip? LocalisedString @Tooltip of the child element.
----@param _enabled? boolean @Whether the child element is enabled. Defaults to `true`.
----@param _visible? boolean @Whether the child element is visible. Defaults to `true`.
----@param _ignored_by_interaction? boolean @Whether the child element is ignored by interaction. Defaults to `false`.
----@param _style? string @Style of the child element.
----@param _tags? Tags @[Tags](Tags) associated with the child element.
----@param _index? uint @Location in its parent that the child element should slot into. By default, the child will be appended onto the end.
----@param _anchor? GuiAnchor @Where to position the child element when in the `relative` element.
+---@param _table LuaGuiElement.add
 ---@return LuaGuiElement @The GUI element that was added.
-function LuaGuiElement.add(_type, _name, _caption, _tooltip, _enabled, _visible, _ignored_by_interaction, _style, _tags, _index, _anchor) end
+function LuaGuiElement.add(_table) end
 
 ---Inserts a string at the end or at the given index of this dropdown or listbox.
 ---@param _string LocalisedString @The text to insert.
@@ -347,4 +337,18 @@ function LuaGuiElement.set_slider_value_step(_value) end
 ---@param _index_1 uint @The index of the first child.
 ---@param _index_2 uint @The index of the second child.
 function LuaGuiElement.swap_children(_index_1, _index_2) end
+
+
+---@class LuaGuiElement.add
+---@field type string @The kind of element to add. Has to be one of the GUI element types listed at the top of this page.
+---@field name? string @Name of the child element. It must be unique within the parent element.
+---@field caption? LocalisedString @Text displayed on the child element. For frames, this is their title. For other elements, like buttons or labels, this is the content. Whilst this attribute may be used on all elements, it doesn't make sense for tables and flows as they won't display it.
+---@field tooltip? LocalisedString @Tooltip of the child element.
+---@field enabled? boolean @Whether the child element is enabled. Defaults to `true`.
+---@field visible? boolean @Whether the child element is visible. Defaults to `true`.
+---@field ignored_by_interaction? boolean @Whether the child element is ignored by interaction. Defaults to `false`.
+---@field style? string @Style of the child element.
+---@field tags? Tags @[Tags](Tags) associated with the child element.
+---@field index? uint @Location in its parent that the child element should slot into. By default, the child will be appended onto the end.
+---@field anchor? GuiAnchor @Where to position the child element when in the `relative` element.
 

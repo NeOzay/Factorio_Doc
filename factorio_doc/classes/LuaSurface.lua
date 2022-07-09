@@ -74,39 +74,22 @@ function LuaSurface.build_enemy_base(_position, _unit_count, _force) end
 function LuaSurface.calculate_tile_properties(_property_names, _positions) end
 
 ---If there exists an entity at the given location that can be fast-replaced with the given entity parameters.
----@param _name string @Name of the entity to check
----@param _position MapPosition @Where the entity would be placed
----@param _direction? defines.direction @Direction the entity would be placed
----@param _force? ForceIdentification @The force that would place the entity. If not specified, the enemy force is assumed.
+---@param _table LuaSurface.can_fast_replace
 ---@return boolean
-function LuaSurface.can_fast_replace(_name, _position, _direction, _force) end
+function LuaSurface.can_fast_replace(_table) end
 
 ---Check for collisions with terrain or other entities.
----@param _name string @Name of the entity prototype to check.
----@param _position MapPosition @Where the entity would be placed.
----@param _direction? defines.direction @Direction of the placed entity.
----@param _force? ForceIdentification @The force that would place the entity. If not specified, the enemy force is assumed.
----@param _build_check_type? defines.build_check_type @Which type of check should be carried out.
----@param _forced? boolean @If `true`, entities that can be marked for deconstruction are ignored. Only used if `build_check_type` is either `manual_ghost`, `script_ghost` or `blueprint_ghost`.
----@param _inner_name? string @The prototype name of the entity contained in the ghost. Only used if `name` is `entity-ghost`.
+---@param _table LuaSurface.can_place_entity
 ---@return boolean
-function LuaSurface.can_place_entity(_name, _position, _direction, _force, _build_check_type, _forced, _inner_name) end
+function LuaSurface.can_place_entity(_table) end
 
 ---Cancel a deconstruction order.
----@param _area BoundingBox @The area to cancel deconstruction orders in.
----@param _force ForceIdentification @The force whose deconstruction orders to cancel.
----@param _player? PlayerIdentification @The player to set the last_user to if any.
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param _item? LuaItemStack @The deconstruction item to use if any.
-function LuaSurface.cancel_deconstruct_area(_area, _force, _player, _skip_fog_of_war, _item) end
+---@param _table LuaSurface.cancel_deconstruct_area
+function LuaSurface.cancel_deconstruct_area(_table) end
 
 ---Cancel a upgrade order.
----@param _area BoundingBox @The area to cancel upgrade orders in.
----@param _force ForceIdentification @The force whose upgrade orders to cancel.
----@param _player? PlayerIdentification @The player to set the last_user to if any.
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param _item? LuaItemStack @The upgrade item to use if any.
-function LuaSurface.cancel_upgrade_area(_area, _force, _player, _skip_fog_of_war, _item) end
+---@param _table LuaSurface.cancel_upgrade_area
+function LuaSurface.cancel_upgrade_area(_table) end
 
 ---Clears this surface deleting all entities and chunks on it.
 ---@param _ignore_characters? boolean @Whether characters on this surface that are connected to or associated with players should be ignored (not destroyed).
@@ -118,94 +101,42 @@ function LuaSurface.clear_pollution() end
 ---Clones the given area.
 ---
 ---Entities are cloned in an order such that they can always be created, eg rails before trains.
----@param _source_area BoundingBox
----@param _destination_area BoundingBox
----@param _destination_surface? SurfaceIdentification
----@param _destination_force? LuaForce|string
----@param _clone_tiles? boolean @If tiles should be cloned
----@param _clone_entities? boolean @If entities should be cloned
----@param _clone_decoratives? boolean @If decoratives should be cloned
----@param _clear_destination_entities? boolean @If the destination entities should be cleared
----@param _clear_destination_decoratives? boolean @If the destination decoratives should be cleared
----@param _expand_map? boolean @If the destination surface should be expanded when destination_area is outside current bounds. Default false.
----@param _create_build_effect_smoke? boolean @If true, the building effect smoke will be shown around the new entities.
-function LuaSurface.clone_area(_source_area, _destination_area, _destination_surface, _destination_force, _clone_tiles, _clone_entities, _clone_decoratives, _clear_destination_entities, _clear_destination_decoratives, _expand_map, _create_build_effect_smoke) end
+---@param _table LuaSurface.clone_area
+function LuaSurface.clone_area(_table) end
 
 ---Clones the given area.
 ---
 ---[defines.events.on_entity_cloned](defines.events.on_entity_cloned) is raised for each entity, and then [defines.events.on_area_cloned](defines.events.on_area_cloned) is raised.
 ---\
 ---Entities are cloned in an order such that they can always be created, eg rails before trains.
----@param _source_offset TilePosition
----@param _destination_offset TilePosition
----@param _source_positions TilePosition[]
----@param _destination_surface? SurfaceIdentification
----@param _destination_force? LuaForce|string
----@param _clone_tiles? boolean @If tiles should be cloned
----@param _clone_entities? boolean @If entities should be cloned
----@param _clone_decoratives? boolean @If decoratives should be cloned
----@param _clear_destination_entities? boolean @If the destination entities should be cleared
----@param _clear_destination_decoratives? boolean @If the destination decoratives should be cleared
----@param _expand_map? boolean @If the destination surface should be expanded when destination_area is outside current bounds. Default false.
----@param _manual_collision_mode? boolean @If manual-style collision checks should be done.
----@param _create_build_effect_smoke? boolean @If true, the building effect smoke will be shown around the new entities.
-function LuaSurface.clone_brush(_source_offset, _destination_offset, _source_positions, _destination_surface, _destination_force, _clone_tiles, _clone_entities, _clone_decoratives, _clear_destination_entities, _clear_destination_decoratives, _expand_map, _manual_collision_mode, _create_build_effect_smoke) end
+---@param _table LuaSurface.clone_brush
+function LuaSurface.clone_brush(_table) end
 
 ---Clones the given entities.
 ---
 ---Entities are cloned in an order such that they can always be created, eg rails before trains.
----@param _entities LuaEntity[]
----@param _destination_offset Vector
----@param _destination_surface? SurfaceIdentification
----@param _destination_force? ForceIdentification
----@param _snap_to_grid? boolean
----@param _create_build_effect_smoke? boolean @If true, the building effect smoke will be shown around the new entities.
-function LuaSurface.clone_entities(_entities, _destination_offset, _destination_surface, _destination_force, _snap_to_grid, _create_build_effect_smoke) end
+---@param _table LuaSurface.clone_entities
+function LuaSurface.clone_entities(_table) end
 
 ---Count entities of given type or name in a given area. Works just like [LuaSurface::find_entities_filtered](LuaSurface::find_entities_filtered), except this only returns the count. As it doesn't construct all the wrapper objects, this is more efficient if one is only interested in the number of entities.
 ---
 ---If no `area` or `position` are given, the entire surface is searched. If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box). If `position` and `radius` are given, this returns entities in the radius of the position. If `area` is specified, this returns entities colliding with that area.
----@param _area? BoundingBox
----@param _position? MapPosition
----@param _radius? double @If given with position, will count all entities within the radius of the position.
----@param _name? string|string[]
----@param _type? string|string[]
----@param _ghost_name? string|string[]
----@param _ghost_type? string|string[]
----@param _direction? defines.direction|defines.direction[]
----@param _collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
----@param _force? ForceIdentification|ForceIdentification[]
----@param _to_be_deconstructed? boolean
----@param _to_be_upgraded? boolean
----@param _limit? uint
----@param _is_military_target? boolean
----@param _invert? boolean @Whether the filters should be inverted.
+---@param _table LuaSurface.count_entities_filtered
 ---@return uint
-function LuaSurface.count_entities_filtered(_area, _position, _radius, _name, _type, _ghost_name, _ghost_type, _direction, _collision_mask, _force, _to_be_deconstructed, _to_be_upgraded, _limit, _is_military_target, _invert) end
+function LuaSurface.count_entities_filtered(_table) end
 
 ---Count tiles of a given name in a given area. Works just like [LuaSurface::find_tiles_filtered](LuaSurface::find_tiles_filtered), except this only returns the count. As it doesn't construct all the wrapper objects, this is more efficient if one is only interested in the number of tiles.
 ---
 ---If no `area` or `position` and `radius` is given, the entire surface is searched. If `position` and `radius` are given, only tiles within the radius of the position are included.
----@param _area? BoundingBox
----@param _position? MapPosition @Ignored if not given with radius.
----@param _radius? double @If given with position, will return all entities within the radius of the position.
----@param _name? string|string[]
----@param _force? ForceIdentification|ForceIdentification[]
----@param _limit? uint
----@param _has_hidden_tile? boolean
----@param _has_tile_ghost? boolean @Can be further filtered by supplying a `force` filter.
----@param _to_be_deconstructed? boolean @Can be further filtered by supplying a `force` filter.
----@param _collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
----@param _invert? boolean @If the filters should be inverted.
+---@param _table LuaSurface.count_tiles_filtered
 ---@return uint
-function LuaSurface.count_tiles_filtered(_area, _position, _radius, _name, _force, _limit, _has_hidden_tile, _has_tile_ghost, _to_be_deconstructed, _collision_mask, _invert) end
+function LuaSurface.count_tiles_filtered(_table) end
 
 ---Adds the given decoratives to the surface.
 ---
 ---This will merge decoratives of the same type that already exist effectively increasing the "amount" field.
----@param _check_collision? boolean @If collision should be checked against entities/tiles.
----@param _decoratives Decorative[]
-function LuaSurface.create_decoratives(_check_collision, _decoratives) end
+---@param _table LuaSurface.create_decoratives
+function LuaSurface.create_decoratives(_table) end
 
 ---Create an entity on this surface.
 ---
@@ -241,49 +172,25 @@ function LuaSurface.create_decoratives(_check_collision, _decoratives) end
 ---```lua
 ---game.surfaces[1].create_entity{name = "inserter", position = game.player.position, direction = defines.direction.north}
 ---```
----@param _name string @The entity prototype name to create.
----@param _position MapPosition @Where to create the entity.
----@param _direction? defines.direction @Desired orientation of the entity after creation.
----@param _force? ForceIdentification @Force of the entity, default is enemy.
----@param _target? LuaEntity|MapPosition @Entity with health for the new entity to target.
----@param _source? LuaEntity|MapPosition @Source entity. Used for beams and highlight-boxes.
----@param _fast_replace? boolean @If true, building will attempt to simulate fast-replace building.
----@param _player? PlayerIdentification @If given set the last_user to this player. If fast_replace is true simulate fast replace using this player.
----@param _spill? boolean @If false while fast_replace is true and player is nil any items from fast-replacing will be deleted instead of dropped on the ground.
----@param _raise_built? boolean @If true; [defines.events.script_raised_built](defines.events.script_raised_built) will be fired on successful entity creation.
----@param _create_build_effect_smoke? boolean @If false, the building effect smoke will not be shown around the new entity.
----@param _spawn_decorations? boolean @If true, entity types that have spawn_decorations property will apply triggers defined in the property.
----@param _move_stuck_players? boolean @If true, any characters that are in the way of the entity are teleported out of the way.
----@param _item? LuaItemStack @If provided, the entity will attempt to pull stored values from this item (for example; creating a spidertron from a previously named and mined spidertron)
+---@param _table LuaSurface.create_entity
 ---@return LuaEntity @The created entity or `nil` if the creation failed.
-function LuaSurface.create_entity(_name, _position, _direction, _force, _target, _source, _fast_replace, _player, _spill, _raise_built, _create_build_effect_smoke, _spawn_decorations, _move_stuck_players, _item) end
+function LuaSurface.create_entity(_table) end
 
 ---Creates a particle at the given location
----@param _name string @The particle name.
----@param _position MapPosition @Where to create the particle.
----@param _movement Vector
----@param _height float
----@param _vertical_speed float
----@param _frame_speed float
-function LuaSurface.create_particle(_name, _position, _movement, _height, _vertical_speed, _frame_speed) end
+---@param _table LuaSurface.create_particle
+function LuaSurface.create_particle(_table) end
 
----@param _name string @The smoke prototype name to create.
----@param _position MapPosition @Where to create the smoke.
-function LuaSurface.create_trivial_smoke(_name, _position) end
+---@param _table LuaSurface.create_trivial_smoke
+function LuaSurface.create_trivial_smoke(_table) end
 
 ---Create a new unit group at a given position.
----@param _position MapPosition @Initial position of the new unit group.
----@param _force? ForceIdentification @Force of the new unit group. Defaults to `"enemy"`.
+---@param _table LuaSurface.create_unit_group
 ---@return LuaUnitGroup
-function LuaSurface.create_unit_group(_position, _force) end
+function LuaSurface.create_unit_group(_table) end
 
 ---Place a deconstruction request.
----@param _area BoundingBox @The area to mark for deconstruction.
----@param _force ForceIdentification @The force whose bots should perform the deconstruction.
----@param _player? PlayerIdentification @The player to set the last_user to if any.
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param _item? LuaItemStack @The deconstruction item to use if any.
-function LuaSurface.deconstruct_area(_area, _force, _player, _skip_fog_of_war, _item) end
+---@param _table LuaSurface.deconstruct_area
+function LuaSurface.deconstruct_area(_table) end
 
 ---@param _prototype string @The decorative prototype to check
 ---@param _position MapPosition @The position to check
@@ -293,16 +200,8 @@ function LuaSurface.decorative_prototype_collides(_prototype, _position) end
 function LuaSurface.delete_chunk(_position) end
 
 ---Removes all decoratives from the given area. If no area and no position are given, then the entire surface is searched.
----@param _area? BoundingBox
----@param _position? TilePosition
----@param _name? string|string[]|LuaDecorativePrototype|LuaDecorativePrototype[]
----@param _collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
----@param _from_layer? string
----@param _to_layer? string
----@param _exclude_soft? boolean @Soft decoratives can be drawn over rails.
----@param _limit? uint
----@param _invert? boolean @If the filters should be inverted.
-function LuaSurface.destroy_decoratives(_area, _position, _name, _collision_mask, _from_layer, _to_layer, _exclude_soft, _limit, _invert) end
+---@param _table LuaSurface.destroy_decoratives
+function LuaSurface.destroy_decoratives(_table) end
 
 ---Sets the given script area to the new values.
 ---@param _id uint @The area to edit.
@@ -328,17 +227,9 @@ function LuaSurface.entity_prototype_collides(_prototype, _position, _use_map_ge
 ---game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, name = "sand-decal"} -- gets all sand-decals in the rectangle
 ---game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 decoratives in the rectangle
 ---```
----@param _area? BoundingBox
----@param _position? TilePosition
----@param _name? string|string[]|LuaDecorativePrototype|LuaDecorativePrototype[]
----@param _collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
----@param _from_layer? string
----@param _to_layer? string
----@param _exclude_soft? boolean @Soft decoratives can be drawn over rails.
----@param _limit? uint
----@param _invert? boolean @If the filters should be inverted.
+---@param _table LuaSurface.find_decoratives_filtered
 ---@return DecorativeResult[]
-function LuaSurface.find_decoratives_filtered(_area, _position, _name, _collision_mask, _from_layer, _to_layer, _exclude_soft, _limit, _invert) end
+function LuaSurface.find_decoratives_filtered(_table) end
 
 ---Find enemy units (entities with type "unit") of a given force within an area.
 ---
@@ -383,23 +274,9 @@ function LuaSurface.find_entities(_area) end
 ---game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 entities in the rectangle
 ---game.surfaces[1].find_entities_filtered{position = {0, 0}, radius = 10}  -- gets all entities within 10 tiles of the position [0,0].
 ---```
----@param _area? BoundingBox
----@param _position? MapPosition @Has precedence over area field.
----@param _radius? double
----@param _name? string|string[]
----@param _type? string|string[]
----@param _ghost_name? string|string[]
----@param _ghost_type? string|string[]
----@param _direction? defines.direction|defines.direction[]
----@param _collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
----@param _force? ForceIdentification|ForceIdentification[]
----@param _to_be_deconstructed? boolean
----@param _to_be_upgraded? boolean
----@param _limit? uint
----@param _is_military_target? boolean
----@param _invert? boolean @Whether the filters should be inverted.
+---@param _table LuaSurface.find_entities_filtered
 ---@return LuaEntity[]
-function LuaSurface.find_entities_filtered(_area, _position, _radius, _name, _type, _ghost_name, _ghost_type, _direction, _collision_mask, _force, _to_be_deconstructed, _to_be_upgraded, _limit, _is_military_target, _invert) end
+function LuaSurface.find_entities_filtered(_table) end
 
 ---Find a specific entity at a specific position.
 ---
@@ -424,18 +301,14 @@ function LuaSurface.find_logistic_network_by_position(_position, _force) end
 function LuaSurface.find_logistic_networks_by_construction_area(_position, _force) end
 
 ---Find the enemy military target ([military entity](https://wiki.factorio.com/Military_units_and_structures)) closest to the given position.
----@param _position MapPosition @Center of the search area.
----@param _max_distance double @Radius of the circular search area.
----@param _force? ForceIdentification @The force the result will be an enemy of. Uses the player force if not specified.
+---@param _table LuaSurface.find_nearest_enemy
 ---@return LuaEntity @The nearest enemy military target or `nil` if no enemy could be found within the given area.
-function LuaSurface.find_nearest_enemy(_position, _max_distance, _force) end
+function LuaSurface.find_nearest_enemy(_table) end
 
 ---Find the enemy entity-with-owner closest to the given position.
----@param _position MapPosition @Center of the search area.
----@param _max_distance double @Radius of the circular search area.
----@param _force? ForceIdentification @The force the result will be an enemy of. Uses the player force if not specified.
+---@param _table LuaSurface.find_nearest_enemy_entity_with_owner
 ---@return LuaEntity @The nearest enemy entity-with-owner or `nil` if no enemy could be found within the given area.
-function LuaSurface.find_nearest_enemy_entity_with_owner(_position, _max_distance, _force) end
+function LuaSurface.find_nearest_enemy_entity_with_owner(_table) end
 
 ---Find a non-colliding position within a given radius.
 ---
@@ -461,19 +334,9 @@ function LuaSurface.find_non_colliding_position_in_box(_name, _search_space, _pr
 ---If no filters are given, this returns all tiles in the search area.
 ---
 ---If no `area` or `position` and `radius` is given, the entire surface is searched. If `position` and `radius` are given, only tiles within the radius of the position are included.
----@param _area? BoundingBox
----@param _position? MapPosition @Ignored if not given with radius.
----@param _radius? double @If given with position, will return all entities within the radius of the position.
----@param _name? string|string[]
----@param _force? ForceIdentification|ForceIdentification[]
----@param _limit? uint
----@param _has_hidden_tile? boolean
----@param _has_tile_ghost? boolean @Can be further filtered by supplying a `force` filter.
----@param _to_be_deconstructed? boolean @Can be further filtered by supplying a `force` filter.
----@param _collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
----@param _invert? boolean @Whether the filters should be inverted.
+---@param _table LuaSurface.find_tiles_filtered
 ---@return LuaTile[]
-function LuaSurface.find_tiles_filtered(_area, _position, _radius, _name, _force, _limit, _has_hidden_tile, _has_tile_ghost, _to_be_deconstructed, _collision_mask, _invert) end
+function LuaSurface.find_tiles_filtered(_table) end
 
 ---Find units (entities with type "unit") of a given force and force condition within a given area.
 ---
@@ -488,11 +351,9 @@ function LuaSurface.find_tiles_filtered(_area, _position, _radius, _name, _force
 ---```lua
 ---local units = game.player.surface.find_units({area = {{-10, -10},{10, 10}}, force = "player", condition = "same"})
 ---```
----@param _area BoundingBox @Box to find units within.
----@param _force LuaForce|string @Force performing the search.
----@param _condition ForceCondition @Only forces which meet the condition will be included in the search.
+---@param _table LuaSurface.find_units
 ---@return LuaEntity[]
-function LuaSurface.find_units(_area, _force, _condition) end
+function LuaSurface.find_units(_table) end
 
 ---Blocks and generates all chunks that have been requested using all available threads.
 function LuaSurface.force_generate_chunk_requests() end
@@ -586,10 +447,9 @@ function LuaSurface.get_tile(_x, _y) end
 function LuaSurface.get_total_pollution() end
 
 ---Gets train stops matching the given filters.
----@param _name? string|string[]
----@param _force? ForceIdentification
+---@param _table LuaSurface.get_train_stops
 ---@return LuaEntity[]
-function LuaSurface.get_train_stops(_name, _force) end
+function LuaSurface.get_train_stops(_table) end
 
 ---@param _force? ForceIdentification @If given only trains matching this force are returned.
 ---@return LuaTrain[]
@@ -605,11 +465,8 @@ function LuaSurface.help() end
 function LuaSurface.is_chunk_generated(_position) end
 
 ---Play a sound for every player on this surface.
----@param _path SoundPath @The sound to play.
----@param _position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
----@param _volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
----@param _override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
-function LuaSurface.play_sound(_path, _position, _volume_modifier, _override_sound_type) end
+---@param _table LuaSurface.play_sound
+function LuaSurface.play_sound(_table) end
 
 ---Spawn pollution at the given position.
 ---@param _source MapPosition @Where to spawn the pollution.
@@ -650,18 +507,9 @@ function LuaSurface.remove_script_position(_id) end
 ---Generates a path with the specified constraints (as an array of [PathfinderWaypoints](PathfinderWaypoint)) using the unit pathfinding algorithm. This path can be used to emulate pathing behavior by script for non-unit entities, such as vehicles. If you want to command actual units (such as biters or spitters) to move, use [LuaEntity::set_command](LuaEntity::set_command) instead.
 ---
 ---The resulting path is ultimately returned asynchronously via [on_script_path_request_finished](on_script_path_request_finished).
----@param _bounding_box BoundingBox @The dimensions of the object that's supposed to travel the path.
----@param _collision_mask CollisionMaskWithFlags|string[] @The list of masks the `bounding_box` collides with.
----@param _start MapPosition @The position from which to start pathfinding.
----@param _goal MapPosition @The position to find a path to.
----@param _force ForceIdentification @The force for which to generate the path, determining which gates can be opened for example.
----@param _radius? double @How close the pathfinder needs to get to its `goal` (in tiles). Defaults to `1`.
----@param _pathfind_flags? PathfinderFlags @Flags that affect pathfinder behavior.
----@param _can_open_gates? boolean @Whether the path request can open gates. Defaults to `false`.
----@param _path_resolution_modifier? int @Defines how coarse the pathfinder's grid is. Smaller values mean a coarser grid (negative numbers allowed). Defaults to `0`.
----@param _entity_to_ignore? LuaEntity @Makes the pathfinder ignore collisions with this entity if it is given.
+---@param _table LuaSurface.request_path
 ---@return uint @A unique handle to identify this call when [on_script_path_request_finished](on_script_path_request_finished) fires.
-function LuaSurface.request_path(_bounding_box, _collision_mask, _start, _goal, _force, _radius, _pathfind_flags, _can_open_gates, _path_resolution_modifier, _entity_to_ignore) end
+function LuaSurface.request_path(_table) end
 
 ---Request that the game's map generator generate chunks at the given position for the given radius on this surface.
 ---@param _position MapPosition @Where to generate the new chunks.
@@ -679,12 +527,9 @@ function LuaSurface.set_chunk_generated_status(_position, _status) end
 function LuaSurface.set_hidden_tile(_position, _tile) end
 
 ---Give a command to multiple units. This will automatically select suitable units for the task.
----@param _command Command
----@param _unit_count uint @Number of units to give the command to.
----@param _force? ForceIdentification @Force of the units this command is to be given to. If not specified, uses the enemy force.
----@param _unit_search_distance? uint @Radius to search for units. The search area is centered on the destination of the command.
+---@param _table LuaSurface.set_multi_command
 ---@return uint @Number of units actually sent. May be less than `count` if not enough units were available.
-function LuaSurface.set_multi_command(_command, _unit_count, _force, _unit_search_distance) end
+function LuaSurface.set_multi_command(_table) end
 
 ---Set tiles at specified locations. Can automatically correct the edges around modified tiles.
 ---
@@ -708,10 +553,247 @@ function LuaSurface.set_tiles(_tiles, _correct_tiles, _remove_colliding_entities
 function LuaSurface.spill_item_stack(_position, _items, _enable_looted, _force, _allow_belts) end
 
 ---Place an upgrade request.
----@param _area BoundingBox @The area to mark for upgrade.
----@param _force ForceIdentification @The force whose bots should perform the upgrade.
----@param _player? PlayerIdentification @The player to set the last_user to if any.
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param _item LuaItemStack @The upgrade item to use.
-function LuaSurface.upgrade_area(_area, _force, _player, _skip_fog_of_war, _item) end
+---@param _table LuaSurface.upgrade_area
+function LuaSurface.upgrade_area(_table) end
+
+
+---@class LuaSurface.can_fast_replace
+---@field name string @Name of the entity to check
+---@field position MapPosition @Where the entity would be placed
+---@field direction? defines.direction @Direction the entity would be placed
+---@field force? ForceIdentification @The force that would place the entity. If not specified, the enemy force is assumed.
+
+---@class LuaSurface.can_place_entity
+---@field name string @Name of the entity prototype to check.
+---@field position MapPosition @Where the entity would be placed.
+---@field direction? defines.direction @Direction of the placed entity.
+---@field force? ForceIdentification @The force that would place the entity. If not specified, the enemy force is assumed.
+---@field build_check_type? defines.build_check_type @Which type of check should be carried out.
+---@field forced? boolean @If `true`, entities that can be marked for deconstruction are ignored. Only used if `build_check_type` is either `manual_ghost`, `script_ghost` or `blueprint_ghost`.
+---@field inner_name? string @The prototype name of the entity contained in the ghost. Only used if `name` is `entity-ghost`.
+
+---@class LuaSurface.cancel_deconstruct_area
+---@field area BoundingBox @The area to cancel deconstruction orders in.
+---@field force ForceIdentification @The force whose deconstruction orders to cancel.
+---@field player? PlayerIdentification @The player to set the last_user to if any.
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@field item? LuaItemStack @The deconstruction item to use if any.
+
+---@class LuaSurface.cancel_upgrade_area
+---@field area BoundingBox @The area to cancel upgrade orders in.
+---@field force ForceIdentification @The force whose upgrade orders to cancel.
+---@field player? PlayerIdentification @The player to set the last_user to if any.
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@field item? LuaItemStack @The upgrade item to use if any.
+
+---@class LuaSurface.clone_area
+---@field source_area BoundingBox
+---@field destination_area BoundingBox
+---@field destination_surface? SurfaceIdentification
+---@field destination_force? LuaForce|string
+---@field clone_tiles? boolean @If tiles should be cloned
+---@field clone_entities? boolean @If entities should be cloned
+---@field clone_decoratives? boolean @If decoratives should be cloned
+---@field clear_destination_entities? boolean @If the destination entities should be cleared
+---@field clear_destination_decoratives? boolean @If the destination decoratives should be cleared
+---@field expand_map? boolean @If the destination surface should be expanded when destination_area is outside current bounds. Default false.
+---@field create_build_effect_smoke? boolean @If true, the building effect smoke will be shown around the new entities.
+
+---@class LuaSurface.clone_brush
+---@field source_offset TilePosition
+---@field destination_offset TilePosition
+---@field source_positions TilePosition[]
+---@field destination_surface? SurfaceIdentification
+---@field destination_force? LuaForce|string
+---@field clone_tiles? boolean @If tiles should be cloned
+---@field clone_entities? boolean @If entities should be cloned
+---@field clone_decoratives? boolean @If decoratives should be cloned
+---@field clear_destination_entities? boolean @If the destination entities should be cleared
+---@field clear_destination_decoratives? boolean @If the destination decoratives should be cleared
+---@field expand_map? boolean @If the destination surface should be expanded when destination_area is outside current bounds. Default false.
+---@field manual_collision_mode? boolean @If manual-style collision checks should be done.
+---@field create_build_effect_smoke? boolean @If true, the building effect smoke will be shown around the new entities.
+
+---@class LuaSurface.clone_entities
+---@field entities LuaEntity[]
+---@field destination_offset Vector
+---@field destination_surface? SurfaceIdentification
+---@field destination_force? ForceIdentification
+---@field snap_to_grid? boolean
+---@field create_build_effect_smoke? boolean @If true, the building effect smoke will be shown around the new entities.
+
+---@class LuaSurface.count_entities_filtered
+---@field area? BoundingBox
+---@field position? MapPosition
+---@field radius? double @If given with position, will count all entities within the radius of the position.
+---@field name? string|string[]
+---@field type? string|string[]
+---@field ghost_name? string|string[]
+---@field ghost_type? string|string[]
+---@field direction? defines.direction|defines.direction[]
+---@field collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
+---@field force? ForceIdentification|ForceIdentification[]
+---@field to_be_deconstructed? boolean
+---@field to_be_upgraded? boolean
+---@field limit? uint
+---@field is_military_target? boolean
+---@field invert? boolean @Whether the filters should be inverted.
+
+---@class LuaSurface.count_tiles_filtered
+---@field area? BoundingBox
+---@field position? MapPosition @Ignored if not given with radius.
+---@field radius? double @If given with position, will return all entities within the radius of the position.
+---@field name? string|string[]
+---@field force? ForceIdentification|ForceIdentification[]
+---@field limit? uint
+---@field has_hidden_tile? boolean
+---@field has_tile_ghost? boolean @Can be further filtered by supplying a `force` filter.
+---@field to_be_deconstructed? boolean @Can be further filtered by supplying a `force` filter.
+---@field collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
+---@field invert? boolean @If the filters should be inverted.
+
+---@class LuaSurface.create_decoratives
+---@field check_collision? boolean @If collision should be checked against entities/tiles.
+---@field decoratives Decorative[]
+
+---@class LuaSurface.create_entity
+---@field name string @The entity prototype name to create.
+---@field position MapPosition @Where to create the entity.
+---@field direction? defines.direction @Desired orientation of the entity after creation.
+---@field force? ForceIdentification @Force of the entity, default is enemy.
+---@field target? LuaEntity|MapPosition @Entity with health for the new entity to target.
+---@field source? LuaEntity|MapPosition @Source entity. Used for beams and highlight-boxes.
+---@field fast_replace? boolean @If true, building will attempt to simulate fast-replace building.
+---@field player? PlayerIdentification @If given set the last_user to this player. If fast_replace is true simulate fast replace using this player.
+---@field spill? boolean @If false while fast_replace is true and player is nil any items from fast-replacing will be deleted instead of dropped on the ground.
+---@field raise_built? boolean @If true; [defines.events.script_raised_built](defines.events.script_raised_built) will be fired on successful entity creation.
+---@field create_build_effect_smoke? boolean @If false, the building effect smoke will not be shown around the new entity.
+---@field spawn_decorations? boolean @If true, entity types that have spawn_decorations property will apply triggers defined in the property.
+---@field move_stuck_players? boolean @If true, any characters that are in the way of the entity are teleported out of the way.
+---@field item? LuaItemStack @If provided, the entity will attempt to pull stored values from this item (for example; creating a spidertron from a previously named and mined spidertron)
+
+---@class LuaSurface.create_particle
+---@field name string @The particle name.
+---@field position MapPosition @Where to create the particle.
+---@field movement Vector
+---@field height float
+---@field vertical_speed float
+---@field frame_speed float
+
+---@class LuaSurface.create_trivial_smoke
+---@field name string @The smoke prototype name to create.
+---@field position MapPosition @Where to create the smoke.
+
+---@class LuaSurface.create_unit_group
+---@field position MapPosition @Initial position of the new unit group.
+---@field force? ForceIdentification @Force of the new unit group. Defaults to `"enemy"`.
+
+---@class LuaSurface.deconstruct_area
+---@field area BoundingBox @The area to mark for deconstruction.
+---@field force ForceIdentification @The force whose bots should perform the deconstruction.
+---@field player? PlayerIdentification @The player to set the last_user to if any.
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@field item? LuaItemStack @The deconstruction item to use if any.
+
+---@class LuaSurface.destroy_decoratives
+---@field area? BoundingBox
+---@field position? TilePosition
+---@field name? string|string[]|LuaDecorativePrototype|LuaDecorativePrototype[]
+---@field collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
+---@field from_layer? string
+---@field to_layer? string
+---@field exclude_soft? boolean @Soft decoratives can be drawn over rails.
+---@field limit? uint
+---@field invert? boolean @If the filters should be inverted.
+
+---@class LuaSurface.find_decoratives_filtered
+---@field area? BoundingBox
+---@field position? TilePosition
+---@field name? string|string[]|LuaDecorativePrototype|LuaDecorativePrototype[]
+---@field collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
+---@field from_layer? string
+---@field to_layer? string
+---@field exclude_soft? boolean @Soft decoratives can be drawn over rails.
+---@field limit? uint
+---@field invert? boolean @If the filters should be inverted.
+
+---@class LuaSurface.find_entities_filtered
+---@field area? BoundingBox
+---@field position? MapPosition @Has precedence over area field.
+---@field radius? double
+---@field name? string|string[]
+---@field type? string|string[]
+---@field ghost_name? string|string[]
+---@field ghost_type? string|string[]
+---@field direction? defines.direction|defines.direction[]
+---@field collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
+---@field force? ForceIdentification|ForceIdentification[]
+---@field to_be_deconstructed? boolean
+---@field to_be_upgraded? boolean
+---@field limit? uint
+---@field is_military_target? boolean
+---@field invert? boolean @Whether the filters should be inverted.
+
+---@class LuaSurface.find_nearest_enemy
+---@field position MapPosition @Center of the search area.
+---@field max_distance double @Radius of the circular search area.
+---@field force? ForceIdentification @The force the result will be an enemy of. Uses the player force if not specified.
+
+---@class LuaSurface.find_nearest_enemy_entity_with_owner
+---@field position MapPosition @Center of the search area.
+---@field max_distance double @Radius of the circular search area.
+---@field force? ForceIdentification @The force the result will be an enemy of. Uses the player force if not specified.
+
+---@class LuaSurface.find_tiles_filtered
+---@field area? BoundingBox
+---@field position? MapPosition @Ignored if not given with radius.
+---@field radius? double @If given with position, will return all entities within the radius of the position.
+---@field name? string|string[]
+---@field force? ForceIdentification|ForceIdentification[]
+---@field limit? uint
+---@field has_hidden_tile? boolean
+---@field has_tile_ghost? boolean @Can be further filtered by supplying a `force` filter.
+---@field to_be_deconstructed? boolean @Can be further filtered by supplying a `force` filter.
+---@field collision_mask? CollisionMaskLayer|CollisionMaskLayer[]
+---@field invert? boolean @Whether the filters should be inverted.
+
+---@class LuaSurface.find_units
+---@field area BoundingBox @Box to find units within.
+---@field force LuaForce|string @Force performing the search.
+---@field condition ForceCondition @Only forces which meet the condition will be included in the search.
+
+---@class LuaSurface.get_train_stops
+---@field name? string|string[]
+---@field force? ForceIdentification
+
+---@class LuaSurface.play_sound
+---@field path SoundPath @The sound to play.
+---@field position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
+---@field volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
+---@field override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
+
+---@class LuaSurface.request_path
+---@field bounding_box BoundingBox @The dimensions of the object that's supposed to travel the path.
+---@field collision_mask CollisionMaskWithFlags|string[] @The list of masks the `bounding_box` collides with.
+---@field start MapPosition @The position from which to start pathfinding.
+---@field goal MapPosition @The position to find a path to.
+---@field force ForceIdentification @The force for which to generate the path, determining which gates can be opened for example.
+---@field radius? double @How close the pathfinder needs to get to its `goal` (in tiles). Defaults to `1`.
+---@field pathfind_flags? PathfinderFlags @Flags that affect pathfinder behavior.
+---@field can_open_gates? boolean @Whether the path request can open gates. Defaults to `false`.
+---@field path_resolution_modifier? int @Defines how coarse the pathfinder's grid is. Smaller values mean a coarser grid (negative numbers allowed). Defaults to `0`.
+---@field entity_to_ignore? LuaEntity @Makes the pathfinder ignore collisions with this entity if it is given.
+
+---@class LuaSurface.set_multi_command
+---@field command Command
+---@field unit_count uint @Number of units to give the command to.
+---@field force? ForceIdentification @Force of the units this command is to be given to. If not specified, uses the enemy force.
+---@field unit_search_distance? uint @Radius to search for units. The search area is centered on the destination of the command.
+
+---@class LuaSurface.upgrade_area
+---@field area BoundingBox @The area to mark for upgrade.
+---@field force ForceIdentification @The force whose bots should perform the upgrade.
+---@field player? PlayerIdentification @The player to set the last_user to if any.
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@field item LuaItemStack @The upgrade item to use.
 

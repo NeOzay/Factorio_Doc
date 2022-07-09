@@ -229,10 +229,9 @@ function LuaForce.get_saved_technology_progress(_technology) end
 function LuaForce.get_spawn_position(_surface) end
 
 ---Gets train stops matching the given filters.
----@param _name? string|string[]
----@param _surface? SurfaceIdentification
+---@param _table LuaForce.get_train_stops
 ---@return LuaEntity[]
-function LuaForce.get_train_stops(_name, _surface) end
+function LuaForce.get_train_stops(_table) end
 
 ---@param _surface? SurfaceIdentification @If given only trains on the surface are returned.
 ---@return LuaTrain[]
@@ -276,11 +275,8 @@ function LuaForce.is_pathfinder_busy() end
 function LuaForce.kill_all_units() end
 
 ---Play a sound for every player in this force.
----@param _path SoundPath @The sound to play.
----@param _position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
----@param _volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
----@param _override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
-function LuaForce.play_sound(_path, _position, _volume_modifier, _override_sound_type) end
+---@param _table LuaForce.play_sound
+function LuaForce.play_sound(_table) end
 
 ---Print text to the chat console of all players on this force.
 ---
@@ -355,4 +351,15 @@ function LuaForce.set_turret_attack_modifier(_turret, _modifier) end
 ---@param _position ChunkPosition @The chunk position to unchart.
 ---@param _surface SurfaceIdentification @Surface to unchart on.
 function LuaForce.unchart_chunk(_position, _surface) end
+
+
+---@class LuaForce.get_train_stops
+---@field name? string|string[]
+---@field surface? SurfaceIdentification
+
+---@class LuaForce.play_sound
+---@field path SoundPath @The sound to play.
+---@field position? MapPosition @Where the sound should be played. If not given, it's played at the current position of each player.
+---@field volume_modifier? double @The volume of the sound to play. Must be between 0 and 1 inclusive.
+---@field override_sound_type? SoundType @The volume mixer to play the sound through. Defaults to the default mixer for the given sound type.
 

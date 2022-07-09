@@ -84,16 +84,9 @@ function LuaItemStack.add_durability(_amount) end
 
 ---
 ---Built entities can be come invalid between the building of the blueprint and the function returning if by_player or raise_built is used and one of those events invalidates the entity.
----@param _surface SurfaceIdentification @Surface to build on
----@param _force ForceIdentification @Force to use for the building
----@param _position MapPosition @The position to build at
----@param _force_build? boolean @When true, anything that can be built is else nothing is built if any one thing can't be built
----@param _direction? defines.direction @The direction to use when building
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param _by_player? PlayerIdentification @The player to use if any. If provided [defines.events.on_built_entity](defines.events.on_built_entity) will also be fired on successful entity creation.
----@param _raise_built? boolean @If true; [defines.events.script_raised_built](defines.events.script_raised_built) will be fired on successful entity creation. Note: this is ignored if by_player is provided.
+---@param _table LuaItemStack.build_blueprint
 ---@return LuaEntity[] @Array of created ghosts
-function LuaItemStack.build_blueprint(_surface, _force, _position, _force_build, _direction, _skip_fog_of_war, _by_player, _raise_built) end
+function LuaItemStack.build_blueprint(_table) end
 
 ---Would a call to [LuaItemStack::set_stack](LuaItemStack::set_stack) succeed?
 ---@param _stack? ItemStackIdentification @Stack that would be set, possibly `nil`.
@@ -101,12 +94,8 @@ function LuaItemStack.build_blueprint(_surface, _force, _position, _force_build,
 function LuaItemStack.can_set_stack(_stack) end
 
 ---Cancel deconstruct the given area with this deconstruction item.
----@param _surface SurfaceIdentification @Surface to cancel deconstruct on
----@param _force ForceIdentification @Force to use for canceling deconstruction
----@param _area BoundingBox @The area to deconstruct
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param _by_player? PlayerIdentification @The player to use if any.
-function LuaItemStack.cancel_deconstruct_area(_surface, _force, _area, _skip_fog_of_war, _by_player) end
+---@param _table LuaItemStack.cancel_deconstruct_area
+function LuaItemStack.cancel_deconstruct_area(_table) end
 
 ---Clear this item stack.
 function LuaItemStack.clear() end
@@ -121,29 +110,17 @@ function LuaItemStack.clear_deconstruction_item() end
 function LuaItemStack.clear_upgrade_item() end
 
 ---Sets up this blueprint using the found blueprintable entities/tiles on the surface.
----@param _surface SurfaceIdentification @Surface to create from
----@param _force ForceIdentification @Force to use for the creation
----@param _area BoundingBox @The bounding box
----@param _always_include_tiles? boolean @When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.
----@param _include_entities? boolean @When true, entities are included in the blueprint. Defaults to true.
----@param _include_modules? boolean @When true, modules are included in the blueprint. Defaults to true.
----@param _include_station_names? boolean @When true, station names are included in the blueprint. Defaults to false.
----@param _include_trains? boolean @When true, trains are included in the blueprint. Defaults to false.
----@param _include_fuel? boolean @When true, train fuel is included in the blueprint, Defaults to true.
+---@param _table LuaItemStack.create_blueprint
 ---@return table<uint, LuaEntity> @The blueprint entity index to source entity mapping.
-function LuaItemStack.create_blueprint(_surface, _force, _area, _always_include_tiles, _include_entities, _include_modules, _include_station_names, _include_trains, _include_fuel) end
+function LuaItemStack.create_blueprint(_table) end
 
 ---Creates the equipment grid for this item if it doesn't exist and this is an item-with-entity-data that supports equipment grids.
 ---@return LuaEquipmentGrid
 function LuaItemStack.create_grid() end
 
 ---Deconstruct the given area with this deconstruction item.
----@param _surface SurfaceIdentification @Surface to deconstruct on
----@param _force ForceIdentification @Force to use for the deconstruction
----@param _area BoundingBox @The area to deconstruct
----@param _skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
----@param _by_player? PlayerIdentification @The player to use if any.
-function LuaItemStack.deconstruct_area(_surface, _force, _area, _skip_fog_of_war, _by_player) end
+---@param _table LuaItemStack.deconstruct_area
+function LuaItemStack.deconstruct_area(_table) end
 
 ---Remove ammo from this ammo item.
 ---@param _amount float @Amount of ammo to remove.
@@ -280,4 +257,40 @@ function LuaItemStack.swap_stack(_stack) end
 ---@param _stack ItemStackIdentification
 ---@return boolean @`true` if the full stack was transferred.
 function LuaItemStack.transfer_stack(_stack) end
+
+
+---@class LuaItemStack.build_blueprint
+---@field surface SurfaceIdentification @Surface to build on
+---@field force ForceIdentification @Force to use for the building
+---@field position MapPosition @The position to build at
+---@field force_build? boolean @When true, anything that can be built is else nothing is built if any one thing can't be built
+---@field direction? defines.direction @The direction to use when building
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@field by_player? PlayerIdentification @The player to use if any. If provided [defines.events.on_built_entity](defines.events.on_built_entity) will also be fired on successful entity creation.
+---@field raise_built? boolean @If true; [defines.events.script_raised_built](defines.events.script_raised_built) will be fired on successful entity creation. Note: this is ignored if by_player is provided.
+
+---@class LuaItemStack.cancel_deconstruct_area
+---@field surface SurfaceIdentification @Surface to cancel deconstruct on
+---@field force ForceIdentification @Force to use for canceling deconstruction
+---@field area BoundingBox @The area to deconstruct
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@field by_player? PlayerIdentification @The player to use if any.
+
+---@class LuaItemStack.create_blueprint
+---@field surface SurfaceIdentification @Surface to create from
+---@field force ForceIdentification @Force to use for the creation
+---@field area BoundingBox @The bounding box
+---@field always_include_tiles? boolean @When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.
+---@field include_entities? boolean @When true, entities are included in the blueprint. Defaults to true.
+---@field include_modules? boolean @When true, modules are included in the blueprint. Defaults to true.
+---@field include_station_names? boolean @When true, station names are included in the blueprint. Defaults to false.
+---@field include_trains? boolean @When true, trains are included in the blueprint. Defaults to false.
+---@field include_fuel? boolean @When true, train fuel is included in the blueprint, Defaults to true.
+
+---@class LuaItemStack.deconstruct_area
+---@field surface SurfaceIdentification @Surface to deconstruct on
+---@field force ForceIdentification @Force to use for the deconstruction
+---@field area BoundingBox @The area to deconstruct
+---@field skip_fog_of_war? boolean @If chunks covered by fog-of-war are skipped.
+---@field by_player? PlayerIdentification @The player to use if any.
 
