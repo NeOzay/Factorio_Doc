@@ -103,7 +103,7 @@ concepts_types.filter = function (concept)
 		def = def..FieldDescription.fromParameter(param):tostring()
 	end
 	for name, variant_parameter_field in pairs(variant_parameter_field_list) do
-		def = def..("---@field %s? %s"):format(name, table.concat(variant_parameter_field, "|"))
+		def = def..("---@field %s? %s\n"):format(name, table.concat(variant_parameter_field, "|"))
 	end
 	return def
 end
@@ -132,7 +132,7 @@ local function solve_concept()
 		if concept.custom then
 			def = def..concept.custom
 		else
-			def = def..Docomentation.new(concept.description, concept.notes, concept.examples):tostring()
+			def = def..DocDescription.new(concept.description, concept.notes, concept.examples):tostring()
 			def = def..(concepts_types[concept.category](concept) or ("---@class %s\n"):format(concept.name)).."\n"
 		end
 	end

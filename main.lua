@@ -1,13 +1,12 @@
 json = require"json"
-Documentation = require"script.make_doc"
+DocDescription = require"script.make_doc"
 ClassDescription = require"script.make_class"
-Docomentation = require"script.make_doc"
 FieldDescription = require"script.make_field"
 MethodDescription = require"script.make_method"
 solve_type = require"script.solve_type"
 
 make_file = require("script.make_file")
-local examples = require"examples"
+
 
 local rawData
 do

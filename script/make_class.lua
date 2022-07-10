@@ -21,7 +21,7 @@ function ClassDoc.new(class)
 
 	classDoc.raw = class
 	classDoc.name = class.name
-	classDoc.documentation = Docomentation.new(class.description, class.notes, class.examples)
+	classDoc.documentation = DocDescription.new(class.description, class.notes, class.examples)
 	classDoc.extras = {}
 	classDoc.fields = {}
 	classDoc.base_classes = class.base_classes
@@ -53,7 +53,7 @@ end
 function ClassDoc.fromEvent(event)
 	local classDoc = setmetatable({}, ClassDoc)
 	classDoc.name = event.name
-	classDoc.documentation = Docomentation.new(event.description, event.notes, event.examples)
+	classDoc.documentation = DocDescription.new(event.description, event.notes, event.examples)
 	classDoc.extras = {}
 	classDoc.methods = {}
 	classDoc.fields = {}

@@ -50,7 +50,7 @@ function MethodDoc.new(method, parent)
 	methodDoc.raw = method
 	methodDoc.name = method.name
 	methodDoc.parent = parent and parent.."."
-	methodDoc.documentation = Docomentation.new(method.description, method.notes, method.examples)
+	methodDoc.documentation = DocDescription.new(method.description, method.notes, method.examples)
 	methodDoc.parameters = method.parameters
 	table.sort(methodDoc.parameters, function (a, b)
 		return a.order < b.order

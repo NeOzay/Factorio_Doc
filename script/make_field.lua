@@ -1,4 +1,5 @@
 ---@class FieldDescription
+---@field documentation DocomentationDescription|string
 local FieldDoc = {}
 FieldDoc.__index = FieldDoc
 
@@ -11,7 +12,7 @@ function FieldDoc.new(attribute)
 	field.type = attribute.type
 	local rw = ("`[%s]`"):format((attribute.read and "R" or "")..(attribute.write and "W" or ""))
 	if attribute.notes or attribute.examples or attribute.description:find("\n") then
-		field.documentation = Docomentation.new(attribute.description..rw, attribute.notes, attribute.examples)
+		field.documentation = DocDescription.new(attribute.description..rw, attribute.notes, attribute.examples)
 	else
 		field.documentation = attribute.description..rw
 	end
@@ -26,7 +27,7 @@ function FieldDoc.fromParameter(parameter)
 	field.name = parameter.name..(parameter.optional and "?" or "")
 	field.type = parameter.type
 	if parameter.description:find("\n") then
-		field.documentation = Docomentation.new(parameter.description)
+		field.documentation = DocDescription.new(parameter.description)
 	else
 		field.documentation = parameter.description
 	end
