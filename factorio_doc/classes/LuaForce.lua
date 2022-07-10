@@ -229,7 +229,7 @@ function LuaForce.get_saved_technology_progress(_technology) end
 function LuaForce.get_spawn_position(_surface) end
 
 ---Gets train stops matching the given filters.
----@param _table LuaForce.get_train_stops
+---@param _table? LuaForce.get_train_stops
 ---@return LuaEntity[]
 function LuaForce.get_train_stops(_table) end
 

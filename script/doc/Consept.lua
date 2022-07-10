@@ -6,7 +6,7 @@
 ---@field examples? string[]
 ---@field category string
 ---@field parameters? Parameter[]
----@field variavariant_parameter_groups? ParameterGroup[]
+---@field variant_parameter_groups? ParameterGroup[]
 ---@field variant_parameter_description? string
 ---@field options? Concept.spec[]|BasicMember[]
 ---@field attributes? Attribute[]

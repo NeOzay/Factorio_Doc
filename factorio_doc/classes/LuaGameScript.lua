@@ -344,7 +344,7 @@ function LuaGameScript.get_script_inventories(_mod) end
 function LuaGameScript.get_surface(_surface) end
 
 ---Gets train stops matching the given filters.
----@param _table LuaGameScript.get_train_stops
+---@param _table? LuaGameScript.get_train_stops
 ---@return LuaEntity[]
 function LuaGameScript.get_train_stops(_table) end
 

@@ -28,12 +28,13 @@
 ---@field takes_table boolean
 ---@field table_is_optional? boolean
 ---@field return_values  Parameter[]
+---@field custom string
 
 ---@class Parameter
 ---@field name string
 ---@field order integer
 ---@field description string
----@field type string
+---@field type Type
 ---@field optional boolean
 
 ---@class Attribute

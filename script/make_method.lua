@@ -15,10 +15,11 @@ local function make_params(params)
 	return def
 end
 
----@param params Parameter
-local function make_table_params(params)
+---@param params Parameter[]
+---@param is_optional? boolean
+local function make_table_params(params, is_optional)
 	local _type = solve_type({complex_type = "table", parameters = params})
-	local def = ("---@param %s %s\n"):format("_table", _type)
+	local def = ("---@param %s %s\n"):format("_table"..(is_optional and "?" or ""), _type)
 	return def
 end
 
@@ -41,12 +42,11 @@ function MethodDoc.new(method, parent)
 	---@class MethodDescription
 	local methodDoc = setmetatable({}, MethodDoc)
 	
-	---@diagnostic disable
 	if method.custom then
 		methodDoc.custom = method.custom
 		return methodDoc
 	end
-	---@diagnostic enable
+
 	methodDoc.raw = method
 	methodDoc.name = method.name
 	methodDoc.parent = parent and parent.."."
@@ -61,7 +61,7 @@ function MethodDoc.new(method, parent)
 	end)
 	
 	methodDoc.table_type = method.takes_table
-	
+	methodDoc.table_is_optional = method.table_is_optional
 	return methodDoc
 end
 
@@ -77,7 +77,7 @@ function MethodDoc:tostring()
 	local paramNames = {}
 
 	if self.table_type then
-		description = description..make_table_params(self.parameters)
+		description = description..make_table_params(self.parameters, self.table_is_optional)
 		paramNames = {"_table"}
 	else
 		for index, param in ipairs(self.parameters) do

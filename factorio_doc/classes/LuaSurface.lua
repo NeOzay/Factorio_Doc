@@ -447,7 +447,7 @@ function LuaSurface.get_tile(_x, _y) end
 function LuaSurface.get_total_pollution() end
 
 ---Gets train stops matching the given filters.
----@param _table LuaSurface.get_train_stops
+---@param _table? LuaSurface.get_train_stops
 ---@return LuaEntity[]
 function LuaSurface.get_train_stops(_table) end
 

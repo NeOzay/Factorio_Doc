@@ -61,7 +61,51 @@ end
 
 ---@param concept Concept
 concepts_types.filter = function (concept)
-	
+	local params = concept.parameters --[[@as Parameter[] ]]
+	table.sort(params, function (a, b)
+		return a.order < b.order
+	end)
+
+	table.sort(concept.variant_parameter_groups, function (a, b)
+		return a.order < b.order
+	end)
+
+	local variant_parameter_groups_list = {}
+
+	local variant_parameter_field_list = {}
+	for index, variant_parameter in ipairs(concept.variant_parameter_groups) do
+		variant_parameter_groups_list[index] = ('"%s"'):format(variant_parameter.name)
+
+		for index, param in ipairs(variant_parameter.parameters) do
+			
+			if not variant_parameter_field_list[param.name] then
+				variant_parameter_field_list[param.name] = {}
+			end
+			local _type = solve_type(param.type)
+			local found
+			for index, t in ipairs(variant_parameter_field_list[param.name]) do
+				if t ==_type then
+					found = true
+					break
+				end
+			end
+			if not found  then
+				table.insert(variant_parameter_field_list[param.name], _type)
+			end
+		end
+	end
+
+	local def = ("---@class %s\n"):format(concept.name)
+	params[1].type = table.concat(variant_parameter_groups_list,"|")
+	params[2].type = '"or"|"and"'
+
+	for index, param in ipairs(concept.parameters) do
+		def = def..FieldDescription.fromParameter(param):tostring()
+	end
+	for name, variant_parameter_field in pairs(variant_parameter_field_list) do
+		def = def..("---@field %s? %s"):format(name, table.concat(variant_parameter_field, "|"))
+	end
+	return def
 end
 
 ---@param concept Concept
@@ -88,7 +132,6 @@ local function solve_concept()
 		if concept.custom then
 			def = def..concept.custom
 		else
-			current.class = concept.name
 			def = def..Docomentation.new(concept.description, concept.notes, concept.examples):tostring()
 			def = def..(concepts_types[concept.category](concept) or ("---@class %s\n"):format(concept.name)).."\n"
 		end

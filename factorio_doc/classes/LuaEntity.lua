@@ -409,7 +409,7 @@ function LuaEntity.deplete() end
 ---Destroys the entity.
 ---
 ---Not all entities can be destroyed - things such as rails under trains cannot be destroyed until the train is moved or destroyed.
----@param _table LuaEntity.destroy
+---@param _table? LuaEntity.destroy
 ---@return boolean @Returns `false` if the entity was valid and destruction failed, `true` in all other cases.
 function LuaEntity.destroy(_table) end
 
@@ -711,7 +711,7 @@ function LuaEntity.launch_rocket() end
 ---'Standard' operation is to keep calling `LuaEntity.mine` with an inventory until all items are transferred and the items dealt with.
 ---\
 ---The result of mining the entity (the item(s) it produces when mined) will be dropped on the ground if they don't fit into the provided inventory.
----@param _table LuaEntity.mine
+---@param _table? LuaEntity.mine
 ---@return boolean @Whether mining succeeded.
 function LuaEntity.mine(_table) end
 
@@ -757,14 +757,14 @@ function LuaEntity.request_to_close(_force) end
 function LuaEntity.request_to_open(_force, _extra_time) end
 
 ---Revive a ghost. I.e. turn it from a ghost to a real entity or tile.
----@param _table LuaEntity.revive
+---@param _table? LuaEntity.revive
 ---@return table<string, uint> @Any items the new real entity collided with or `nil` if the ghost could not be revived.
 ---@return LuaEntity @The revived entity if an entity ghost was successfully revived.
 ---@return LuaEntity @The item request proxy if it was requested with `return_item_request_proxy`.
 function LuaEntity.revive(_table) end
 
 ---Rotates this entity as if the player rotated it.
----@param _table LuaEntity.rotate
+---@param _table? LuaEntity.rotate
 ---@return boolean @Whether the rotation was successful.
 ---@return table<string, uint> @Count of spilled items indexed by their prototype names if `spill_items` was `true`.
 function LuaEntity.rotate(_table) end
@@ -831,7 +831,7 @@ function LuaEntity.set_recipe(_recipe) end
 function LuaEntity.set_request_slot(_request, _slot) end
 
 ---Revives a ghost silently.
----@param _table LuaEntity.silent_revive
+---@param _table? LuaEntity.silent_revive
 ---@return table<string, uint> @Any items the new real entity collided with or `nil` if the ghost could not be revived.
 ---@return LuaEntity @The revived entity if an entity ghost was successfully revived.
 ---@return LuaEntity @The item request proxy if it was requested with `return_item_request_proxy`.

@@ -9,12 +9,12 @@ local baseTypes = {
 	boolean = true
 }
 
----@param types table
+---@param types BuiltinType[]
 local function makeType(types)
 	local description = ""
-	for index, type in ipairs(types) do
-		if not baseTypes[type.name] then
-			description = description..("---@class %s:%s @%s\n"):format(type.name, "number, integer", type.description)
+	for index, _type in ipairs(types) do
+		if not baseTypes[_type.name] then
+			description = description..("---@alias %s %s #%s\n"):format(_type.name, "number", _type.description)
 		end
 	end
 	make_file(description, "./factorio_doc/builtin_types.lua")
