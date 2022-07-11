@@ -1,8 +1,8 @@
 
 local events = data.events
 
-
+local def = ""
 for index, event in ipairs(events) do
-	local c = ClassDescription.fromEvent(event)
-	make_file(c:tostring(), "./factorio_doc/events/"..c.name..".lua")
+	def = def..ClassDescription.fromEvent(event):tostring()
 end
+make_file(def, "./factorio_doc/events.lua")

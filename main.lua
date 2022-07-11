@@ -22,10 +22,19 @@ current = {}
 require("custom")
 
 local function setupClass()
+	local def = ""
+	local index = 1
 	for i = 1, #data.classes, 1 do
-		local c = ClassDescription.new(data.classes[i])
-		make_file(c:tostring(), "./factorio_doc/classes/"..c.name..".lua")
+		def = def..ClassDescription.new(data.classes[i]):tostring()
+		local _, n = string.gsub(def, "\n", "\n")
+		if (n or 0) >= 2000 then
+			make_file(def, "./factorio_doc/classes"..index..".lua")
+			index = index + 1
+			def = ""
+		end
 	end
+
+	make_file(def, "./factorio_doc/classes"..index..".lua")
 end
 
 

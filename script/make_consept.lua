@@ -70,11 +70,11 @@ concepts_types.filter = function (concept)
 		return a.order < b.order
 	end)
 
-	local variant_parameter_groups_list = {}
+	local variant_parameter_groups_list = {"string"}
 
 	local variant_parameter_field_list = {}
 	for index, variant_parameter in ipairs(concept.variant_parameter_groups) do
-		variant_parameter_groups_list[index] = ('"%s"'):format(variant_parameter.name)
+		table.insert(variant_parameter_groups_list, ('"%s"'):format(variant_parameter.name))
 
 		for index, param in ipairs(variant_parameter.parameters) do
 			
